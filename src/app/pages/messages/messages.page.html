@@ -1,10 +1,21 @@
 <ion-content>
  
-    <ion-list>
-      <ion-item *ngFor="let item of items">{{item}}</ion-item>
+    <ion-list lines="full">      
+      <ion-item *ngFor="let user of users;" ion-button (click)="redirectToMessage(test)">
+        <ion-avatar slot="start">
+          <img src="../../../assets/images/gw50h17a.bmp">         
+        </ion-avatar>
+        <ion-label>
+        
+          <h2>{{user.name}}</h2>
+          <p>This is the latest text message from {{user.name}}</p>
+        </ion-label>        
+        <ion-badge *ngIf="user.unread != 0" >{{user.unread}}</ion-badge>           
+      </ion-item>
+      
     </ion-list>
 
-    <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)" [disabled]="numTimesLeft <= 0">
+    <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)" [disabled]="fullyLoaded">
       <ion-infinite-scroll-content
         loadingSpinner="bubbles">
       </ion-infinite-scroll-content>
