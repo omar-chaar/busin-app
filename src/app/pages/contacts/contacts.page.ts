@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { IonInfiniteScroll } from '@ionic/angular';
+import { IonAccordionGroup } from '@ionic/angular';
 @Component({
   selector: 'app-contacts',
   templateUrl: 'contacts.page.html',
@@ -7,6 +8,7 @@ import { IonInfiniteScroll } from '@ionic/angular';
 })
 export class ContactsPage {
   @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
+  @ViewChild(IonAccordionGroup, { static: true }) accordionGroup: IonAccordionGroup;
 
   users: {name: string, position: string}[]  = 
   [{
@@ -98,5 +100,14 @@ export class ContactsPage {
       this.users.push({"name":name,"position":position})
     }
   }
+  
+  logAccordionValue() {
+    console.log(this.accordionGroup.value);
+  }
+
+  closeAccordion() {
+    this.accordionGroup.value = undefined;
+  }
+
     
 }
