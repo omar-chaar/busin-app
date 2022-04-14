@@ -1,19 +1,31 @@
-<ion-tabs>
+<ion-tabs >
   
-  <ion-tab-bar slot="top">
-    <ion-tab-button tab="messages">
+  <ion-tab-bar slot="top" class="menu-nav" >
+    <ion-tab-button tab="messages" class="menu-item">
       <ion-icon name="chatbubble-ellipses-sharp"></ion-icon>
     </ion-tab-button>
 
-    <ion-tab-button tab="announcements">
+    <ion-tab-button tab="announcements" class="menu-item">
       <ion-icon name="newspaper-sharp"></ion-icon>
     </ion-tab-button>
 
-    <ion-tab-button tab="contacts">
+    <ion-tab-button tab="contacts" class="menu-item">
       <ion-icon name="journal-sharp"></ion-icon>
     </ion-tab-button>
+    
+    <ion-tab-button component="menu" class="menu-button">
+      <ion-icon name="ellipsis-vertical-sharp"></ion-icon>
+      <ion-popover [isOpen]="isPopoverOpen">
+        <ng-template>
+          <app-popover-content></app-popover-content>
+        </ng-template>
+      </ion-popover>
+    </ion-tab-button>
+    
+    
 
     
   </ion-tab-bar>
+
 
 </ion-tabs>
