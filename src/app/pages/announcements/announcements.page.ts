@@ -1,5 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { IonInfiniteScroll } from '@ionic/angular';
+import { IonAccordionGroup } from '@ionic/angular';
 
 @Component({
   selector: 'app-announcements',
@@ -8,6 +9,7 @@ import { IonInfiniteScroll } from '@ionic/angular';
 })
 export class AnnouncementsPage {
   @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
+  @ViewChild(IonAccordionGroup, { static: true }) accordionGroup: IonAccordionGroup;
 
   items = [];
   numTimesLeft = 5;
@@ -26,8 +28,16 @@ export class AnnouncementsPage {
   }
 
   addMoreItems() {
-    for (let i=0; i<20; i++)
+    for (let i = 0; i < 20; i++)
       this.items.push(i);
   }
-    
+
+  logAccordionValue() {
+    console.log(this.accordionGroup.value);
+  }
+
+  closeAccordion() {
+    this.accordionGroup.value = undefined;
+  }
+
 }
