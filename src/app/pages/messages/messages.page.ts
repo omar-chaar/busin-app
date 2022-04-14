@@ -41,7 +41,7 @@ export class MessagesPage {
     }
   }
   redirectToMessage(user: string){
-    this.router.navigateByUrl('/message');
+    this.router.navigateByUrl('/message/' + user);
   }
 
   //name generator

@@ -1,7 +1,7 @@
 <ion-content>
  
     <ion-list lines="full">      
-      <ion-item *ngFor="let user of users;" ion-button (click)="redirectToMessage(test)">
+      <ion-item *ngFor="let user of users;" ion-button (click)="redirectToMessage(user.name)">
         <ion-avatar slot="start">
           <img src="../../../assets/images/gw50h17a.bmp">         
         </ion-avatar>
