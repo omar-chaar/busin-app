@@ -21,6 +21,14 @@ const routes: Routes = [
   {
     path: 'profile',
     loadChildren: () => import('./pages/profile/profile.module').then( m => m.ProfilePageModule)
+  },
+  {
+    path: 'join',
+    loadChildren: () => import('./pages/join/join.module').then( m => m.JoinPageModule)
+  },
+  {
+    path: 'create',
+    loadChildren: () => import('./pages/create/create.module').then( m => m.CreatePageModule)
   }
 
 
