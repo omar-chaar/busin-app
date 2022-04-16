@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { IonInfiniteScroll } from '@ionic/angular';
 import { IonAccordionGroup } from '@ionic/angular';
 
@@ -14,11 +14,30 @@ interface IAnnouncement{
   templateUrl: 'announcements.page.html',
   styleUrls: ['./announcements.page.scss']
 })
-export class AnnouncementsPage {
+export class AnnouncementsPage implements OnInit {
   @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
   @ViewChild(IonAccordionGroup, { static: true }) accordionGroup: IonAccordionGroup;
 
-  announcements: IAnnouncement[] = [
+  announcements: IAnnouncement[] = [];
+  announcementsTest: IAnnouncement[] = [
+    {
+      title: 'Update about clothing politics',
+      text: '    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+      date: '10/04/2022',
+      read: false,
+    },
+    {
+      title: 'New Safety Measures',
+      text: '    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+      date: '25/02/2022',
+      read: false,
+    },
+    {
+      title: 'Feast of Annuncitrueation',
+      text: '    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+      date: '25/02/2022',
+      read: false,
+    },
     {
       title: 'Update about clothing politics',
       text: '    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
@@ -35,16 +54,32 @@ export class AnnouncementsPage {
       title: 'Feast of Annunciation',
       text: '    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
       date: '25/02/2022',
+      read: false,
+    },
+    {
+      title: 'New Safety Measures',
+      text: '    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+      date: '25/02/2022',
+      read: false,
+    },
+    {
+      title: 'Feast of Annunciation',
+      text: '    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+      date: '25/02/2022',
       read: true,
-    }
-  ];
+    },
+  ]
   numTimesLeft = 5;
 
   constructor() {
-    this.addMoreItems();
+
   }
 
-  loadData(event) {
+  ngOnInit(): void {
+    this.addMoreItems()
+  }
+
+  loadData(event):void {
     setTimeout(() => {
       console.log('Done');
       this.addMoreItems();
@@ -53,9 +88,8 @@ export class AnnouncementsPage {
     }, 2000);
   }
 
-  addMoreItems() {
-    //for (let i = 0; i < 20; i++)
-      //this.items.push(i);
+  addMoreItems():void {
+    this.announcements.push(...this.announcementsTest)
   }
 
   confirmRead(announcement: IAnnouncement): void{
