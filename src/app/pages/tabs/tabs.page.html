@@ -13,14 +13,14 @@
       <ion-icon name="journal-sharp"></ion-icon>
     </ion-tab-button>
     
-    <button component="menu" class="menu-button">
+    <ion-button component="menu" class="menu-button" fill="clear">
       <ion-icon name="ellipsis-vertical-sharp"></ion-icon>
       <ion-popover [isOpen]="isPopoverOpen">
         <ng-template>
           <app-popover-content></app-popover-content>
         </ng-template>
       </ion-popover>
-    </button>
+    </ion-button>
   </ion-tab-bar>
 
 
