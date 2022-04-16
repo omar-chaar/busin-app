@@ -1,10 +1,13 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>login</ion-title>
-  </ion-toolbar>
-</ion-header>
-<ion-buttons>
-  <button ion-button (click)="redirectTo()">ok </button>
-</ion-buttons>
-<ion-content>
+<ion-content class="login-page" fullscreen="true">
+  <div class="login-container">
+    <span class="login-icon">
+      <ion-icon name="chatbox-ellipses"></ion-icon>
+    </span>
+    <h1>Welcome to Busin</h1>
+    <ion-button color="tertiary" shape="round">Join a new company</ion-button>
+    <ion-button color="tertiary" shape="round">Create a new company</ion-button>
+    <ion-buttons>
+      <button class="login-text" ion-button (click)="redirectTo()">Log in</button>
+    </ion-buttons>
+  </div>
 </ion-content>

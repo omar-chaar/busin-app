@@ -1,27 +1,25 @@
 <ion-content>
 
   <ion-list lines="full">
-    <ion-accordion-group value="numbers" *ngFor="let user of users">
-      <ion-accordion value="colors">
+    <ion-accordion-group value="numbers" *ngFor="let departament of departaments">
+      <ion-accordion value="colors" class="departament-item">
         <ion-item slot="header">
-          <ion-label> Department </ion-label>
-            <ion-buttons>
-              <ion-icon name="chatbubble-ellipses-sharp"></ion-icon>
-            </ion-buttons>
-          
+          <ion-label>
+            <h2 class="departament-name">{{departament.name}}</h2>
+          </ion-label>
         </ion-item>
         <ion-list slot="content">
-          <ion-item>
+          <ion-item *ngFor="let user of departament.users">
             <ion-avatar slot="start">
               <img src="../../../assets/images/gw50h17a.bmp">
             </ion-avatar>
-            <ion-label>{{user.name}}</ion-label>
-          </ion-item>
-          <ion-item>
-            <ion-avatar slot="start">
-              <img src="../../../assets/images/gw50h17a.bmp">
-            </ion-avatar>
-            <ion-label>{{user.name}}</ion-label>
+            <ion-label class="username">
+              <p class="username">{{user.name}}</p>
+              <p class="position">{{user.position}}</p>
+            </ion-label>
+            <ion-buttons class="chat-icon">
+              <ion-icon name="chatbubble-ellipses-sharp"></ion-icon>
+            </ion-buttons>
           </ion-item>
         </ion-list>
       </ion-accordion>

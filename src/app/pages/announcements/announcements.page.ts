@@ -2,6 +2,13 @@ import { Component, ViewChild } from '@angular/core';
 import { IonInfiniteScroll } from '@ionic/angular';
 import { IonAccordionGroup } from '@ionic/angular';
 
+interface IAnnouncement{
+  title: string,
+  text: string,
+  date: string,
+  read?: boolean,
+}
+
 @Component({
   selector: 'app-announcements',
   templateUrl: 'announcements.page.html',
@@ -11,7 +18,26 @@ export class AnnouncementsPage {
   @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
   @ViewChild(IonAccordionGroup, { static: true }) accordionGroup: IonAccordionGroup;
 
-  items = [];
+  announcements: IAnnouncement[] = [
+    {
+      title: 'Update about clothing politics',
+      text: '    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+      date: '10/04/2022',
+      read: false,
+    },
+    {
+      title: 'New Safety Measures',
+      text: '    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+      date: '25/02/2022',
+      read: false,
+    },
+    {
+      title: 'Feast of Annunciation',
+      text: '    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+      date: '25/02/2022',
+      read: false,
+    },
+  ];
   numTimesLeft = 5;
 
   constructor() {
@@ -28,8 +54,12 @@ export class AnnouncementsPage {
   }
 
   addMoreItems() {
-    for (let i = 0; i < 20; i++)
-      this.items.push(i);
+    //for (let i = 0; i < 20; i++)
+      //this.items.push(i);
+  }
+
+  confirmRead(announcement: IAnnouncement): void{
+    announcement.read = true
   }
 
   logAccordionValue() {

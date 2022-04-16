@@ -1,22 +1,25 @@
 <ion-content>
-
   <ion-list lines="full">
-    <ion-accordion-group value="numbers" *ngFor="let item of items">
+    <ion-accordion-group value="numbers" *ngFor="let announcement of announcements">
       <ion-accordion value="colors">
-        <ion-item slot="header" disabled="false" *ngIf="item < 5">
-          <ion-label>Announcement</ion-label>
+        <ion-item slot="header" [attr.disabled]="announcement.read ? true : null" class="announcement-title">
+          <ion-label>{{announcement.title}}</ion-label>
         </ion-item>       
-          <ion-item slot="header" disabled="true" *ngIf="item >= 5">
-            <ion-label>Announcement Read</ion-label>
-          </ion-item>
-
-          <ion-item slot="content">
+          <ion-item slot="content" class="content">
             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
               dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
               ea commodo consequat. Duis aute irure
               dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
               occaecat cupidatat non proident, sunt in culpa
               qui officia deserunt mollit anim id est laborum.</p>
+          </ion-item>
+          <ion-item slot="content">
+            <div class="button-container">
+              <ion-button color="tertiary" shape="round" [attr.disabled]="announcement.read ? true : null"
+              (click)="confirmRead(announcement)" >
+                {{announcement.read ? 'Already read' : 'I have read'}}
+              </ion-button>
+            </div>
           </ion-item>
       </ion-accordion>
     </ion-accordion-group>

@@ -1,13 +1,16 @@
-.menu-button{
-    position: absolute !important;
-    right: 0 !important;
-    
-}
-
-.menu-nav{
-    position: relative !important;
-}
-
 .menu-item{
-    --color-selected: #5B3FFF;
+    --color-selected: #5D5FEF;
+}
+
+.menu-button{
+    flex: 0;
+    background-color: transparent;
+    border: none;
+    font-size: 1.5rem;
+    color: grey;
+    transition: color .2s;
+}
+
+.menu-button:active{
+    color: #000;
 }
