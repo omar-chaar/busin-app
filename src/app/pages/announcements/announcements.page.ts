@@ -59,15 +59,10 @@ export class AnnouncementsPage {
   }
 
   confirmRead(announcement: IAnnouncement): void{
-    announcement.read = true
+    if(!announcement.read){
+      setTimeout(() => {
+        announcement.read = true
+      }, 2000)
+    }
   }
-
-  logAccordionValue() {
-    console.log(this.accordionGroup.value);
-  }
-
-  closeAccordion() {
-    this.accordionGroup.value = undefined;
-  }
-
 }

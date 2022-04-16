@@ -45,6 +45,10 @@ export class ContactsPage {
         {
           name: 'Omar El Khoury',
           position: 'Junior Developer'
+        },
+        {
+          name: 'Bluezão',
+          position: 'Influencer'
         }
       ]
     },
