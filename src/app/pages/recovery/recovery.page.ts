@@ -17,8 +17,9 @@ export class RecoveryPage implements OnInit {
   }
 
   handleSubmit():void {
-    if(this.validationService.validateEmail(this.email)) return
+    if(!this.validationService.validateEmail(this.email)) return
     console.log('email sent!')
+    this.router.navigateByUrl('/user-login');
   }
 
   goBack():void{

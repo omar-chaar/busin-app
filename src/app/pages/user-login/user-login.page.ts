@@ -18,9 +18,10 @@ export class UserLoginPage implements OnInit {
   }
 
   handleSubmit():void {
-    if(this.validationService.validateEmail(this.email)) return
-    if(this.validationService.validatePassword(this.password)) return
+    if(!this.validationService.validateEmail(this.email)) return 
+    if(!this.validationService.validatePassword(this.password)) return 
     console.log('logged in!')
+    this.router.navigateByUrl('/tabs/messages')
   }
 
   goToRecovery():void{
