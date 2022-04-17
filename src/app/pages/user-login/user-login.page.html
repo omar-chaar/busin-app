@@ -1,5 +1,5 @@
 <ion-content class="login-page" fullscreen="true">
-  <form class="login-container">
+  <form class="login-container" (ngSubmit)="handleSubmit()">
     <ion-item>
       <span class="login-icon">
         <ion-icon name="person-circle-outline"></ion-icon>
@@ -11,7 +11,7 @@
       <ion-label position="stacked">Password</ion-label>
       <ion-input [(ngModel)]="password" name="password" type="password" placeholder="*******" required></ion-input>
     </ion-item>
-    <ion-button (click)="handleSubmit()" expand="block" color="tertiary">Login</ion-button>
-    <button class="login-text" ion-button (click)="goToRecovery()">Forgot my password</button>
+    <ion-button expand="block" color="tertiary" type="submit">Login</ion-button>
+    <span class="login-text non-primary-button" (click)="goToRecovery()">Forgot my password</span>
   </form>
 </ion-content>
