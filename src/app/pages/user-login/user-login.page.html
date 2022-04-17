@@ -12,6 +12,6 @@
       <ion-input [(ngModel)]="password" name="password" type="password" placeholder="*******" required></ion-input>
     </ion-item>
     <ion-button (click)="handleSubmit()" expand="block" color="tertiary">Login</ion-button>
-    <button class="login-text" ion-button>Forgot my password</button>
+    <button class="login-text" ion-button (click)="goToRecovery()">Forgot my password</button>
   </form>
 </ion-content>

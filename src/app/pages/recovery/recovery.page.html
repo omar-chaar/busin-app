@@ -1,0 +1,10 @@
+<ion-content class="login-page" fullscreen="true">
+  <ion-icon name="chevron-back-outline" (click)="goBack()"></ion-icon>
+  <form class="login-container">
+    <ion-item>
+      <ion-label position="stacked">Type your e-mail</ion-label>
+      <ion-input [(ngModel)]="email" name="password" type="email" placeholder="example@email.com" required></ion-input>
+    </ion-item>
+    <ion-button (click)="handleSubmit()" expand="block" color="tertiary">Send recovery email</ion-button>
+  </form>
+</ion-content>

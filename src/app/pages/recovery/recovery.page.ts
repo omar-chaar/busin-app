@@ -3,14 +3,13 @@ import { Router } from '@angular/router';
 import { ValidationService } from 'src/app/services/validation.service';
 
 @Component({
-  selector: 'app-user-login',
-  templateUrl: './user-login.page.html',
-  styleUrls: ['./user-login.page.scss'],
+  selector: 'app-recovery',
+  templateUrl: './recovery.page.html',
+  styleUrls: ['./recovery.page.scss'],
 })
-export class UserLoginPage implements OnInit {
+export class RecoveryPage implements OnInit {
 
   email: string
-  password: string
 
   constructor(private router: Router, private validationService: ValidationService) { }
 
@@ -19,11 +18,11 @@ export class UserLoginPage implements OnInit {
 
   handleSubmit():void {
     if(this.validationService.validateEmail(this.email)) return
-    if(this.validationService.validatePassword(this.password)) return
-    console.log('logged in!')
+    console.log('email sent!')
   }
 
-  goToRecovery():void{
-    this.router.navigateByUrl('/recovery')
+  goBack():void{
+    this.router.navigateByUrl('/user-login');
   }
+
 }

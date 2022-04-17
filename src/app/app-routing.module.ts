@@ -33,6 +33,10 @@ const routes: Routes = [
   {
     path: 'user-login',
     loadChildren: () => import('./pages/user-login/user-login.module').then( m => m.UserLoginPageModule)
+  },
+  {
+    path: 'recovery',
+    loadChildren: () => import('./pages/recovery/recovery.module').then( m => m.RecoveryPageModule)
   }
 
 
