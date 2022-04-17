@@ -10,7 +10,7 @@ export class LoginPage {
   constructor(private router: Router) { }
 
   redirectTo() {
-    this.router.navigateByUrl('/tabs/messages');
+    this.router.navigateByUrl('/user-login');
   }
 
 }
