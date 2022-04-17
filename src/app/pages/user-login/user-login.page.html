@@ -1,9 +1,17 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>userLogin</ion-title>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content>
-
+<ion-content class="login-page" fullscreen="true">
+  <form class="login-container">
+    <ion-item>
+      <span class="login-icon">
+        <ion-icon name="person-circle-outline"></ion-icon>
+      </span>
+      <ion-label position="stacked">E-mail</ion-label>
+      <ion-input [(ngModel)]="email" name="password" type="email" placeholder="example@email.com" required></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">Password</ion-label>
+      <ion-input [(ngModel)]="password" name="password" type="password" placeholder="*******" required></ion-input>
+    </ion-item>
+    <ion-button (click)="handleSubmit()" expand="block" color="tertiary">Login</ion-button>
+    <button class="login-text" ion-button>Forgot my password</button>
+  </form>
 </ion-content>
