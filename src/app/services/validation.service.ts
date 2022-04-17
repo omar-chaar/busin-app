@@ -1,47 +1,37 @@
 import { Injectable } from '@angular/core';
-import { ToastController } from '@ionic/angular';
-
+import { ToastService } from 'src/app/services/toast.service';
 @Injectable({
   providedIn: 'root'
 })
 export class ValidationService {
 
-  emailRegex: RegExp = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/
+  emailRegex: RegExp = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
 
-  constructor(public toastController: ToastController) { }
+  constructor(private toastService: ToastService) { }
 
-  async presentToast(message: string, duration: number, color: string) {
-    const toast = await this.toastController.create({
-      message,
-      duration,
-      icon: 'information-circle',
-      position: 'top',
-      color
-    });
-    toast.present();
-  }
+ 
 
   validateEmail(email: string): boolean {
     if (!email) {
-      this.presentToast('E-mail field is empty!', 3000, 'danger')
-      return true
+      this.toastService.presentToast('E-mail field is empty!', 3000, 'danger');
+      return false;
     }
     if (email.match(this.emailRegex))
-      return false
-    this.presentToast('Invalid e-mail format!', 3000, 'danger')
-    return true
+      return true;
+    this.toastService.presentToast('Invalid e-mail format!', 3000, 'danger');
+    return false;
 
   }
 
   validatePassword(password: string): boolean {
     if(!password){
-      this.presentToast('Password field is empty', 3000, 'danger')
-      return true
+      this.toastService.presentToast('Password field is empty', 3000, 'danger');
+      return false;
     }
     if (password.length >= 6)
-      return false
-    this.presentToast('Password is too short!', 3000, 'danger')
-    return true
+      return true;
+    this.toastService.presentToast('Password is too short!', 3000, 'danger');
+    return false;
 
   }
 
