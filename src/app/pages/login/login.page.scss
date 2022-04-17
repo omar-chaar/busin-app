@@ -17,8 +17,7 @@
     margin-right: auto;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
+    justify-content: space-between;    
     gap: 15px;
 }
 
@@ -33,4 +32,8 @@
     background-color: #fff;
     color: #5B3FFF;
     font-size: 3rem;
+}
+
+.non-primary-button{
+    align-self: center;
 }
