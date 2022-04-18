@@ -36,8 +36,15 @@ export class MessagePage implements OnInit {
     if (this.text.length > 0) {
       const msg = this.messagesService.insertMessage(this.text, this.user, this.chat)
       this.chat.messages.push(msg)
+      this.chat.lastMessage = new Date()
       this.text = ''
     }
+  }
+
+  formatTime(date: Date):string{
+    const hour:string = date.getHours().toString().length === 1 ? `0${date.getHours().toString()}` : date.getHours().toString();
+    const minutes:string = date.getMinutes().toString().length === 1 ? `0${date.getMinutes().toString()}` : date.getMinutes().toString();
+    return `${hour}:${minutes}`
   }
 
 }

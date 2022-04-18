@@ -49,4 +49,10 @@ export class MessagesPage implements OnInit {
   redirectToMessage(chatId: number){
     this.router.navigateByUrl('/message/' + chatId);
   }
+
+  formatTime(date: Date):string{
+    const hour:string = date.getHours().toString().length === 1 ? `0${date.getHours().toString()}` : date.getHours().toString();
+    const minutes:string = date.getMinutes().toString().length === 1 ? `0${date.getMinutes().toString()}` : date.getMinutes().toString();
+    return `${hour}:${minutes}`
+  }
 }

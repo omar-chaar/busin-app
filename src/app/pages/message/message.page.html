@@ -25,7 +25,7 @@
           <p>{{message.text}}</p>
           <div class="meta-info">
             <ion-icon name="checkmark-done-sharp"></ion-icon>
-            <p>{{message.time}}</p>
+            <p>{{formatTime(message.date)}}</p>
           </div>
         </div>
       </ion-row>
@@ -34,7 +34,7 @@
 </ion-content>
 <ion-item class="text-container">
   <form class="text-form" (ngSubmit)="onSubmit()">
-    <ion-input [(ngModel)]="text" name="text" id="text" class="text-field" placeholder="Type to send a text message..."></ion-input>
+    <ion-input [(ngModel)]="text" name="text" id="text" type="text" class="text-field" placeholder="Type to send a text message..."></ion-input>
     <ion-button type="submit" fill="clear" class="submit-btn">
       <ion-icon name="send-sharp"></ion-icon>
     </ion-button>

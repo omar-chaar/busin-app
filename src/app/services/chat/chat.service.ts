@@ -8,6 +8,7 @@ export interface IChat{
   participants: IUser[],
   messages?: IMessage[],
   read: boolean,
+  lastMessage: Date,
 }
 
 @Injectable({
@@ -23,7 +24,8 @@ export class ChatService {
         this.userService.getUser(0),
         this.userService.getUser(1)
       ],
-      read: true
+      read: true,
+      lastMessage: new Date()
     },
     {
       id: 1,
@@ -31,7 +33,8 @@ export class ChatService {
         this.userService.getUser(5),
         this.userService.getUser(3)
       ],
-      read: true
+      read: true,
+      lastMessage: new Date()
     },
     {
       id: 2,
@@ -39,7 +42,8 @@ export class ChatService {
         this.userService.getUser(2),
         this.userService.getUser(5)
       ],
-      read: true
+      read: true,
+      lastMessage: new Date()
     },
     {
       id: 3,
@@ -47,7 +51,8 @@ export class ChatService {
         this.userService.getUser(5),
         this.userService.getUser(4)
       ],
-      read: true
+      read: true,
+      lastMessage: new Date()
     },
     {
       id: 4,
@@ -55,7 +60,8 @@ export class ChatService {
         this.userService.getUser(5),
         this.userService.getUser(1)
       ],
-      read: true
+      read: true,
+      lastMessage: new Date()
     },
     {
       id: 5,
@@ -63,7 +69,8 @@ export class ChatService {
         this.userService.getUser(6),
         this.userService.getUser(5)
       ],
-      read: true
+      read: true,
+      lastMessage: new Date()
     },
   ]
 
