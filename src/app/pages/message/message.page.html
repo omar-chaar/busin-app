@@ -1,12 +1,45 @@
 <ion-header>
   <ion-toolbar>
-    <ion-avatar id="main-avatar" slot="start" >
-      <img src="../../../assets/images/gw50h17a.bmp">         
-    </ion-avatar>
-    <ion-title>message</ion-title>
+    <div class="header">
+      <ion-icon name="chevron-back-outline" class="previous" (click)="goBack()"></ion-icon>
+      <ion-avatar id="main-avatar" slot="start">
+        <img src="../../../assets/images/gw50h17a.bmp">
+      </ion-avatar>
+      <div class="contact-info">
+        <h1>{{contact.name}}</h1>
+        <p>{{contact.position}} - Available</p>
+      </div>
+      <div class="icons">
+        <ion-icon name="videocam"></ion-icon>
+        <ion-icon name="call"></ion-icon>
+      </div>
+    </div>
   </ion-toolbar>
 </ion-header>
-
 <ion-content>
-
+  <ion-list>
+    <ion-grid>
+      <ion-row *ngFor="let message of chat.messages" class="messagebox-container"
+        [ngClass]="{'user-message': message.sender.id === user.id}">
+        <div class="message-box">
+          <p>{{message.text}}</p>
+          <div class="meta-info">
+            <ion-icon name="checkmark-done-sharp"></ion-icon>
+            <p>{{message.time}}</p>
+          </div>
+        </div>
+      </ion-row>
+    </ion-grid>
+  </ion-list>
 </ion-content>
+<ion-item class="text-container">
+  <form class="text-form" (ngSubmit)="onSubmit()">
+    <ion-input [(ngModel)]="text" name="text" id="text" class="text-field" placeholder="Type to send a text message..."></ion-input>
+    <ion-button type="submit" fill="clear" class="submit-btn">
+      <ion-icon name="send-sharp"></ion-icon>
+    </ion-button>
+
+  </form>
+</ion-item>
+
+<!-- [ngClass]="{ reminder: task.reminder }"-->

@@ -1,14 +1,14 @@
 <ion-content>
  
     <ion-list lines="full">      
-      <ion-item *ngFor="let user of users;" ion-button (click)="redirectToMessage(user.name)">
+      <ion-item *ngFor="let chat of chats;" ion-button (click)="redirectToMessage(chat.id)">
         <ion-avatar slot="start">
           <img src="../../../assets/images/gw50h17a.bmp">         
         </ion-avatar>
         <ion-label>
         
-          <h2>{{user.name}}</h2>
-          <p>This is the latest text message from {{user.name}}</p>
+          <h2>{{chat.participants[0].id === user.id ? chat.participants[1].name : chat.participants[0].name}}</h2>
+          <p>{{chat.messages[chat.messages.length-1].text}}</p>
         </ion-label>        
         <ion-badge *ngIf="user.unread != 0" >{{user.unread}}</ion-badge>           
       </ion-item>
