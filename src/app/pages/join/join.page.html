@@ -1,9 +1,14 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>join</ion-title>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content>
-
+<ion-content class="page" fullscreen="true">
+  <ion-icon name="chevron-back-outline" class="return-icon" (click)="redirectTo('/login')"></ion-icon>
+  <form class="container" (ngSubmit)="handleSubmit()">
+    <ion-item>
+      <span class="icon">
+        <ion-icon name="enter"></ion-icon>
+      </span>
+      <p class="info">Enter the code provided by the company below.</p>
+      <ion-label position="stacked">Code:</ion-label>
+      <ion-input [(ngModel)]="code" name="code" type="text" placeholder="Enter the code here..." required></ion-input>
+    </ion-item>
+    <ion-button expand="block" color="tertiary" type="submit">Join company</ion-button>
+  </form>
 </ion-content>
