@@ -2,11 +2,11 @@
   <ion-toolbar>
     <div class="header">
       <ion-icon name="chevron-back-outline" class="previous" (click)="goBack()"></ion-icon>
-      <ion-avatar id="main-avatar" slot="start">
+      <ion-avatar id="main-avatar" slot="start" (click)="goToProfile(contact.id)">
         <img src="../../../assets/images/gw50h17a.bmp">
       </ion-avatar>
       <div class="contact-info">
-        <h1>{{contact.name}}</h1>
+        <h1 (click)="goToProfile(contact.id)">{{contact.name}}</h1>
         <p>{{contact.position}} - Available</p>
       </div>
       <div class="icons">

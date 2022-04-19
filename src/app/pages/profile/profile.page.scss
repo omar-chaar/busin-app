@@ -1,0 +1,87 @@
+.profile-page{
+    --background: #fff;
+    position: relative;
+}
+
+.position-top{
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.profile-container{
+    background-color: #5B3FFF;
+    color: #fff;
+    border-bottom-left-radius: 40px;
+    border-bottom-right-radius: 40px;
+    padding: 20px 25px 25px 25px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;  
+    align-items: center;  
+    gap: 15px;
+}
+
+.profile-icons{
+    display: flex;
+    justify-content: space-between;
+    align-self: stretch;
+}
+
+.profile-header{
+    justify-content: space-between;
+    font-size: 1.5rem;
+}
+
+.profile-options{
+    margin-top: 30px;
+    justify-content: space-around;
+    font-size: 2rem;
+}
+
+.profile-icons ion-icon{
+    cursor: pointer;
+}
+
+.profile-avatar{
+    border-radius: 50%;
+}
+
+.profile-avatar ion-avatar{
+    width: 88px;
+    height: 88px;
+}
+
+.profile-title{
+    font-size: 1.5rem;
+    font-weight: bolder;
+}
+
+.profile-info p{
+    text-align: center;
+    margin: 0;
+    margin-bottom: 5px;
+}
+
+.profile-schedule{
+    display: flex;
+    flex-direction: column;
+    align-self: stretch;
+    color: #414141;
+    font-size: 14px;
+    padding: 10px 15px;
+    border-bottom: 1px solid lightgray;
+}
+
+.profile-schedule p{
+    margin: 0;
+    margin-bottom: 5px;
+}

@@ -36,6 +36,10 @@ export class MessagePage implements OnInit {
     this._router.navigateByUrl('/tabs/messages')
   }
 
+  goToProfile(id: number):void{
+    this._router.navigateByUrl('/profile/' + id)
+  }
+
   onSubmit(): void {
     if (this.text.length > 0) {
       const msg = this.messagesService.insertMessage(this.text, this.user, this.chat)

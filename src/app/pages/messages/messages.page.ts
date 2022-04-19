@@ -75,4 +75,8 @@ export class MessagesPage implements OnInit {
     const minutes:string = date.getMinutes().toString().length === 1 ? `0${date.getMinutes().toString()}` : date.getMinutes().toString();
     return `${hour}:${minutes}`
   }
+
+  goToProfile(id: number):void{
+    this.router.navigateByUrl('/profile/' + id)
+  }
 }
