@@ -35,5 +35,22 @@ export class ValidationService {
 
   }
 
+  validateLength(field: string = 'Field', text: string, max:number=Infinity, min:number=0):boolean{
+    if(!text){
+      this.toastService.presentToast(field + ' is empty!', 3000, 'danger');
+      return false
+    }
+    if(text.length < min){
+      this.toastService.presentToast(field + ' is too short!', 3000, 'danger');
+      return false
+    }
+    if(text.length > max){
+      this.toastService.presentToast(field + ' is too long!', 3000, 'danger')
+      return false
+    }
+
+    return true
+  }
+
 
 }

@@ -9,8 +9,8 @@ export class LoginPage {
 
   constructor(private router: Router) { }
 
-  redirectTo() {
-    this.router.navigateByUrl('/user-login');
+  redirectTo(url: string) {
+    this.router.navigateByUrl(url);
   }
 
 }

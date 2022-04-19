@@ -4,10 +4,10 @@
       <ion-icon name="chatbox-ellipses"></ion-icon>
     </span>
     <h1 class="non-primary-button">Welcome to Busin</h1>
-    <ion-button color="tertiary" shape="round" >Join a company</ion-button>
-    <ion-button color="tertiary" shape="round" >Create a new company</ion-button>
+    <ion-button (click)="redirectTo('/join')" color="tertiary" shape="round" >Join a company</ion-button>
+    <ion-button (click)="redirectTo('/create')" color="tertiary" shape="round" >Create a new company</ion-button>
     <ion-buttons class="non-primary-button">
-      <button class="login-text" ion-button (click)="redirectTo()">Log in</button>
+      <button class="login-text" ion-button (click)="redirectTo('/tabs/messages')">Log in</button>
     </ion-buttons>
   </div>
 </ion-content>

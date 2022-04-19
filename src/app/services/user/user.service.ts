@@ -19,28 +19,28 @@ export class UserService {
   fakeDb: IUser[] = [
     {
       id: 0,
-      name: 'Kenobi',
-      position: 'General'
+      name: 'Omar Chaar',
+      position: 'Fullstack Developer'
     },
     {
       id: 1,
-      name: 'Grievous',
-      position: 'General',
+      name: 'Gabriel Nunes',
+      position: 'Front-end Developer',
     },
     {
       id: 2,
-      name: 'Bluezão',
-      position: 'Influencer',
+      name: 'Ahmed Hassan',
+      position: 'Senior Developer',
     },
     {
       id: 3,
-      name: 'Gabriel',
-      position: 'Emperor of the World'
+      name: 'Omar El Khoury',
+      position: 'Junior Developer'
     },
     {
       id: 4,
-      name: 'Marcell',
-      position: 'Trapper'
+      name: 'Marcell da Silva',
+      position: 'Accountant'
     },
     {
       id: 5,

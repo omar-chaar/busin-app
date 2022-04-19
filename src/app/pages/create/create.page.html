@@ -1,9 +1,13 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>create</ion-title>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content>
-
+<ion-content class="page" fullscreen="true">
+  <ion-icon name="chevron-back-outline" class="return-icon" (click)="redirectTo('/login')"></ion-icon>
+  <form class="container" (ngSubmit)="handleSubmit()">
+    <ion-item>
+      <span class="icon">
+        <ion-icon name="business"></ion-icon>
+      </span>
+      <ion-label position="stacked">Name of the company:</ion-label>
+      <ion-input [(ngModel)]="name" name="name" type="text" placeholder="Type the name of your company..." required></ion-input>
+    </ion-item>
+    <ion-button expand="block" color="tertiary" type="submit">Create new company</ion-button>
+  </form>
 </ion-content>
