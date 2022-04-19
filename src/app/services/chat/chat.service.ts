@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { IMessage, MessagesService } from '../messages/messages.service';
 import { IUser } from '../user/user.service';
 import { UserService } from '../user/user.service';
@@ -17,6 +18,7 @@ export interface IChat{
 export class ChatService {
 
   chatsPerRequest: number = 4;
+  subscription: Subscription;
   fakeDb: IChat[] = [
     {
       id: 0,
@@ -76,6 +78,16 @@ export class ChatService {
 
   constructor(private userService: UserService, private messageService: MessagesService) { 
     this.updateMessages()
+    this.subscription = messageService.onChange().subscribe(value => {
+      const newArr = this.fakeDb.map(chat => {
+        if(chat.id === value.chatId)
+          chat.messages.push(value)
+          chat.lastMessage = new Date()
+        return chat
+      })
+
+      this.fakeDb = newArr
+    })
   }
 
   getChats(user:IUser, page:number):IChat[]{
@@ -85,8 +97,14 @@ export class ChatService {
     })
   }
 
-  getChat(id: number):IChat{
-    return this.fakeDb.filter((chat: IChat) => chat.id === id)[0]
+  getChat(id: number, user: IUser):IChat|boolean{
+    const chat = this.fakeDb.filter((chat: IChat) => chat.id === id)[0]
+    if(chat.participants.includes(user)) return chat
+    else return false
+  }
+
+  getChatByMessage(message: IMessage):IChat{
+    return this.fakeDb.filter(chat => chat.messages.includes(message))[0]
   }
 
   updateMessages():void{
