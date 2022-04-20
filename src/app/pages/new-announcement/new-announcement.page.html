@@ -1,7 +1,8 @@
-<ion-content class="login-page" fullscreen="true">
-  <form class="login-container" (ngSubmit)="handleSubmit()">
+<ion-content class="page" fullscreen="true">
+  <ion-icon name="chevron-down-outline" class="return-icon" (click)="dismiss()"></ion-icon>
+  <form class="container" (ngSubmit)="handleSubmit()">
     <ion-item>
-      <span class="login-icon">
+      <span class="icon">
         <ion-icon name="newspaper"></ion-icon>
       </span>
       <ion-label position="stacked">Announcement Title</ion-label>
@@ -12,6 +13,6 @@
       <ion-textarea [(ngModel)]="content" rows="5" name="content" type="text" placeholder="Please enter the announcement content" required></ion-textarea>
     </ion-item>
     <ion-button expand="block" color="tertiary" type="submit">Send</ion-button>
-    <span class="login-text non-primary-button" (click)="goToRecovery()">Cancel</span>
+    <span class="text non-primary-button" (click)="dismiss()">Cancel</span>
   </form>
 </ion-content>

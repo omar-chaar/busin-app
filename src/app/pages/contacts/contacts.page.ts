@@ -1,159 +1,66 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 import { IonInfiniteScroll } from '@ionic/angular';
 import { IonAccordionGroup } from '@ionic/angular';
+import { ChatService } from 'src/app/services/chat/chat.service';
+import { DepartamentService, IDepartament } from 'src/app/services/departament/departament.service';
+import { IUser, UserService } from 'src/app/services/user/user.service';
 
-interface IUser {
-  name: string,
-  position: string,
-}
-
-interface IDepartament {
-  name: string,
-  users: IUser[],
-}
 
 @Component({
   selector: 'app-contacts',
   templateUrl: 'contacts.page.html',
   styleUrls: ['./contacts.page.scss']
 })
-export class ContactsPage implements OnInit{
+export class ContactsPage implements OnInit {
   @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
   @ViewChild(IonAccordionGroup, { static: true }) accordionGroup: IonAccordionGroup;
 
   departaments: IDepartament[] = []
-  departamentsTest: IDepartament[] = [
-    {
-      name: 'Marketing',
-      users: [
-        {
-          name: 'Aline Groover',
-          position: 'Accountant'
-        },
-        {
-          "name": 'Nevada Anders',
-          "position": 'Manager',
-        }
-      ]
-    },
-    {
-      name: 'IT Departament',
-      users: [
-        {
-          name: 'Ahmed Hassan',
-          position: 'Senior Developer'
-        },
-        {
-          name: 'Omar El Khoury',
-          position: 'Junior Developer'
-        },
-        {
-          name: 'Bluezão',
-          position: 'Influencer'
-        }
-      ]
-    },
-    {
-      name: 'Human Resources',
-      users: [
-        {
-          name: 'Harriette Garcia',
-          position: 'Recruiter'
-        }
-      ]
-    },
-    {
-      name: 'Marketing',
-      users: [
-        {
-          name: 'Aline Groover',
-          position: 'Accountant'
-        },
-        {
-          "name": 'Nevada Anders',
-          "position": 'Manager',
-        }
-      ]
-    },
-    {
-      name: 'IT Departament',
-      users: [
-        {
-          name: 'Ahmed Hassan',
-          position: 'Senior Developer'
-        },
-        {
-          name: 'Omar El Khoury',
-          position: 'Junior Developer'
-        },
-        {
-          name: 'Bluezão',
-          position: 'Influencer'
-        }
-      ]
-    },
-    {
-      name: 'Human Resources',
-      users: [
-        {
-          name: 'Harriette Garcia',
-          position: 'Recruiter'
-        }
-      ]
-    },
-    {
-      name: 'Marketing',
-      users: [
-        {
-          name: 'Aline Groover',
-          position: 'Accountant'
-        },
-        {
-          "name": 'Nevada Anders',
-          "position": 'Manager',
-        }
-      ]
-    },
-    {
-      name: 'IT Departament',
-      users: [
-        {
-          name: 'Ahmed Hassan',
-          position: 'Senior Developer'
-        },
-        {
-          name: 'Omar El Khoury',
-          position: 'Junior Developer'
-        },
-        {
-          name: 'Bluezão',
-          position: 'Influencer'
-        }
-      ]
-    }
-  ]
+  user: IUser;
 
-  numTimesLeft = 5
+  page: number = 1
+  fullyLoaded = false
 
-  constructor() {
+  constructor(private departamentService: DepartamentService, private userService: UserService,
+    private router: Router, private chatService:ChatService) {
+      this.user = this.userService.currentUser
   }
 
   ngOnInit(): void {
     this.loadMoreDepartaments()
   }
 
-  loadData(event) {
-    this.numTimesLeft -= 1
-    //Loading event
+  loadData(event):void {
     setTimeout(() => {
-      console.log('Done');
       this.loadMoreDepartaments();
       event.target.complete();
     }, 2000);
   }
 
-  loadMoreDepartaments():void {
-    this.departaments.push(...this.departamentsTest)
+  loadMoreDepartaments(): void {
+    if (!this.fullyLoaded) {
+      const arr = this.departamentService.getDepartaments(this.page)
+      if (arr.length > 0) {
+        this.departaments.push(...arr)
+        this.page++
+      } else {
+        this.fullyLoaded = true
+      }
+    }
+  }
+
+  getUsers(departament: IDepartament):IUser[]{
+    return this.userService.getUsersByDepartament(departament)
+  }
+
+  redirectTo(url:string):void{
+    this.router.navigateByUrl(url)
+  }
+
+  redirectToChat(contact:IUser){
+    const chatId = this.chatService.verifyChat(contact, this.user)
+    this.router.navigateByUrl('/message/' + chatId)
   }
 
   logAccordionValue() {
@@ -163,6 +70,5 @@ export class ContactsPage implements OnInit{
   closeAccordion() {
     this.accordionGroup.value = undefined;
   }
-
 
 }

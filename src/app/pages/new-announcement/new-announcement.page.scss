@@ -1,9 +1,9 @@
-.login-page{
+.page{
     --background: #5B3FFF;
     position: relative;
 }
 
-.login-container{
+.container{
     background-color: #EEF1F2;
     border-top-left-radius: 40px;
     border-top-right-radius: 40px;
@@ -21,16 +21,16 @@
     gap: 15px;
 }
 
-.login-text{
+.text{
     color:#5B3FFF;
     background-color: transparent;
 }
 
-.login-text:hover{
+.text:hover{
     background-color: inherit;
 }
 
-.login-icon{
+.icon{
     padding: 10px 15px 0px 15px;
     border-radius: 50%;
     background-color: #fff;
@@ -46,5 +46,14 @@ ion-item{
 
 .non-primary-button{
     align-self: center;
+    cursor: pointer;
+}
+
+.return-icon{
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    color: #fff;
+    font-size: 2rem;
     cursor: pointer;
 }

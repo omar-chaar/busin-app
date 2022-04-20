@@ -152,8 +152,10 @@ export class MessagesService {
   getMessage(id: number):IMessage{
     return this.fakeDb.filter((message: IMessage) => message.id === id)[0]
   }
+  
 
   insertMessage(message:string, sender: IUser, chat:IChat):IMessage{
+    const parentMessage = chat.messages.length > 0 ? this.getMessage(chat.messages[chat.messages.length-1].id) : null;
     const newMsg: IMessage = {
       id: this.fakeDb.length,
       chatId: chat.id,
@@ -161,7 +163,7 @@ export class MessagesService {
       text: message,
       date: new Date,
       read: false,
-      parentMessage: this.getMessage(chat.messages[chat.messages.length-1].id)
+      parentMessage
     }
     this.fakeDb.push(newMsg)
     this.subject.next(newMsg)

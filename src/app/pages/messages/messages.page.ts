@@ -15,22 +15,30 @@ export class MessagesPage implements OnInit {
   @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
   //users: {name: string, unread: number}[]  = []
   chats: IChat[] = []
-  page:number = 1;
+  page: number = 1;
   fullyLoaded = false
   subscription: Subscription
-  
+  seubscriptionB: Subscription
+
   //user for test
   user: IUser = this.userService.currentUser
 
-  constructor(private router: Router, private chatService: ChatService, private userService: UserService, 
+  constructor(private router: Router, private chatService: ChatService, private userService: UserService,
     private messageService: MessagesService) {
     this.subscription = messageService.onChange().subscribe(value => {
       const chat = this.chatService.getChatByMessage(value)
-      console.log(chat)
       const index = this.chats.indexOf(chat)
-      console.log(index)
       this.chats.splice(index, 1)
       this.chats.unshift(chat)
+    })
+
+    this.seubscriptionB = chatService.onChange().subscribe(() => {
+      this.chats = []
+      this.fullyLoaded = false
+      console.log('aa')
+      this.page = 1
+      const chats = this.chatService.getChats(this.user, this.page)
+      this.sortChatsByDate(chats)
     })
   }
 
@@ -40,43 +48,45 @@ export class MessagesPage implements OnInit {
   }
 
   loadData(event): void {
-    this.page += 1;
-    setTimeout(() => {
-      const res = this.addMoreItems();
-      if(!res){
-        this.fullyLoaded = true
-      }
-      event.target.complete();
-    }, 2000);
+    if (!this.fullyLoaded) {
+      this.page += 1;
+      setTimeout(() => {
+        const res = this.addMoreItems();
+        if (!res) {
+          this.fullyLoaded = true
+        }
+        event.target.complete();
+      }, 2000);
+    }
   }
 
-  addMoreItems():boolean{
+  addMoreItems(): boolean {
     const chats = this.chatService.getChats(this.user, this.page)
-    if(chats.length === 0) return false
+    if (chats.length === 0) return false
     this.chats.push(...chats)
     return true
   }
 
-  redirectToMessage(chatId: number){
+  redirectToMessage(chatId: number) {
     this.router.navigateByUrl('/message/' + chatId);
   }
 
-  sortChatsByDate(chats: IChat[]): void{
-    const sortedArr = chats.sort(function(a,b){
-      const msgA = a.messages[a.messages.length-1]
-      const msgB = b.messages[b.messages.length-1]
+  sortChatsByDate(chats: IChat[]): void {
+    const sortedArr = chats.sort(function (a, b) {
+      const msgA = a.messages[a.messages.length - 1]
+      const msgB = b.messages[b.messages.length - 1]
       return msgB.date.getTime() - msgA.date.getTime();
     });
     this.chats = sortedArr
   }
 
-  formatTime(date: Date):string{
-    const hour:string = date.getHours().toString().length === 1 ? `0${date.getHours().toString()}` : date.getHours().toString();
-    const minutes:string = date.getMinutes().toString().length === 1 ? `0${date.getMinutes().toString()}` : date.getMinutes().toString();
+  formatTime(date: Date): string {
+    const hour: string = date.getHours().toString().length === 1 ? `0${date.getHours().toString()}` : date.getHours().toString();
+    const minutes: string = date.getMinutes().toString().length === 1 ? `0${date.getMinutes().toString()}` : date.getMinutes().toString();
     return `${hour}:${minutes}`
   }
 
-  goToProfile(id: number):void{
+  goToProfile(id: number): void {
     this.router.navigateByUrl('/profile/' + id)
   }
 }

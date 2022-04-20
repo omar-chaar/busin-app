@@ -1,12 +1,28 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-back-button [text]="buttonText" [icon]="buttonIcon">
-      </ion-back-button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content>
-
-</ion-content>
+<ion-content class="profile-page" fullscreen="true">
+  <div class="position-top">
+    <div class="profile-container">
+      <span class="profile-icons profile-header">
+        <ion-icon name="chevron-back-outline" (click)="redirectTo('/tabs/messages')"></ion-icon>
+        <ion-icon name="ellipsis-vertical-sharp"></ion-icon>
+      </span>
+      <span class="profile-avatar non-primary-button">
+        <ion-avatar>
+          <img src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y">
+        </ion-avatar>
+      </span>
+      <h1 class="profile-title">{{profileUser.name}}</h1>
+      <span class="profile-info">
+        <p>{{departament.name}}</p>
+        <p>{{profileUser.position}}</p>
+      </span>
+      <span class="profile-icons profile-options">
+        <ion-icon name="chatbubble-ellipses"></ion-icon>
+        <ion-icon name="call"></ion-icon>
+      </span>
+    </div>
+    <span class="profile-schedule">
+      <p>Not working at the moment</p>
+      <p>Next earliest time avaliable: 8:30</p>
+    </span>
+  </div>
+</ion-content> 

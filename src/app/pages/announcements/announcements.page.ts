@@ -1,6 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { IonInfiniteScroll } from '@ionic/angular';
 import { IonAccordionGroup } from '@ionic/angular';
+import {ModalController} from '@ionic/angular';
+import { NewAnnouncementPage } from '../new-announcement/new-announcement.page';
 
 interface IAnnouncement{
   title: string,
@@ -70,13 +72,22 @@ export class AnnouncementsPage implements OnInit {
     },
   ]
   numTimesLeft = 5;
+  modal: HTMLElement;
 
-  constructor() {
+  constructor(public modalController: ModalController) {
 
   }
 
   ngOnInit(): void {
     this.addMoreItems()
+  }
+
+  async presentModal() {
+    const modal = await this.modalController.create({
+      component: NewAnnouncementPage,
+      cssClass: 'my-custom-class'
+    });
+    return await modal.present();
   }
 
   loadData(event):void {
@@ -98,5 +109,9 @@ export class AnnouncementsPage implements OnInit {
         announcement.read = true
       }, 2000)
     }
+  }
+
+  openModal():void{
+    this.presentModal()
   }
 }

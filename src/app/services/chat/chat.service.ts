@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Observable, Subject, Subscription } from 'rxjs';
 import { IMessage, MessagesService } from '../messages/messages.service';
 import { IUser } from '../user/user.service';
 import { UserService } from '../user/user.service';
@@ -9,7 +9,7 @@ export interface IChat{
   participants: IUser[],
   messages?: IMessage[],
   read: boolean,
-  lastMessage: Date,
+  lastMessage?: Date,
 }
 
 @Injectable({
@@ -19,6 +19,7 @@ export class ChatService {
 
   chatsPerRequest: number = 4;
   subscription: Subscription;
+  subject = new Subject();
   fakeDb: IChat[] = [
     {
       id: 0,
@@ -85,7 +86,7 @@ export class ChatService {
           chat.lastMessage = new Date()
         return chat
       })
-
+      console.log(newArr)
       this.fakeDb = newArr
     })
   }
@@ -93,7 +94,7 @@ export class ChatService {
   getChats(user:IUser, page:number):IChat[]{
     return this.fakeDb.filter((chat: IChat, index: number) => {
       return (user.id === chat.participants[0].id || user.id === chat.participants[1].id) &&
-      (this.chatsPerRequest*page >= index && this.chatsPerRequest*page - this.chatsPerRequest < index) // for testing pagination
+      (this.chatsPerRequest*page >= index+1 && this.chatsPerRequest*page - this.chatsPerRequest < index+1) // for testing pagination
     })
   }
 
@@ -113,5 +114,43 @@ export class ChatService {
       if(messages.length > 0)
         chat.messages = messages
     })
+  }
+
+  newChat(userA: IUser, userB:IUser):IChat{
+    return {
+      id: this.fakeDb.length,
+      participants: [
+        userA,
+        userB,
+      ],
+      read: true,
+      messages: []
+    }
+  }
+
+  verifyChat(userA: IUser, userB: IUser):number{
+    let chat: IChat;
+    const exists = this.fakeDb.reduce((previous, current) => {
+      if(previous) return true
+      if(current.participants.includes(userA) && current.participants.includes(userB)){
+        chat = current
+        return true
+      }
+      return false
+    }, false)
+
+    if(exists){
+      return chat.id
+    }else{
+      const newChat = this.newChat(userA, userB)
+      this.fakeDb.push(newChat)
+      this.subject.next(newChat)
+      return newChat.id
+    }
+    
+  }
+
+  onChange(): Observable<any>{
+    return this.subject.asObservable()
   }
 }

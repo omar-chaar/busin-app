@@ -1,6 +1,6 @@
 <ion-content>
   <div style="display: flex; justify-content: center;" class="button-div">
-    <ion-button color="tertiary" shape="round" class="announcement-button">New Announcement</ion-button>
+    <ion-button color="tertiary" shape="round" class="announcement-button" (click)="openModal()">New Announcement</ion-button>
   </div>
   <ion-list lines="full">
     <ion-accordion-group value="numbers" *ngFor="let announcement of announcements">
