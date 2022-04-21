@@ -1,15 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { IonInfiniteScroll } from '@ionic/angular';
 import { IonAccordionGroup } from '@ionic/angular';
-import {ModalController} from '@ionic/angular';
+import { ModalController } from '@ionic/angular';
+import { AnnouncementService, IAnnouncement } from 'src/app/services/announcement/announcement.service';
 import { NewAnnouncementPage } from '../new-announcement/new-announcement.page';
-
-interface IAnnouncement{
-  title: string,
-  text: string,
-  date: string,
-  read?: boolean,
-}
 
 @Component({
   selector: 'app-announcements',
@@ -21,97 +15,68 @@ export class AnnouncementsPage implements OnInit {
   @ViewChild(IonAccordionGroup, { static: true }) accordionGroup: IonAccordionGroup;
 
   announcements: IAnnouncement[] = [];
-  announcementsTest: IAnnouncement[] = [
-    {
-      title: 'Update about clothing politics',
-      text: '    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-      date: '10/04/2022',
-      read: false,
-    },
-    {
-      title: 'New Safety Measures',
-      text: '    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-      date: '25/02/2022',
-      read: false,
-    },
-    {
-      title: 'Feast of Annuncitrueation',
-      text: '    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-      date: '25/02/2022',
-      read: false,
-    },
-    {
-      title: 'Update about clothing politics',
-      text: '    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-      date: '10/04/2022',
-      read: false,
-    },
-    {
-      title: 'New Safety Measures',
-      text: '    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-      date: '25/02/2022',
-      read: false,
-    },
-    {
-      title: 'Feast of Annunciation',
-      text: '    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-      date: '25/02/2022',
-      read: false,
-    },
-    {
-      title: 'New Safety Measures',
-      text: '    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-      date: '25/02/2022',
-      read: false,
-    },
-    {
-      title: 'Feast of Annunciation',
-      text: '    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-      date: '25/02/2022',
-      read: true,
-    },
-  ]
-  numTimesLeft = 5;
+
+  fullyLoaded = false;
+  page = 1
   modal: HTMLElement;
 
-  constructor(public modalController: ModalController) {
+  constructor(public modalController: ModalController, private announcementService: AnnouncementService) {
 
   }
 
   ngOnInit(): void {
-    this.addMoreItems()
+    this.announcements.push(...this.announcementService.getAnnouncements(this.page));
+    this.page += 1;
   }
 
   async presentModal() {
     const modal = await this.modalController.create({
       component: NewAnnouncementPage,
-      cssClass: 'my-custom-class'
+      cssClass: 'my-custom-class',
+      componentProps: {
+        sortByDate: this.sortByDate,
+        announcements: this.announcements
+      }
     });
     return await modal.present();
   }
 
-  loadData(event):void {
-    setTimeout(() => {
-      console.log('Done');
-      this.addMoreItems();
-      this.numTimesLeft -= 1;
-      event.target.complete();
-    }, 2000);
+  loadData(event): void {
+    if (!this.fullyLoaded) {
+      this.page += 1
+      setTimeout(() => {
+        const arr = this.announcementService.getAnnouncements(this.page);
+        this.announcements.push(...arr)
+        this.sortByDate(this.announcements)
+        if (arr.length === 0) this.fullyLoaded = true
+        event.target.complete();
+      }, 2000);
+    }
   }
 
-  addMoreItems():void {
-    this.announcements.push(...this.announcementsTest)
+  formatDate(date: Date): string {
+    const day: string = date.getDate().toString().length === 1 ? `0${date.getDate().toString()}` : date.getDate().toString();
+    const month: string = (date.getMonth()+1).toString().length === 1 ? `0${(date.getMonth()+1).toString()}` : (date.getMonth()+1).toString();
+    const year: string = date.getFullYear().toString()
+    return `${day}/${month}/${year}`
   }
 
-  confirmRead(announcement: IAnnouncement): void{
-    if(!announcement.read){
+  sortByDate(announcements: IAnnouncement[]): void {
+    const sortedArr = announcements.sort(function (a, b) {
+      return b.date.getTime() - a.date.getTime();
+    });
+    this.announcements = sortedArr
+  }
+
+  confirmRead(announcement: IAnnouncement): void {
+    if (!announcement.read) {
       setTimeout(() => {
         announcement.read = true
       }, 2000)
     }
   }
 
-  openModal():void{
+  openModal(): void {
     this.presentModal()
   }
 }

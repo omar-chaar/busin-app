@@ -27,18 +27,7 @@ export class MessagesPage implements OnInit {
     private messageService: MessagesService) {
     this.subscription = messageService.onChange().subscribe(value => {
       const chat = this.chatService.getChatByMessage(value)
-      const index = this.chats.indexOf(chat)
-      this.chats.splice(index, 1)
       this.chats.unshift(chat)
-    })
-
-    this.seubscriptionB = chatService.onChange().subscribe(() => {
-      this.chats = []
-      this.fullyLoaded = false
-      console.log('aa')
-      this.page = 1
-      const chats = this.chatService.getChats(this.user, this.page)
-      this.sortChatsByDate(chats)
     })
   }
 

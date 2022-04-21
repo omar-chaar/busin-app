@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
+import { AnnouncementService, IAnnouncement } from 'src/app/services/announcement/announcement.service';
 import { ToastService } from 'src/app/services/toast/toast.service';
 import { ValidationService } from 'src/app/services/validation/validation.service';
 
@@ -11,11 +12,13 @@ import { ValidationService } from 'src/app/services/validation/validation.servic
 })
 export class NewAnnouncementPage implements OnInit {
 
+  @Input() sortByDate;
+  @Input() announcements: IAnnouncement[];
   title: string
   content: string
 
   constructor(private router: Router, private modalController: ModalController, private validationService: ValidationService,
-    private toastService: ToastService) { }
+    private toastService: ToastService, private announcementService: AnnouncementService) { }
 
   ngOnInit() {
   }
@@ -31,7 +34,10 @@ export class NewAnnouncementPage implements OnInit {
   handleSubmit():void {
     if(this.validationService.validateLength('Title', this.title, 50, 3)){
       if(this.validationService.validateLength('Content', this.content, 300, 25)){
+        const announcement = this.announcementService.insertAnnouncement(this.title, this.content)
         this.toastService.presentToast('Announcement published!', 3000, 'success')
+        this.announcements.push(announcement)
+        this.sortByDate(this.announcements)
         this.dismiss()
       }
     }

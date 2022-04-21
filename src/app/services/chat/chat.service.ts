@@ -19,7 +19,6 @@ export class ChatService {
 
   chatsPerRequest: number = 4;
   subscription: Subscription;
-  subject = new Subject();
   fakeDb: IChat[] = [
     {
       id: 0,
@@ -86,16 +85,15 @@ export class ChatService {
           chat.lastMessage = new Date()
         return chat
       })
-      console.log(newArr)
       this.fakeDb = newArr
     })
   }
 
-  getChats(user:IUser, page:number):IChat[]{
-    return this.fakeDb.filter((chat: IChat, index: number) => {
-      return (user.id === chat.participants[0].id || user.id === chat.participants[1].id) &&
-      (this.chatsPerRequest*page >= index+1 && this.chatsPerRequest*page - this.chatsPerRequest < index+1) // for testing pagination
-    })
+  
+
+  getChats(user:IUser, page:number) {
+    const chats = this.fakeDb.filter((chat: IChat, index: number) => user.id === chat.participants[0].id || user.id === chat.participants[1].id)
+    return chats.slice((page - 1) * this.chatsPerRequest, page * this.chatsPerRequest);
   }
 
   getChat(id: number, user: IUser):IChat|boolean{
@@ -144,13 +142,9 @@ export class ChatService {
     }else{
       const newChat = this.newChat(userA, userB)
       this.fakeDb.push(newChat)
-      this.subject.next(newChat)
       return newChat.id
     }
     
   }
 
-  onChange(): Observable<any>{
-    return this.subject.asObservable()
-  }
 }
