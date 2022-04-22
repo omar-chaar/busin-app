@@ -1,12 +1,7 @@
 import { Injectable } from '@angular/core';
-import { IDepartament } from '../departament/departament.service';
-
-export interface IUser{
-  id: number,
-  name: string,
-  position: string,
-  departament?: number, //Change later
-}
+import { User } from 'src/model/classes/User';
+import { Departament } from 'src/model/classes/Departament';
+import { DepartamentService } from '../departament/departament.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,79 +10,36 @@ export class UserService {
 
   usersPerRequest: number = 4;
 
-  currentUser: IUser
+  currentUser: User
 
-  fakeDb: IUser[] = [
-    {
-      id: 0,
-      name: 'Omar Chaar',
-      position: 'Fullstack Developer',
-      departament: 0,
-    },
-    {
-      id: 1,
-      name: 'Gabriel Nunes',
-      position: 'Front-end Developer',
-      departament: 0,
-    },
-    {
-      id: 2,
-      name: 'Ahmed Hassan',
-      position: 'Senior Developer',
-      departament: 0,
-    },
-    {
-      id: 3,
-      name: 'Omar El Khoury',
-      position: 'Junior Developer',
-      departament: 0,
-    },
-    {
-      id: 4,
-      name: 'Marcell da Silva',
-      position: 'Accountant',
-      departament: 2
-    },
-    {
-      id: 5,
-      name: 'Omar',
-      position: 'Putin supporter',
-      departament: 1
-    },
-    {
-      id: 6,
-      name: 'Someone',
-      position: 'Manager or Menager idk how to spell it',
-      departament: 3
-    },
-    {
-      id: 7,
-      name: 'Tired',
-      position: 'Of typing users',
-      departament: 5
-    },
-    {
-      id: 8,
-      name: 'Last One',
-      position: 'Last of the array',
-      departament: 4
-    }
-  ];
+  fakeDb: User[];
 
-  constructor() {
+  constructor(private departamentService: DepartamentService) {
+    this.fakeDb = [
+      new User(0, 'Omar', 'Chaar', 'Fullstack Developer', 'omar@gmail.com', '...', this.departamentService.getDepartament(0)),
+      new User(1, 'Gabriel', 'Nunes', 'Front-end Developer', 'gabriel@gmail.com', '...', this.departamentService.getDepartament(0)),
+      new User(2, 'Ahmed', 'Hassan', 'Senior Developer', 'ahmed@gmail.com', '...', this.departamentService.getDepartament(0)),
+      new User(3, 'Omar', 'El Khoury', 'Junior Developer', 'omark@gmail.com', '...', this.departamentService.getDepartament(0)),
+      new User(4, 'Marcell', 'da Silva', 'Accountant', 'marcell@gmail.com', '...', this.departamentService.getDepartament(2)),
+      new User(5, 'Cliff', 'Gilmore', 'Influencer', 'cliff@gmail.com', '...', this.departamentService.getDepartament(1)),
+      new User(6, 'Ike', 'Mcmahon', 'Salesman', 'ike@gmail.com', '...', this.departamentService.getDepartament(3)),
+      new User(7, 'Coley', 'Frey', 'Stockist', 'coley@gmail.com', '...', this.departamentService.getDepartament(5)),
+      new User(8, 'Valentine', 'Lindsey', 'Driver', 'valetine@gmail.com', '...', this.departamentService.getDepartament(4)),
+    ]
     this.currentUser = this.getUser(5) // troque o parametro para mudar o usuário
+
    }
 
-  getUser(id: number): IUser{
-    return this.fakeDb.filter((user: IUser) => user.id === id)[0];
+  getUser(id: number): User{
+    return this.fakeDb.filter((user: User) => user.id === id)[0];
   }
 
-  getUsers():IUser[]{
+  getUsers():User[]{
     return this.fakeDb
   }
 
-  getUsersByDepartament(departament: IDepartament):IUser[]{
-    return this.fakeDb.filter(user => user.departament === departament.id)
+  getUsersByDepartament(departament: Departament):User[]{
+    return this.fakeDb.filter(user => user.departament.id === departament.id)
   }
 
 

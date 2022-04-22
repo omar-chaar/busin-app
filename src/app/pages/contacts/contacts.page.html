@@ -9,15 +9,15 @@
           </ion-label>
         </ion-item>
         <ion-list slot="content">
-          <ion-item *ngFor="let user of getUsers(departament)" class="border-none">
-            <ion-avatar slot="start" (click)="redirectTo('/profile/' + user.id)">
+          <ion-item *ngFor="let contact of getUsers(departament)" class="border-none">
+            <ion-avatar slot="start" (click)="redirectTo('/profile/' + contact.id)">
               <img src="../../../assets/images/gw50h17a.bmp">
             </ion-avatar>
-            <ion-label class="username" (click)="redirectTo('/profile/' + user.id)">
-              <p class="username">{{user.name}}</p>
-              <p class="position">{{user.position}}</p>
+            <ion-label class="username" (click)="redirectTo('/profile/' + contact.id)">
+              <p class="username">{{contact.getFullName()}}</p>
+              <p class="position">{{contact.position}}</p>
             </ion-label>
-            <ion-buttons class="chat-icon" (click)="redirectToChat(user)">
+            <ion-buttons class="chat-icon" *ngIf="user !== contact" (click)="redirectToChat(contact)">
               <ion-icon name="chatbubble-ellipses-sharp"></ion-icon>
             </ion-buttons>
           </ion-item>

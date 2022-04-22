@@ -1,9 +1,13 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
-import { AnnouncementService, IAnnouncement } from 'src/app/services/announcement/announcement.service';
+import { AnnouncementService } from 'src/app/services/announcement/announcement.service';
 import { ToastService } from 'src/app/services/toast/toast.service';
+import { UserService } from 'src/app/services/user/user.service';
 import { ValidationService } from 'src/app/services/validation/validation.service';
+
+import { User } from 'src/model/classes/User';
+import { Announcement } from 'src/model/classes/Announcement';
 
 @Component({
   selector: 'app-new-announcement',
@@ -13,12 +17,15 @@ import { ValidationService } from 'src/app/services/validation/validation.servic
 export class NewAnnouncementPage implements OnInit {
 
   @Input() sortByDate;
-  @Input() announcements: IAnnouncement[];
+  @Input() announcements: Announcement[];
   title: string
   content: string
+  user: User;
 
   constructor(private router: Router, private modalController: ModalController, private validationService: ValidationService,
-    private toastService: ToastService, private announcementService: AnnouncementService) { }
+    private toastService: ToastService, private announcementService: AnnouncementService, private userService: UserService) {
+      this.user = this.userService.currentUser;
+     }
 
   ngOnInit() {
   }
@@ -34,7 +41,7 @@ export class NewAnnouncementPage implements OnInit {
   handleSubmit():void {
     if(this.validationService.validateLength('Title', this.title, 50, 3)){
       if(this.validationService.validateLength('Content', this.content, 300, 25)){
-        const announcement = this.announcementService.insertAnnouncement(this.title, this.content)
+        const announcement = this.announcementService.insertAnnouncement(this.title, this.content, this.user)
         this.toastService.presentToast('Announcement published!', 3000, 'success')
         this.announcements.push(announcement)
         this.sortByDate(this.announcements)

@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { ChatService, IChat } from 'src/app/services/chat/chat.service';
+import { ChatService } from 'src/app/services/chat/chat.service';
 import { MessagesService } from 'src/app/services/messages/messages.service';
-import { IUser, UserService } from 'src/app/services/user/user.service';
+import { UserService } from 'src/app/services/user/user.service';
+
+import { User } from 'src/model/classes/User';
+import { Chat } from 'src/model/classes/Chat';
 
 @Component({
   selector: 'app-message',
@@ -11,9 +14,9 @@ import { IUser, UserService } from 'src/app/services/user/user.service';
 })
 export class MessagePage implements OnInit {
 
-  contact: IUser;
-  chat: IChat;
-  user: IUser;
+  contact: User;
+  chat: Chat;
+  user: User;
   text: string;
 
   constructor(private _router: Router, private route: ActivatedRoute, private chatService: ChatService,
@@ -42,7 +45,7 @@ export class MessagePage implements OnInit {
 
   onSubmit(): void {
     if (this.text.length > 0) {
-      const msg = this.messagesService.insertMessage(this.text, this.user, this.chat)
+      const msg = this.messagesService.insertMessage(this.text, this.user, this.contact, this.chat)
       this.text = ''
     }
   }

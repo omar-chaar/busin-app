@@ -2,8 +2,10 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { IonInfiniteScroll } from '@ionic/angular';
 import { IonAccordionGroup } from '@ionic/angular';
 import { ModalController } from '@ionic/angular';
-import { AnnouncementService, IAnnouncement } from 'src/app/services/announcement/announcement.service';
+import { AnnouncementService } from 'src/app/services/announcement/announcement.service';
 import { NewAnnouncementPage } from '../new-announcement/new-announcement.page';
+
+import { Announcement } from 'src/model/classes/Announcement';
 
 @Component({
   selector: 'app-announcements',
@@ -14,7 +16,7 @@ export class AnnouncementsPage implements OnInit {
   @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
   @ViewChild(IonAccordionGroup, { static: true }) accordionGroup: IonAccordionGroup;
 
-  announcements: IAnnouncement[] = [];
+  announcements: Announcement[] = [];
 
   fullyLoaded = false;
   page = 1
@@ -61,14 +63,14 @@ export class AnnouncementsPage implements OnInit {
     return `${day}/${month}/${year}`
   }
 
-  sortByDate(announcements: IAnnouncement[]): void {
+  sortByDate(announcements: Announcement[]): void {
     const sortedArr = announcements.sort(function (a, b) {
       return b.date.getTime() - a.date.getTime();
     });
     this.announcements = sortedArr
   }
 
-  confirmRead(announcement: IAnnouncement): void {
+  confirmRead(announcement: Announcement): void {
     if (!announcement.read) {
       setTimeout(() => {
         announcement.read = true

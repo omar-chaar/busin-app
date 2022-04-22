@@ -3,8 +3,11 @@ import { Router } from '@angular/router';
 import { IonInfiniteScroll } from '@ionic/angular';
 import { IonAccordionGroup } from '@ionic/angular';
 import { ChatService } from 'src/app/services/chat/chat.service';
-import { DepartamentService, IDepartament } from 'src/app/services/departament/departament.service';
-import { IUser, UserService } from 'src/app/services/user/user.service';
+import { DepartamentService } from 'src/app/services/departament/departament.service';
+import { UserService } from 'src/app/services/user/user.service';
+
+import { User } from 'src/model/classes/User';
+import { Departament } from 'src/model/classes/Departament';
 
 
 @Component({
@@ -16,8 +19,8 @@ export class ContactsPage implements OnInit {
   @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
   @ViewChild(IonAccordionGroup, { static: true }) accordionGroup: IonAccordionGroup;
 
-  departaments: IDepartament[] = []
-  user: IUser;
+  departaments: Departament[] = []
+  user: User;
 
   page: number = 1
   fullyLoaded = false
@@ -50,7 +53,7 @@ export class ContactsPage implements OnInit {
     }
   }
 
-  getUsers(departament: IDepartament):IUser[]{
+  getUsers(departament: Departament):User[]{
     return this.userService.getUsersByDepartament(departament)
   }
 
@@ -58,7 +61,7 @@ export class ContactsPage implements OnInit {
     this.router.navigateByUrl(url)
   }
 
-  redirectToChat(contact:IUser){
+  redirectToChat(contact:User){
     const chatId = this.chatService.verifyChat(contact, this.user)
     this.router.navigateByUrl('/message/' + chatId)
   }

@@ -1,10 +1,13 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { IonInfiniteScroll } from '@ionic/angular';
 import { Router } from '@angular/router';
-import { ChatService, IChat } from 'src/app/services/chat/chat.service';
-import { IUser, UserService } from 'src/app/services/user/user.service';
+import { ChatService } from 'src/app/services/chat/chat.service';
+import { UserService } from 'src/app/services/user/user.service';
 import { Subscription } from 'rxjs';
 import { MessagesService } from 'src/app/services/messages/messages.service';
+
+import { User } from 'src/model/classes/User';
+import { Chat } from 'src/model/classes/Chat';
 
 @Component({
   selector: 'app-messages',
@@ -14,20 +17,25 @@ import { MessagesService } from 'src/app/services/messages/messages.service';
 export class MessagesPage implements OnInit {
   @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
   //users: {name: string, unread: number}[]  = []
-  chats: IChat[] = []
+  chats: Chat[] = []
   page: number = 1;
   fullyLoaded = false
   subscription: Subscription
   seubscriptionB: Subscription
 
   //user for test
-  user: IUser = this.userService.currentUser
+  user: User = this.userService.currentUser
 
   constructor(private router: Router, private chatService: ChatService, private userService: UserService,
     private messageService: MessagesService) {
     this.subscription = messageService.onChange().subscribe(value => {
       const chat = this.chatService.getChatByMessage(value)
-      this.chats.unshift(chat)
+      if (!this.chats.includes(chat)) {
+        this.chats.unshift(chat)
+      } else {
+        this.sortChatsByDate(this.chats)
+      }
+
     })
   }
 
@@ -60,11 +68,11 @@ export class MessagesPage implements OnInit {
     this.router.navigateByUrl('/message/' + chatId);
   }
 
-  sortChatsByDate(chats: IChat[]): void {
+  sortChatsByDate(chats: Chat[]): void {
     const sortedArr = chats.sort(function (a, b) {
       const msgA = a.messages[a.messages.length - 1]
       const msgB = b.messages[b.messages.length - 1]
-      return msgB.date.getTime() - msgA.date.getTime();
+      return msgB.time.getTime() - msgA.time.getTime();
     });
     this.chats = sortedArr
   }

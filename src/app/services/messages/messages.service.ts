@@ -1,18 +1,10 @@
 import { Injectable } from '@angular/core';
-import { IChat } from '../chat/chat.service';
-import { IUser } from '../user/user.service';
 import { UserService } from '../user/user.service';
 import { Observable, Subject } from 'rxjs';
 
-export interface IMessage{
-  id: number,
-  chatId: number,
-  sender: IUser,
-  text: string,
-  date: any,
-  read: boolean,
-  parentMessage?: IMessage
-}
+import { User } from 'src/model/classes/User';
+import { Chat } from 'src/model/classes/Chat';
+import { Message } from 'src/model/classes/Message';
 
 @Injectable({
   providedIn: 'root'
@@ -20,151 +12,47 @@ export interface IMessage{
 export class MessagesService {
 
   private subject = new Subject();
-  fakeDb: IMessage[] = [
-    {
-      id: 0,
-      chatId: 0,
-      sender: this.userService.getUser(0), 
-      text: 'Hello there!',
-      date: new Date('Mon Apr 18 2022 21:31:44 GMT-0300 (Horário Padrão de Brasília)'),
-      read: false,
-      //parentMessage: null
-    },
-    {
-      id: 1,
-      chatId: 0,
-      sender: this.userService.getUser(1), 
-      text: 'General Kenobi!',
-      date: new Date('Mon Apr 18 2022 21:32:23 GMT-0300 (Horário Padrão de Brasília)'),
-      read: false,
-      //parentMessage: this.getMessage(0)
-    },
-    {
-      id: 2,
-      chatId: 1,
-      sender: this.userService.getUser(3), 
-      text: 'Bom dia princesa, vc vai ver essa msg quando executar o projeto espero q os passarinhos estejam cantando e vc tenha um ótimo dia :* :*',
-      date: new Date('Mon Apr 18 2022 21:32:44 GMT-0300 (Horário Padrão de Brasília)'),
-      read: false,
-      //parentMessage: null
-    },
-    {
-      id: 3,
-      chatId: 1,
-      sender: this.userService.getUser(3), 
-      text: 'Ainda tem algumas coisas pra fazer tipo ordenar os chats e mensagens de acordo com horário e confirmação de leitura, mas faço isso dps',
-      date: new Date('Mon Apr 18 2022 21:32:59 GMT-0300 (Horário Padrão de Brasília)'),
-      read: false,
-      //parentMessage: this.getMessage(2)
-    },
-    {
-      id: 4,
-      chatId: 1,
-      sender: this.userService.getUser(3), 
-      text: 'Com ctz pode rolar alguns bugs com esses chats fakes, não estão perfeitos, então se vc ver algo estranho me envia',
-      date: new Date('Mon Apr 18 2022 21:33:12 GMT-0300 (Horário Padrão de Brasília)'),
-      read: false,
-      //parentMessage: this.getMessage(3)
-    },
-    {
-      id: 5,
-      chatId: 1,
-      sender: this.userService.getUser(3), 
-      text: 'Tem um bug visual quando entra no chat, me parece ser coisa desse item-list do ionic, não sei direito como resolver, e o avatar fica espremido se o nome for mt grande',
-      date: new Date('Mon Apr 18 2022 21:33:32 GMT-0300 (Horário Padrão de Brasília)'),
-      read: false,
-      //parentMessage: this.getMessage(4)
-    },
-    {
-      id: 6,
-      chatId: 1,
-      sender: this.userService.getUser(3), 
-      text: 'se vc quiser trocar o "usuario", vai no arquivo user.service e altera o id no construtor q altera aqui',
-      date: new Date('Mon Apr 18 2022 21:33:45 GMT-0300 (Horário Padrão de Brasília)'),
-      read: false,
-      //parentMessage: this.getMessage(5)
-    },
-    {
-      id: 7,
-      chatId: 2,
-      sender: this.userService.getUser(2), 
-      text: "teste teste teste",
-      date: new Date('Mon Apr 18 2022 21:34:04 GMT-0300 (Horário Padrão de Brasília)'),
-      read: false,
-      //parentMessage: null
-    },
-    {
-      id: 8,
-      chatId: 2,
-      sender: this.userService.getUser(5), 
-      text: "test teste test test",
-      date: new Date('Mon Apr 18 2022 21:34:43 GMT-0300 (Horário Padrão de Brasília)'),
-      read: false,
-      //parentMessage: this.getMessage(7)
-    },
-    {
-      id: 9,
-      chatId: 3,
-      sender: this.userService.getUser(4), 
-      text: "odeio jovens mimados e ainda brancos",
-      date: new Date('Mon Apr 18 2022 21:34:57 GMT-0300 (Horário Padrão de Brasília)'),
-      read: false,
-      //parentMessage: null
-    },
-    {
-      id: 10,
-      chatId: 4,
-      sender: this.userService.getUser(1), 
-      text: "coff...coff...",
-      date: new Date('Mon Apr 18 2022 21:35:10 GMT-0300 (Horário Padrão de Brasília)'),
-      read: false,
-      //parentMessage: null
-    },
-    {
-      id: 11,
-      chatId: 5,
-      sender: this.userService.getUser(6), 
-      text: "+ teste",
-      date: new Date('Mon Apr 18 2022 21:35:24 GMT-0300 (Horário Padrão de Brasília)'),
-      read: false,
-      //parentMessage: null
-    },
-    {
-      id: 12,
-      chatId: 5,
-      sender: this.userService.getUser(5), 
-      text: "sim, + teste",
-      date: new Date('Mon Apr 18 2022 21:35:36 GMT-0300 (Horário Padrão de Brasília)'),
-      read: false,
-      //parentMessage: this.getMessage(11)
-    },
-
-  ]
+  fakeDb: Message[];
 
   constructor(private userService: UserService) { 
+    this.fakeDb = [
+      new Message(0, this.userService.getUser(0), this.userService.getUser(1), new Date('Mon Apr 18 2022 21:31:44 GMT-0300 (Horário Padrão de Brasília)'), 'Hello there', false),
+      new Message(1, this.userService.getUser(1), this.userService.getUser(0),  new Date('Mon Apr 18 2022 21:32:23 GMT-0300 (Horário Padrão de Brasília)'), 'General Kenobi!', false),
+      new Message(2, this.userService.getUser(3), this.userService.getUser(5), new Date('Mon Apr 18 2022 21:32:44 GMT-0300 (Horário Padrão de Brasília)'), 'Hello, this is a test message.', false),
+      new Message(3, this.userService.getUser(3), this.userService.getUser(5), new Date('Mon Apr 18 2022 21:32:59 GMT-0300 (Horário Padrão de Brasília)'), 'Hello, this is a second test message.', false),
+      new Message(4, this.userService.getUser(3), this.userService.getUser(5), new Date('Mon Apr 18 2022 21:33:12 GMT-0300 (Horário Padrão de Brasília)'), 'Hello, this is a third test message.', false),
+      new Message(5, this.userService.getUser(3), this.userService.getUser(5), new Date('Mon Apr 18 2022 21:33:32 GMT-0300 (Horário Padrão de Brasília)'), 'Hello, this is a fourth test message.', false),
+      new Message(6, this.userService.getUser(3), this.userService.getUser(5), new Date('Mon Apr 18 2022 21:33:45 GMT-0300 (Horário Padrão de Brasília)'), 'Hello, this is a fifth test message.', false),
+      new Message(7, this.userService.getUser(2), this.userService.getUser(5), new Date('Mon Apr 18 2022 21:33:55 GMT-0300 (Horário Padrão de Brasília)'), 'Hello, this is another test message.', false),
+      new Message(8, this.userService.getUser(5), this.userService.getUser(2), new Date('Mon Apr 18 2022 21:34:15 GMT-0300 (Horário Padrão de Brasília)'), 'This is a nice test message.', false),
+      new Message(9, this.userService.getUser(4), this.userService.getUser(5), new Date('Mon Apr 18 2022 21:34:57 GMT-0300 (Horário Padrão de Brasília)'), 'Wow, another test message.', false),
+      new Message(10, this.userService.getUser(1), this.userService.getUser(5), new Date('Mon Apr 18 2022 21:35:10 GMT-0300 (Horário Padrão de Brasília)'), 'Hello mister.', false),
+      new Message(11, this.userService.getUser(6), this.userService.getUser(5), new Date('Mon Apr 18 2022 21:35:24 GMT-0300 (Horário Padrão de Brasília)'), 'One last test message.', false),
 
+    ]
   }
 
-  getMessages(chat: IChat):IMessage[]{
-    return this.fakeDb.filter((message: IMessage) => chat.id === message.chatId)
+  getMessages([userA, userB]:User[], chat:Chat):Message[]{
+
+    return this.fakeDb.filter((message: Message) => {
+      if((message.sender === userA || message.receiver === userA) &&
+         (message.sender === userB || message.receiver === userB)){
+           message.chatId = chat;
+           return true
+         }else
+         return false
+    })
   }
 
-  getMessage(id: number):IMessage{
-    return this.fakeDb.filter((message: IMessage) => message.id === id)[0]
+  getMessage(id: number):Message{
+    return this.fakeDb.filter((message: Message) => message.id === id)[0]
   }
   
 
-  insertMessage(message:string, sender: IUser, chat:IChat):IMessage{
+  insertMessage(message:string, sender: User, receiver: User, chat:Chat):Message{
     const parentMessage = chat.messages.length > 0 ? this.getMessage(chat.messages[chat.messages.length-1].id) : null;
-    const newMsg: IMessage = {
-      id: this.fakeDb.length,
-      chatId: chat.id,
-      sender,
-      text: message,
-      date: new Date,
-      read: false,
-      parentMessage
-    }
+    const newMsg = new Message(this.fakeDb.length, sender, receiver, new Date(), message, false, parentMessage)
+    chat.insertMessage(newMsg)
     this.fakeDb.push(newMsg)
     this.subject.next(newMsg)
 

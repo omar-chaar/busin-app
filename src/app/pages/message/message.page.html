@@ -6,7 +6,7 @@
         <img src="../../../assets/images/gw50h17a.bmp">
       </ion-avatar>
       <div class="contact-info">
-        <h1 (click)="goToProfile(contact.id)">{{contact.name}}</h1>
+        <h1 (click)="goToProfile(contact.id)">{{contact.getFullName()}}</h1>
         <p>{{contact.position}} - Available</p>
       </div>
       <div class="icons">
@@ -22,10 +22,10 @@
       <ion-row *ngFor="let message of chat.messages" class="messagebox-container"
         [ngClass]="{'user-message': message.sender.id === user.id}">
         <div class="message-box">
-          <p>{{message.text}}</p>
+          <p>{{message.message}}</p>
           <div class="meta-info">
             <ion-icon name="checkmark-done-sharp"></ion-icon>
-            <p>{{formatTime(message.date)}}</p>
+            <p>{{formatTime(message.time)}}</p>
           </div>
         </div>
       </ion-row>

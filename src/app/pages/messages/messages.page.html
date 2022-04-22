@@ -6,10 +6,10 @@
         <img src="../../../assets/images/gw50h17a.bmp">
       </ion-avatar>
       <ion-label (click)="redirectToMessage(chat.id)">
-        <h2>{{chat.participants[0].id === user.id ? chat.participants[1].name : chat.participants[0].name}}</h2>
+        <h2>{{chat.participants[0].id === user.id ? chat.participants[1].getFullName() : chat.participants[0].getFullName()}}</h2>
         <ion-label class="message-info">
-          <p class="text-info">{{chat.messages[chat.messages.length-1].text}}</p>
-          <p class="hour-info">{{formatTime(chat.messages[chat.messages.length-1].date)}}</p>
+          <p class="text-info">{{chat.messages[chat.messages.length-1].message}}</p>
+          <p class="hour-info">{{formatTime(chat.messages[chat.messages.length-1].time)}}</p>
         </ion-label>
       </ion-label>
       <ion-badge *ngIf="user.unread != 0">{{user.unread}}</ion-badge>

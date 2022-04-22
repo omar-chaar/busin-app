@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { IUser, UserService } from 'src/app/services/user/user.service';
+import { UserService } from 'src/app/services/user/user.service';
 import { Location } from '@angular/common'
-import { DepartamentService, IDepartament } from 'src/app/services/departament/departament.service';
+import { DepartamentService } from 'src/app/services/departament/departament.service';
+
+import { User } from 'src/model/classes/User';
+import { Departament } from 'src/model/classes/Departament';
 
 @Component({
   selector: 'app-profile',
@@ -11,8 +14,8 @@ import { DepartamentService, IDepartament } from 'src/app/services/departament/d
 })
 export class ProfilePage implements OnInit {
 
-  profileUser: IUser;
-  departament: IDepartament;
+  profileUser: User;
+  departament: Departament;
 
   constructor(private route: ActivatedRoute, private _router: Router, private userService: UserService,
      private location: Location, private departamentService: DepartamentService) { }
@@ -24,7 +27,7 @@ export class ProfilePage implements OnInit {
       this._router.navigateByUrl('/tabs/messages')
     }else{
       this.profileUser = profileUser;
-      this.departament = this.departamentService.getDepartament(profileUser.departament)
+      this.departament = profileUser.departament
     }
   }
 

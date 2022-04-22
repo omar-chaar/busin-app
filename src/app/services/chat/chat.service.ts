@@ -1,16 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Observable, Subject, Subscription } from 'rxjs';
-import { IMessage, MessagesService } from '../messages/messages.service';
-import { IUser } from '../user/user.service';
+import { MessagesService } from '../messages/messages.service';
 import { UserService } from '../user/user.service';
 
-export interface IChat{
-  id: number,
-  participants: IUser[],
-  messages?: IMessage[],
-  read: boolean,
-  lastMessage?: Date,
-}
+import { User } from 'src/model/classes/User';
+import { Chat } from 'src/model/classes/Chat';
+import { Message } from 'src/model/classes/Message';
+
 
 @Injectable({
   providedIn: 'root'
@@ -19,115 +15,59 @@ export class ChatService {
 
   chatsPerRequest: number = 4;
   subscription: Subscription;
-  fakeDb: IChat[] = [
-    {
-      id: 0,
-      participants: [
-        this.userService.getUser(0),
-        this.userService.getUser(1)
-      ],
-      read: true,
-      lastMessage: new Date()
-    },
-    {
-      id: 1,
-      participants: [
-        this.userService.getUser(5),
-        this.userService.getUser(3)
-      ],
-      read: true,
-      lastMessage: new Date()
-    },
-    {
-      id: 2,
-      participants: [
-        this.userService.getUser(2),
-        this.userService.getUser(5)
-      ],
-      read: true,
-      lastMessage: new Date()
-    },
-    {
-      id: 3,
-      participants: [
-        this.userService.getUser(5),
-        this.userService.getUser(4)
-      ],
-      read: true,
-      lastMessage: new Date()
-    },
-    {
-      id: 4,
-      participants: [
-        this.userService.getUser(5),
-        this.userService.getUser(1)
-      ],
-      read: true,
-      lastMessage: new Date()
-    },
-    {
-      id: 5,
-      participants: [
-        this.userService.getUser(6),
-        this.userService.getUser(5)
-      ],
-      read: true,
-      lastMessage: new Date()
-    },
-  ]
+  fakeDb: Chat[];
 
-  constructor(private userService: UserService, private messageService: MessagesService) { 
+  constructor(private userService: UserService, private messageService: MessagesService) {
+
+    this.fakeDb = [
+      new Chat(0, [this.userService.getUser(0), this.userService.getUser(1)], true),
+      new Chat(1, [this.userService.getUser(5), this.userService.getUser(3)], true),
+      new Chat(2, [this.userService.getUser(2), this.userService.getUser(5)], true),
+      new Chat(3, [this.userService.getUser(5), this.userService.getUser(4)], true),
+      new Chat(4, [this.userService.getUser(5), this.userService.getUser(1)], true),
+      new Chat(5, [this.userService.getUser(6), this.userService.getUser(5)], true),
+    ]
     this.updateMessages()
     this.subscription = messageService.onChange().subscribe(value => {
-      const newArr = this.fakeDb.map(chat => {
+      this.fakeDb.forEach(chat => {
         if(chat.id === value.chatId)
-          chat.messages.push(value)
-          chat.lastMessage = new Date()
+          chat.insertMessage(value)
         return chat
       })
-      this.fakeDb = newArr
     })
   }
 
   
 
-  getChats(user:IUser, page:number) {
-    const chats = this.fakeDb.filter((chat: IChat, index: number) => user.id === chat.participants[0].id || user.id === chat.participants[1].id)
+  getChats(user:User, page:number) {
+    const chats = this.fakeDb.filter((chat: Chat, index: number) => user.id === chat.participants[0].id || user.id === chat.participants[1].id)
     return chats.slice((page - 1) * this.chatsPerRequest, page * this.chatsPerRequest);
   }
 
-  getChat(id: number, user: IUser):IChat|boolean{
-    const chat = this.fakeDb.filter((chat: IChat) => chat.id === id)[0]
+  getChat(id: number, user: User):Chat|boolean{
+    const chat = this.fakeDb.filter((chat: Chat) => chat.id === id)[0]
     if(chat.participants.includes(user)) return chat
     else return false
   }
 
-  getChatByMessage(message: IMessage):IChat{
+  getChatByMessage(message: Message):Chat{
     return this.fakeDb.filter(chat => chat.messages.includes(message))[0]
   }
 
   updateMessages():void{
-    this.fakeDb.forEach((chat: IChat) => {
-      const messages: IMessage[] = this.messageService.getMessages(chat)
+    this.fakeDb.forEach((chat: Chat) => {
+      const messages: Message[] = this.messageService.getMessages(chat.participants, chat)
       if(messages.length > 0)
-        chat.messages = messages
+        chat.loadMoreMessages(messages)
     })
   }
 
-  newChat(userA: IUser, userB:IUser):IChat{
-    return {
-      id: this.fakeDb.length,
-      participants: [
-        userA,
-        userB,
-      ],
-      read: true,
-      messages: []
-    }
+  newChat(userA: User, userB:User):Chat{
+    return new Chat(this.fakeDb.length, [userA, userB], true)
   }
 
-  verifyChat(userA: IUser, userB: IUser):number{
-    let chat: IChat;
+  verifyChat(userA: User, userB: User):number{
+    let chat: Chat;
     const exists = this.fakeDb.reduce((previous, current) => {
       if(previous) return true
       if(current.participants.includes(userA) && current.participants.includes(userB)){
