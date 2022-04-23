@@ -12,7 +12,7 @@
           <p class="hour-info">{{formatTime(chat.messages[chat.messages.length-1].time)}}</p>
         </ion-label>
       </ion-label>
-      <ion-badge *ngIf="user.unread != 0">{{user.unread}}</ion-badge>
+      <ion-badge color="tertiary" *ngIf="chat.unreads > 0">{{chat.unreads}}</ion-badge>
     </ion-item>
 
   </ion-list>

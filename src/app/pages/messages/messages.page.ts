@@ -8,6 +8,7 @@ import { MessagesService } from 'src/app/services/messages/messages.service';
 
 import { User } from 'src/model/classes/User';
 import { Chat } from 'src/model/classes/Chat';
+import { Message } from 'src/model/classes/Message';
 
 @Component({
   selector: 'app-messages',

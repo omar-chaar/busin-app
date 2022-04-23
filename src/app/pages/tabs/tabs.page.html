@@ -1,5 +1,5 @@
 <ion-tabs>
-  
+
   <ion-tab-bar slot="top" class="tab-bar">
     <ion-tab-button tab="messages" class="menu-item">
       <ion-icon name="chatbubble-ellipses-sharp"></ion-icon>
@@ -12,16 +12,20 @@
     <ion-tab-button tab="contacts" class="menu-item">
       <ion-icon name="journal-sharp"></ion-icon>
     </ion-tab-button>
-    
-    <ion-button component="menu" class="menu-button" fill="clear">
+
+    <ion-button component="menu" class="menu-button" fill="clear" id="nested-button">
       <ion-icon name="ellipsis-vertical-sharp"></ion-icon>
-      <ion-popover [isOpen]="isPopoverOpen">
-        <ng-template>
-          <app-popover-content></app-popover-content>
-        </ng-template>
-      </ion-popover>
     </ion-button>
   </ion-tab-bar>
-
-
 </ion-tabs>
+<ion-popover [isOpen]="isPopoverOpen" trigger="nested-button">
+  <ng-template>
+    <app-popover-content>
+      <ion-list>
+        <ion-item (click)="redirectTo('/profile/' + this.user.id)" [button]="true" [detail]="false">
+          <ion-label>Edit profile</ion-label>
+        </ion-item>
+      </ion-list>
+    </app-popover-content>
+  </ng-template>
+</ion-popover>

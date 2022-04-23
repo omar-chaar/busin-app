@@ -3,20 +3,27 @@
     <div class="profile-container">
       <span class="profile-icons profile-header">
         <ion-icon name="chevron-back-outline" (click)="redirectTo('/tabs/messages')"></ion-icon>
-        <ion-icon name="ellipsis-vertical-sharp"></ion-icon>
+        <ion-icon name="ellipsis-vertical-sharp" id="profile-menu{{profileUser.id}}"></ion-icon>
       </span>
       <span class="profile-avatar non-primary-button">
         <ion-avatar>
           <img src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y">
         </ion-avatar>
       </span>
-      <h1 class="profile-title">{{profileUser.getFullName()}}</h1>
+      <div class="profile-section">
+        <h1 *ngIf="!editMode" class="profile-title">{{profileUser.getFullName()}}</h1>
+        <ion-input *ngIf="editMode" [(ngModel)]="profileUser.name" class="edit-input"></ion-input>
+        <ion-input *ngIf="editMode" [(ngModel)]="profileUser.surname" class="edit-input"></ion-input>
+        <button (click)="switchEdit()" *ngIf="user === profileUser && editMode" class="edit-btn"><ion-icon name="checkmark"></ion-icon></button>
+        <button (click)="switchEdit()" *ngIf="user === profileUser && !editMode" class="edit-btn"><ion-icon name="pencil"></ion-icon></button>
+        <button (click)="switchEdit()" *ngIf="editMode" class="edit-btn"><ion-icon name="close"></ion-icon></button>
+      </div>
       <span class="profile-info">
         <p>{{departament.name}}</p>
         <p>{{profileUser.position}}</p>
       </span>
-      <span class="profile-icons profile-options">
-        <ion-icon name="chatbubble-ellipses"></ion-icon>
+      <span class="profile-icons profile-options" *ngIf="user !== profileUser">
+        <ion-icon (click)="redirectToChat(profileUser)" name="chatbubble-ellipses"></ion-icon>
         <ion-icon name="call"></ion-icon>
       </span>
     </div>
@@ -26,3 +33,18 @@
     </span>
   </div>
 </ion-content> 
+
+<ion-popover [isOpen]="isPopoverOpen" trigger="profile-menu{{profileUser.id}}">
+  <ng-template>
+    <app-popover-content>
+      <ion-list>
+        <ion-item *ngIf="user !== profileUser" [button]="true" [detail]="false">
+          <ion-label>Delete messages</ion-label>
+        </ion-item>
+        <ion-item *ngIf="user === profileUser" [button]="true" [detail]="false">
+          <ion-label>Change picture</ion-label>
+        </ion-item>
+      </ion-list>
+    </app-popover-content>
+  </ng-template>
+</ion-popover>

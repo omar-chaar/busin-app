@@ -85,3 +85,32 @@
     margin: 0;
     margin-bottom: 5px;
 }
+
+.profile-section{
+    display: flex;
+    align-items: center;
+}
+
+.profile-section h1{
+    margin: 0;
+}
+
+.edit-btn{
+    height: 35px;
+    width: 35px;
+    margin-left: 10px;
+    font-size: 1.3rem;
+    border-radius: 50%;
+    padding: 5px;
+    color: #5B3FFF;
+    background-color: #fff;
+}
+
+.edit-input{
+    border: 1px solid #fff;
+    border-radius: 20px;
+    margin: 0 2px;
+    --padding-start: 7px;
+    --background: #412DB6;
+}
+

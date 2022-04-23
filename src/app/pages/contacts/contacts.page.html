@@ -9,6 +9,9 @@
           </ion-label>
         </ion-item>
         <ion-list slot="content">
+          <ion-item>
+            <ion-button (click)="redirectTo('/chat-group/' + departament.id)" color="tertiary" class="group-btn">{{departament.name}} Group</ion-button>
+          </ion-item>
           <ion-item *ngFor="let contact of getUsers(departament)" class="border-none">
             <ion-avatar slot="start" (click)="redirectTo('/profile/' + contact.id)">
               <img src="../../../assets/images/gw50h17a.bmp">
