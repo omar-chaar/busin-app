@@ -50,4 +50,8 @@ export class ProfilePage implements OnInit {
     this.editMode = !this.editMode;
   }
 
+
+  startCall(): void {
+    this._router.navigateByUrl('/voice-call')
+  }
 }

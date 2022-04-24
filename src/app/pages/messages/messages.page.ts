@@ -87,4 +87,7 @@ export class MessagesPage implements OnInit {
   goToProfile(id: number): void {
     this.router.navigateByUrl('/profile/' + id)
   }
+
+  
+  
 }

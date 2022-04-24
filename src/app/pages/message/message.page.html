@@ -10,8 +10,9 @@
         <p>{{contact.position}} - Available</p>
       </div>
       <div class="icons">
-        <ion-icon name="videocam"></ion-icon>
-        <ion-icon name="call"></ion-icon>
+        <ion-icon name="videocam" class="clickable-icon"></ion-icon>
+          <ion-icon name="call" (click)="startCall()" class="clickable-icon"></ion-icon>
+        
       </div>
     </div>
   </ion-toolbar>
@@ -34,7 +35,8 @@
 </ion-content>
 <ion-item class="text-container">
   <form class="text-form" (ngSubmit)="onSubmit()">
-    <ion-input [(ngModel)]="text" name="text" id="text" type="text" class="text-field" placeholder="Type to send a text message..."></ion-input>
+    <ion-input [(ngModel)]="text" name="text" id="text" type="text" class="text-field"
+      placeholder="Type to send a text message..."></ion-input>
     <ion-button type="submit" fill="clear" class="submit-btn">
       <ion-icon name="send-sharp"></ion-icon>
     </ion-button>
