@@ -41,6 +41,10 @@ const routes: Routes = [
   },  {
     path: 'new-announcement',
     loadChildren: () => import('./pages/new-announcement/new-announcement.module').then( m => m.NewAnnouncementPageModule)
+  },
+  {
+    path: 'voice-call',
+    loadChildren: () => import('./pages/voice-call/voice-call.module').then( m => m.VoiceCallPageModule)
   }
 
 
