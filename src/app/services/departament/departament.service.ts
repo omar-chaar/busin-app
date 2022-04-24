@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Company } from 'src/model/classes/Company';
 import { Departament } from 'src/model/classes/Departament';
+import { User } from 'src/model/classes/User';
+import { UserService } from '../user/user.service';
 
 
 
@@ -69,6 +71,16 @@ export class DepartamentService {
 
   getDepartament(id: number):Departament{
     return this.fakeDb.filter(departament => departament.id === id)[0];
+  }
+
+  async deleteDepartment(department: Departament, users: User[]):Promise<boolean>{
+    if(users.length === 0){
+      const index = this.fakeDb.indexOf(department)
+      this.fakeDb.splice(index, 1);
+      return true
+    }else{
+      return false
+    }
   }
 
 }

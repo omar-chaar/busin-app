@@ -50,6 +50,14 @@ const routes: Routes = [
   {
     path: 'chat-group/:id',
     loadChildren: () => import('./pages/chat-group/chat-group.module').then( m => m.ChatGroupPageModule)
+  },
+  {
+    path: 'edit-users',
+    loadChildren: () => import('./pages/edit-users/edit-users.module').then( m => m.EditUsersPageModule)
+  },
+  {
+    path: 'edit-departments',
+    loadChildren: () => import('./pages/edit-departments/edit-departments.module').then( m => m.EditDepartmentsPageModule)
   }
 
 

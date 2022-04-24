@@ -13,23 +13,24 @@ export class JoinPage implements OnInit {
 
   code: string;
 
-  constructor(private router: Router, private toastService: ToastService, 
+  constructor(private router: Router, private toastService: ToastService,
     private validationService: ValidationService, private userService: UserService) { }
 
   ngOnInit() {
   }
 
-  handleSubmit():void{
-    if(this.validationService.validateLength('Name', this.code, undefined, 1)){
-      this.toastService.presentToast('Welcome to the team! ;)', 5000, 'success')
-      this.router.navigateByUrl('/tabs/messages')
+  async handleSubmit(): Promise<void> {
+    if (this.validationService.validateLength('Name', this.code, undefined, 1)) {
+      const resp = await this.userService.login('gabriel@gmail.com')
+      if (resp) {
+        this.toastService.presentToast('Welcome to the team! ;)', 5000, 'success')
+        this.router.navigateByUrl('/tabs/messages')
+      }
     }
   }
 
-  enter():void {
-    if(this.userService.login('gabriel@gmail.com')){
-      this.router.navigateByUrl('/tabs/messages')
-    }
+  redirectTo(url: string): void {
+    this.router.navigateByUrl(url);
   }
 
 }

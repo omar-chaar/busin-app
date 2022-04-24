@@ -20,10 +20,11 @@ export class UserLoginPage implements OnInit {
   ngOnInit() {
   }
 
-  handleSubmit():void {
+  async handleSubmit():Promise<void> {
     if(!this.validationService.validateEmail(this.email)) return 
     if(!this.validationService.validatePassword(this.password)) return 
-    if(this.userService.login(this.email)){
+    const resp = await this.userService.login(this.email)
+    if(resp){
       this.router.navigateByUrl('/tabs/messages');
     }else{
       this.toastService.presentToast('Invalid credentials!', 3000, 'warning');

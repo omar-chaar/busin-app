@@ -1,0 +1,21 @@
+<ion-header>
+  <ion-toolbar color="tertiary">
+    <ion-icon name="chevron-back-outline" class="return-icon" (click)="redirectTo('/tabs/contacts')"></ion-icon>
+    <ion-title>Departments</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-list>
+    <ion-item *ngFor="let department of departments">
+      <ion-label *ngIf="!department.edit">{{department.department.name}}</ion-label>
+      <ion-input *ngIf="department.edit" [(ngModel)]="text" placeholder="{{department.department.name}}"></ion-input>
+      <div class="icons">
+        <ion-icon *ngIf="!department.edit" (click)="switchEdit(department)" name="pencil-outline"
+          style="color: darkorange; margin-right: 20px;"></ion-icon>
+        <ion-icon *ngIf="!department.edit" (click)="confirmDelete(department)" name="trash-outline" style="color: brown;"></ion-icon>
+        <ion-icon *ngIf="department.edit" (click)="confirmEdit(department)" name="checkmark" style="color: green;"></ion-icon>
+      </div>
+    </ion-item>
+  </ion-list>
+
+</ion-content>

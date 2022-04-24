@@ -40,7 +40,7 @@ export class UserService {
     return this.fakeDb.filter(user => user.departament.id === departament.id)
   }
 
-  login(email: string):boolean{
+  async login(email: string):Promise<boolean>{
     let user: User;
     const contains = this.fakeDb.reduce((previous, current):boolean => {
       if(previous) return true

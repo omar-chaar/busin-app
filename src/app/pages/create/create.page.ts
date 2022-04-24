@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastService } from 'src/app/services/toast/toast.service';
 import { ValidationService } from 'src/app/services/validation/validation.service';
-import { IonRouterOutlet, ActionSheetController } from '@ionic/angular';
+import { ActionSheetController } from '@ionic/angular';
 import { UserService } from 'src/app/services/user/user.service';
 
 @Component({
@@ -21,7 +21,7 @@ export class CreatePage implements OnInit {
   ngOnInit() {
   }
 
-  handleSubmit(): void {
+  handleSubmit(): void{
     if (this.validationService.validateLength('Name', this.name, 50)) {
       this.canDismiss()
     }
@@ -31,7 +31,7 @@ export class CreatePage implements OnInit {
     this.router.navigateByUrl(url);
   }
 
-  async canDismiss() {
+  async canDismiss():Promise<void> {
     const actionSheet = await this.actionSheetCtrl.create({
       header: `Create "${this.name}"?`,
       buttons: [
@@ -52,12 +52,11 @@ export class CreatePage implements OnInit {
 
     if (role === 'destructive') {
       this.toastService.presentToast('Welcome to your new company!', 5000, 'success')
-      if(this.userService.login('gabriel@gmail.com')){
+      const resp = await this.userService.login('cliff@gmail.com')
+      if(resp){
         this.router.navigateByUrl('/tabs/messages')
       }
     }
-
-    return false;
   }
 
 }
