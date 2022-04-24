@@ -1,11 +1,12 @@
 import { IChatMessage } from "../interfaces/interfaces";
+import { ChatGroup } from "./ChatGroup";
 import { User } from "./User";
 
 export class ChatMessage implements IChatMessage{
 
     id: number;
     sender: User;
-    group: any;
+    group: ChatGroup;
     time: Date;
     message: string;
     parentMessage?: ChatMessage;

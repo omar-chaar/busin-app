@@ -4,6 +4,7 @@ import { Departament } from "../classes/Departament";
 import { User } from "../classes/User";
 import { Message } from "../classes/Message";
 import { Chat } from "../classes/Chat";
+import { ChatGroup } from "../classes/ChatGroup";
 
 export interface IAnnouncement {
     id: number,
@@ -22,6 +23,7 @@ export interface IUser {
     email: string,
     profilePicture: string,
     departament: Departament,
+    admin: boolean,
     getFullName(): string,
 }
 
@@ -50,7 +52,7 @@ export interface IMessage {
 export interface IChatMessage {
     id: number,
     sender: User,
-    group: any,
+    group: ChatGroup,
     time: Date,
     message: string,
     parentMessage?: ChatMessage;
@@ -60,6 +62,14 @@ export interface IChat {
     id: number,
     participants: User[],
     messages?: Message[],
+    unreads?: number,
+    lastMessage?: Date,
+}
+
+export interface IChatGroup{
+    id: number,
+    departament: Departament,
+    participants: User[],
     read: boolean,
     lastMessage?: Date,
 }

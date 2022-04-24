@@ -6,6 +6,7 @@ import { DepartamentService } from 'src/app/services/departament/departament.ser
 
 import { User } from 'src/model/classes/User';
 import { Departament } from 'src/model/classes/Departament';
+import { ChatService } from 'src/app/services/chat/chat.service';
 
 @Component({
   selector: 'app-profile',
@@ -16,9 +17,11 @@ export class ProfilePage implements OnInit {
 
   profileUser: User;
   departament: Departament;
+  user: User;
+  editMode: boolean = false;
 
   constructor(private route: ActivatedRoute, private _router: Router, private userService: UserService,
-     private location: Location, private departamentService: DepartamentService) { }
+     private chatService: ChatService, private departamentService: DepartamentService) { }
 
   ngOnInit() {
     const id = +this.route.snapshot.params['id'];
@@ -28,12 +31,23 @@ export class ProfilePage implements OnInit {
     }else{
       this.profileUser = profileUser;
       this.departament = profileUser.departament
+      this.user = this.userService.currentUser;
     }
   }
 
   redirectTo(url:string): void {
     //this.location.back()
     this._router.navigateByUrl(url)
+  }
+
+  redirectToChat(contact:User){
+    const chatId = this.chatService.verifyChat(contact, this.user)
+    this._router.navigateByUrl('/message/' + chatId)
+  }
+
+
+  switchEdit(){
+    this.editMode = !this.editMode;
   }
 
 }

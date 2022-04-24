@@ -30,6 +30,7 @@ export class MessagePage implements OnInit {
     if(typeof chat === 'boolean'){
       this._router.navigateByUrl('/tabs/messages')
     }else{
+      chat.unreads = 0;
       this.chat = chat;
       this.contact = chat.participants.filter(participant => participant.id !== this.user.id)[0];
     }

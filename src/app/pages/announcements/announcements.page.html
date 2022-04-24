@@ -1,5 +1,5 @@
 <ion-content>
-  <div style="display: flex; justify-content: center;" class="button-div">
+  <div *ngIf="user.admin" style="display: flex; justify-content: center;" class="button-div">
     <ion-button color="tertiary" shape="round" class="announcement-button" (click)="openModal()">New Announcement
     </ion-button>
   </div>

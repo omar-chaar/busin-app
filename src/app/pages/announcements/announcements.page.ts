@@ -6,6 +6,8 @@ import { AnnouncementService } from 'src/app/services/announcement/announcement.
 import { NewAnnouncementPage } from '../new-announcement/new-announcement.page';
 
 import { Announcement } from 'src/model/classes/Announcement';
+import { User } from 'src/model/classes/User';
+import { UserService } from 'src/app/services/user/user.service';
 
 @Component({
   selector: 'app-announcements',
@@ -21,9 +23,11 @@ export class AnnouncementsPage implements OnInit {
   fullyLoaded = false;
   page = 1
   modal: HTMLElement;
+  user: User;
 
-  constructor(public modalController: ModalController, private announcementService: AnnouncementService) {
-
+  constructor(public modalController: ModalController, private announcementService: AnnouncementService,
+    private userService: UserService) {
+      this.user = this.userService.currentUser;
   }
 
   ngOnInit(): void {
@@ -37,7 +41,8 @@ export class AnnouncementsPage implements OnInit {
       cssClass: 'my-custom-class',
       componentProps: {
         sortByDate: this.sortByDate,
-        announcements: this.announcements
+        announcements: this.announcements,
+        user: this.user
       }
     });
     return await modal.present();
@@ -79,6 +84,7 @@ export class AnnouncementsPage implements OnInit {
   }
 
   openModal(): void {
-    this.presentModal()
+    if(this.user.admin)
+      this.presentModal()
   }
 }

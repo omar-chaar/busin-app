@@ -6,8 +6,7 @@
         <img src="../../../assets/images/gw50h17a.bmp">
       </ion-avatar>
       <div class="contact-info">
-        <h1 (click)="goToProfile(contact.id)">{{contact.getFullName()}}</h1>
-        <p>{{contact.position}} - Available</p>
+        <h1>{{chat.departament.name}}</h1>
       </div>
       <div class="icons">
         <ion-icon name="videocam"></ion-icon>
@@ -19,9 +18,12 @@
 <ion-content>
   <ion-list>
     <ion-grid>
-      <ion-row *ngFor="let message of chat.messages" class="messagebox-container"
-        [ngClass]="{'user-message': message.sender.id === user.id}">
+      <ion-row *ngFor="let message of messages" class="messagebox-container"
+        [ngClass]="{'user-message': message.sender === user}">
         <div class="message-box">
+          <div class="meta-info sender-name" *ngIf="message.sender !== user">
+            <p>{{message.sender.name}}</p>
+          </div>
           <p>{{message.message}}</p>
           <div class="meta-info">
             <ion-icon *ngIf="message.sender === user" name="checkmark-done-sharp"></ion-icon>
@@ -34,8 +36,9 @@
 </ion-content>
 <ion-item class="text-container">
   <form class="text-form" (ngSubmit)="onSubmit()">
-    <ion-input [(ngModel)]="text" name="text" id="text" type="text" class="text-field" placeholder="Type to send a text message..."></ion-input>
-    <ion-button type="submit" fill="clear" class="submit-btn">
+    <ion-input [(ngModel)]="text" name="text" id="text" type="text" class="text-field" 
+      placeholder="Type to send a text message..." disabled="{{!chat.participants.includes(user)}}"></ion-input>
+    <ion-button disabled="{{!chat.participants.includes(user)}}" type="submit" fill="clear" class="submit-btn">
       <ion-icon name="send-sharp"></ion-icon>
     </ion-button>
 

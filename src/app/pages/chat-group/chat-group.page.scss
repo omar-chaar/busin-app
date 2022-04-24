@@ -1,0 +1,120 @@
+.header{
+    display: flex;
+    align-items: center;
+    padding: 10px 15px 10px 0px;
+}
+
+.previous{
+    color: #414141;
+    font-size: 2rem;
+    margin-right: 15px;
+    cursor: pointer;
+}
+
+ion-toolbar{
+    --background: #fff;
+}
+
+.contact-info{
+    display: inline-block;
+    flex-direction: column;
+    margin-left: 10px;
+    color: #414141;
+    margin-right: auto;
+}
+
+.contact-info h1, p{
+    margin: 0;
+}
+
+.contact-info h1{
+    font-size: 16px;
+}
+
+.contact-info p{
+    font-size: 14px;
+}
+
+.icons{
+    display: flex;
+    font-size: 2rem;
+    gap: 20px;
+    align-items: center;
+    color: #5B3FFF;
+}
+
+.messagebox-container{
+    margin: 10px 7px;
+}
+
+.message-box{
+    border-radius: 10px;
+    padding: 10px 7px;
+    display: flex;
+    gap: 5px;
+    flex-direction: column;
+    background-color: #DADADA;
+    color: #414141;
+    margin-right: 20px;
+    margin-left: 0px;
+}
+
+.user-message{
+    justify-content: flex-end;
+}
+
+.user-message .message-box{
+    background-color: #5D5FEF;
+    color: #fff;
+    margin-right: 0px;
+    margin-left: 20px;
+}
+
+.user-message .meta-info{
+    color: #D3D3D3;
+}
+
+.meta-info{
+    align-self: flex-end;
+    font-size: 12px;
+    color: #808080;
+    display: flex;
+}
+
+.sender-name{
+    align-self: flex-start !important;
+}
+
+.meta-info ion-icon{
+    font-size: 1rem;
+}
+
+.text-container{
+    --border-color: transparent;
+    width: 100%;
+    height: 60px;
+    --padding-top: 5px;
+}
+
+.text-form{
+    display: flex;
+    justify-content: space-between;
+    width: 100vw;
+}
+
+.text-field{
+    border: 1px solid #808080;
+    color: #414141;
+    border-radius: 15px;
+    flex-grow: 1;
+    --background: #eee;
+    --padding-start: 10px !important;
+    --padding-end: 10px !important;
+    --padding-top: 0px !important;
+    --padding-bottom: 0px !important;
+}
+
+.submit-btn{
+    font-size: 1.1rem;
+    color:#5B3FFF;
+}

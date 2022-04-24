@@ -10,9 +10,10 @@ export class User implements IUser{
     email: string;
     profilePicture: string;
     departament: Departament;
+    admin: boolean;
 
     constructor(id:number, name:string, surname:string, position:string,
-                email: string, profilePicture:string, departament:Departament){
+                email: string, profilePicture:string, departament:Departament, admin:boolean){
             this.id = id;
             this.name = name;
             this.surname = surname;
@@ -20,6 +21,7 @@ export class User implements IUser{
             this.email = email;
             this.profilePicture = profilePicture;
             this.departament = departament;
+            this.admin = admin;
     }
 
     getFullName(): string {

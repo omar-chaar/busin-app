@@ -7,13 +7,13 @@ export class Chat implements IChat{
     id: number;
     participants: User[];
     messages?: Message[] = [];
-    read: boolean;
+    unreads?: number;
     lastMessage?: Date;
 
-    constructor(id: number, participants: User[], read: boolean, messages?: Message[]){
+    constructor(id: number, participants: User[], unreads?: number, messages?: Message[]){
         this.id = id;
         this.participants = participants;
-        this.read = read;
+        if(unreads) this.unreads = unreads;
         if(messages){
             this.messages = messages;
             this.lastMessage = messages[messages.length].time;

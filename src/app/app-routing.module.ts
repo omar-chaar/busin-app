@@ -38,13 +38,18 @@ const routes: Routes = [
   {
     path: 'recovery',
     loadChildren: () => import('./pages/recovery/recovery.module').then( m => m.RecoveryPageModule)
-  },  {
-    path: 'new-announcement',
-    loadChildren: () => import('./pages/new-announcement/new-announcement.module').then( m => m.NewAnnouncementPageModule)
   },
   {
     path: 'voice-call',
     loadChildren: () => import('./pages/voice-call/voice-call.module').then( m => m.VoiceCallPageModule)
+  },
+  {
+    path: 'new-announcement',
+    loadChildren: () => import('./pages/new-announcement/new-announcement.module').then( m => m.NewAnnouncementPageModule)
+  },
+  {
+    path: 'chat-group/:id',
+    loadChildren: () => import('./pages/chat-group/chat-group.module').then( m => m.ChatGroupPageModule)
   }
 
 

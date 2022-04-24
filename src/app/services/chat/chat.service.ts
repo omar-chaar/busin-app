@@ -20,12 +20,12 @@ export class ChatService {
   constructor(private userService: UserService, private messageService: MessagesService) {
 
     this.fakeDb = [
-      new Chat(0, [this.userService.getUser(0), this.userService.getUser(1)], true),
-      new Chat(1, [this.userService.getUser(5), this.userService.getUser(3)], true),
-      new Chat(2, [this.userService.getUser(2), this.userService.getUser(5)], true),
-      new Chat(3, [this.userService.getUser(5), this.userService.getUser(4)], true),
-      new Chat(4, [this.userService.getUser(5), this.userService.getUser(1)], true),
-      new Chat(5, [this.userService.getUser(6), this.userService.getUser(5)], true),
+      new Chat(0, [this.userService.getUser(0), this.userService.getUser(1)]),
+      new Chat(1, [this.userService.getUser(5), this.userService.getUser(3)]),
+      new Chat(2, [this.userService.getUser(2), this.userService.getUser(5)]),
+      new Chat(3, [this.userService.getUser(5), this.userService.getUser(4)]),
+      new Chat(4, [this.userService.getUser(5), this.userService.getUser(1)]),
+      new Chat(5, [this.userService.getUser(6), this.userService.getUser(5)]),
     ]
     this.updateMessages()
     this.subscription = messageService.onChange().subscribe(value => {
@@ -57,13 +57,19 @@ export class ChatService {
   updateMessages():void{
     this.fakeDb.forEach((chat: Chat) => {
       const messages: Message[] = this.messageService.getMessages(chat.participants, chat)
+      const unreads = messages.reduce((previous, current):number => {
+        if(current.read) return previous
+        else return previous+1
+      }, 0)
+
+      chat.unreads = unreads
       if(messages.length > 0)
         chat.loadMoreMessages(messages)
     })
   }
 
   newChat(userA: User, userB:User):Chat{
-    return new Chat(this.fakeDb.length, [userA, userB], true)
+    return new Chat(this.fakeDb.length, [userA, userB])
   }
 
   verifyChat(userA: User, userB: User):number{

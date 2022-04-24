@@ -63,8 +63,12 @@ export class DepartamentService {
     })
   }
 
+  getAllDepartaments():Departament[]{
+    return this.fakeDb;
+  }
+
   getDepartament(id: number):Departament{
-    return this.fakeDb.filter(departament => departament.id === id)[0]
+    return this.fakeDb.filter(departament => departament.id === id)[0];
   }
 
 }
