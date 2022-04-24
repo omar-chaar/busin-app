@@ -24,7 +24,7 @@
       </span>
       <span class="profile-icons profile-options" *ngIf="user !== profileUser">
         <ion-icon (click)="redirectToChat(profileUser)" name="chatbubble-ellipses"></ion-icon>
-        <ion-icon name="call"></ion-icon>
+        <ion-icon name="call" (click)="startCall()" ></ion-icon>
       </span>
     </div>
     <span class="profile-schedule">
