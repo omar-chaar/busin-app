@@ -16,15 +16,15 @@ export class UserService {
 
   constructor(private departamentService: DepartamentService) {
     this.fakeDb = [
-      new User(0, 'Omar', 'Chaar', 'Fullstack Developer', 'omar@gmail.com', '...', this.departamentService.getDepartament(0)),
-      new User(1, 'Gabriel', 'Nunes', 'Front-end Developer', 'gabriel@gmail.com', '...', this.departamentService.getDepartament(0)),
-      new User(2, 'Ahmed', 'Hassan', 'Senior Developer', 'ahmed@gmail.com', '...', this.departamentService.getDepartament(0)),
-      new User(3, 'Omar', 'El Khoury', 'Junior Developer', 'omark@gmail.com', '...', this.departamentService.getDepartament(0)),
-      new User(4, 'Marcell', 'da Silva', 'Accountant', 'marcell@gmail.com', '...', this.departamentService.getDepartament(2)),
-      new User(5, 'Cliff', 'Gilmore', 'Influencer', 'cliff@gmail.com', '...', this.departamentService.getDepartament(1)),
-      new User(6, 'Ike', 'Mcmahon', 'Salesman', 'ike@gmail.com', '...', this.departamentService.getDepartament(3)),
-      new User(7, 'Coley', 'Frey', 'Stockist', 'coley@gmail.com', '...', this.departamentService.getDepartament(5)),
-      new User(8, 'Valentine', 'Lindsey', 'Driver', 'valetine@gmail.com', '...', this.departamentService.getDepartament(4)),
+      new User(0, 'Omar', 'Chaar', 'Fullstack Developer', 'omar@gmail.com', '...', this.departamentService.getDepartament(0), false),
+      new User(1, 'Gabriel', 'Nunes', 'Front-end Developer', 'gabriel@gmail.com', '...', this.departamentService.getDepartament(0), false),
+      new User(2, 'Ahmed', 'Hassan', 'Senior Developer', 'ahmed@gmail.com', '...', this.departamentService.getDepartament(0), false),
+      new User(3, 'Omar', 'El Khoury', 'Junior Developer', 'omark@gmail.com', '...', this.departamentService.getDepartament(0), false),
+      new User(4, 'Marcell', 'da Silva', 'Accountant', 'marcell@gmail.com', '...', this.departamentService.getDepartament(2), false),
+      new User(5, 'Cliff', 'Gilmore', 'Influencer', 'cliff@gmail.com', '...', this.departamentService.getDepartament(1), true),
+      new User(6, 'Ike', 'Mcmahon', 'Salesman', 'ike@gmail.com', '...', this.departamentService.getDepartament(3), false),
+      new User(7, 'Coley', 'Frey', 'Stockist', 'coley@gmail.com', '...', this.departamentService.getDepartament(5), false),
+      new User(8, 'Valentine', 'Lindsey', 'Driver', 'valetine@gmail.com', '...', this.departamentService.getDepartament(4), false),
     ]
     this.currentUser = this.getUser(5) // troque o parametro para mudar o usuário
 

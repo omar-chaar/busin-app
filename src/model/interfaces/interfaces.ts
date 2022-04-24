@@ -23,6 +23,7 @@ export interface IUser {
     email: string,
     profilePicture: string,
     departament: Departament,
+    admin: boolean,
     getFullName(): string,
 }
 
