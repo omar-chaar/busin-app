@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { ToastService } from 'src/app/services/toast/toast.service';
+import { UserService } from 'src/app/services/user/user.service';
 import { ValidationService } from 'src/app/services/validation/validation.service';
 
 @Component({
@@ -12,7 +14,8 @@ export class UserLoginPage implements OnInit {
   email: string
   password: string
 
-  constructor(private router: Router, private validationService: ValidationService) { }
+  constructor(private router: Router, private validationService: ValidationService,
+    private userService: UserService, private toastService: ToastService) { }
 
   ngOnInit() {
   }
@@ -20,11 +23,14 @@ export class UserLoginPage implements OnInit {
   handleSubmit():void {
     if(!this.validationService.validateEmail(this.email)) return 
     if(!this.validationService.validatePassword(this.password)) return 
-    console.log('logged in!')
-    this.router.navigateByUrl('/tabs/messages')
+    if(this.userService.login(this.email)){
+      this.router.navigateByUrl('/tabs/messages');
+    }else{
+      this.toastService.presentToast('Invalid credentials!', 3000, 'warning');
+    }
   }
 
-  goToRecovery():void{
-    this.router.navigateByUrl('/recovery')
+  redirectTo(url: string):void{
+    this.router.navigateByUrl(url);
   }
 }

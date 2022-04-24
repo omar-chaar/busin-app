@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService } from 'src/app/services/user/user.service';
 import { User } from 'src/model/classes/User';
@@ -8,7 +8,7 @@ import { User } from 'src/model/classes/User';
   templateUrl: 'tabs.page.html',
   styleUrls: ['tabs.page.scss']
 })
-export class TabsPage {
+export class TabsPage implements OnInit {
 
   user: User;
 
@@ -16,8 +16,20 @@ export class TabsPage {
     this.user = this.userService.currentUser;
   }
 
+  ngOnInit(): void {
+    if(!this.user){
+      this.router.navigateByUrl('/user-login')
+    }
+  }
+
   redirectTo(url: string){
     this.router.navigateByUrl(url)
+  }
+
+  logout(){
+    if(this.userService.logout()){
+      this.router.navigateByUrl('/login')
+    }
   }
 
 }

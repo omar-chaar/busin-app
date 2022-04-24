@@ -1,4 +1,5 @@
 <ion-content class="login-page" fullscreen="true">
+  <ion-icon name="chevron-back-outline" class="return-icon" (click)="redirectTo('/login')"></ion-icon>
   <form class="login-container" (ngSubmit)="handleSubmit()">
     <ion-item>
       <span class="login-icon">
@@ -12,6 +13,6 @@
       <ion-input [(ngModel)]="password" name="password" type="password" placeholder="*******" required></ion-input>
     </ion-item>
     <ion-button expand="block" color="tertiary" type="submit">Login</ion-button>
-    <span class="login-text non-primary-button" (click)="goToRecovery()">Forgot my password</span>
+    <span class="login-text non-primary-button" (click)="redirectTo('/recovery')">Forgot my password</span>
   </form>
 </ion-content>

@@ -10,7 +10,7 @@ export class UserService {
 
   usersPerRequest: number = 4;
 
-  currentUser: User
+  currentUser: User;
 
   fakeDb: User[];
 
@@ -26,8 +26,6 @@ export class UserService {
       new User(7, 'Coley', 'Frey', 'Stockist', 'coley@gmail.com', '...', this.departamentService.getDepartament(5), false),
       new User(8, 'Valentine', 'Lindsey', 'Driver', 'valetine@gmail.com', '...', this.departamentService.getDepartament(4), false),
     ]
-    this.currentUser = this.getUser(5) // troque o parametro para mudar o usuário
-
    }
 
   getUser(id: number): User{
@@ -40,6 +38,29 @@ export class UserService {
 
   getUsersByDepartament(departament: Departament):User[]{
     return this.fakeDb.filter(user => user.departament.id === departament.id)
+  }
+
+  login(email: string):boolean{
+    let user: User;
+    const contains = this.fakeDb.reduce((previous, current):boolean => {
+      if(previous) return true
+      if(current.email === email){
+        user = current;
+        return true
+      }
+      return false
+    }, false)
+
+    if(contains){
+      this.currentUser = user;
+      return true
+    }
+    return false
+  }
+
+  logout():boolean{
+    this.currentUser = null;
+    return true
   }
 
 

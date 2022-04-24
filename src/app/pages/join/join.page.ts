@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastService } from 'src/app/services/toast/toast.service';
+import { UserService } from 'src/app/services/user/user.service';
 import { ValidationService } from 'src/app/services/validation/validation.service';
 
 @Component({
@@ -13,7 +14,7 @@ export class JoinPage implements OnInit {
   code: string;
 
   constructor(private router: Router, private toastService: ToastService, 
-    private validationService: ValidationService) { }
+    private validationService: ValidationService, private userService: UserService) { }
 
   ngOnInit() {
   }
@@ -25,8 +26,10 @@ export class JoinPage implements OnInit {
     }
   }
 
-  redirectTo(url: string):void {
-    this.router.navigateByUrl(url);
+  enter():void {
+    if(this.userService.login('gabriel@gmail.com')){
+      this.router.navigateByUrl('/tabs/messages')
+    }
   }
 
 }
