@@ -28,6 +28,12 @@ export class ChatGroupService {
     return this.fakeDb.filter(chat => chat.id === id)[0];
   }
 
+  async createGroup(department: Departament):Promise<boolean>{
+    const newGroup = new ChatGroup(department.id, department, [], false);
+    this.fakeDb.push(newGroup);
+    return true
+  }
+
   async deleteGroup(department: Departament):Promise<boolean>{
     this.fakeDb.splice(department.id, 1);
     return true;

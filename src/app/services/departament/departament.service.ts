@@ -86,7 +86,15 @@ export class DepartamentService {
       return false
     }
   }
-  onDelete(): Observable<any> {
+
+  async createDepartment(name: string):Promise<Departament>{
+    const newDepartment = new Departament(this.fakeDb.length, name, this.company);
+    this.fakeDb.push(newDepartment);
+    this.subject.next(newDepartment)
+    return newDepartment
+  }
+
+  onChange(): Observable<any> {
     return this.subject.asObservable()
   }
 }

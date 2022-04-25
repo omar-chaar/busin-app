@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ActionSheetController } from '@ionic/angular';
+import { ActionSheetController, ModalController } from '@ionic/angular';
+import { AddDepartmentPage } from '../add-department/add-department.page';
 import { ChatGroupService } from 'src/app/services/chat-group/chat-group.service';
 import { DepartamentService } from 'src/app/services/departament/departament.service';
 import { ToastService } from 'src/app/services/toast/toast.service';
@@ -8,7 +9,7 @@ import { UserService } from 'src/app/services/user/user.service';
 import { Departament } from 'src/model/classes/Departament';
 import { User } from 'src/model/classes/User';
 
-type EditDepartment = {
+export type EditDepartment = {
   department: Departament,
   edit: boolean
 }
@@ -26,7 +27,8 @@ export class EditDepartmentsPage implements OnInit {
 
   constructor(private router: Router, private userService: UserService,
     private departmentService: DepartamentService, private toastService: ToastService,
-    private actionSheetCtrl: ActionSheetController, private chatGroupService: ChatGroupService) {
+    private actionSheetCtrl: ActionSheetController, private chatGroupService: ChatGroupService,
+    private modalController: ModalController) {
     this.user = this.userService.currentUser;
     const deptos = this.departmentService.getAllDepartaments().map((depto): EditDepartment => {
       return {
@@ -48,10 +50,10 @@ export class EditDepartmentsPage implements OnInit {
   async confirmEdit(departament: EditDepartment): Promise<void> {
     if (this.text.length > 1) {
       const actionSheet = await this.actionSheetCtrl.create({
-        header: `Change "${departament.department.name}" to "${this.text}"?`,
+        header: `Rename "${departament.department.name}" to "${this.text}"?`,
         buttons: [
           {
-            text: 'Change',
+            text: 'Confirm',
             role: 'destructive'
           },
           {
@@ -105,6 +107,17 @@ export class EditDepartmentsPage implements OnInit {
         this.toastService.presentToast('Remove all members from the department before deleting it!', 7000, 'danger')
       }
     }
+  }
+
+  async presentModal() {
+    const modal = await this.modalController.create({
+      component: AddDepartmentPage,
+      cssClass: 'my-custom-class',
+      componentProps: {
+        departments: this.departments
+      }
+    });
+    return await modal.present();
   }
 
   redirectTo(url: string): void {

@@ -31,10 +31,13 @@ export class ContactsPage implements OnInit {
     private router: Router, private chatService:ChatService) {
       this.user = this.userService.currentUser
 
-      this.subscription = this.departamentService.onDelete().subscribe(value => {
-        const index = this.departaments.indexOf(value)
+      this.subscription = this.departamentService.onChange().subscribe(value => {
+        const index = this.departaments.indexOf(value);
+        this.fullyLoaded = false;
         if(index){
           this.departaments.splice(index, 1);
+        }else{
+          this.departaments.push(value);
         }
       })
   }

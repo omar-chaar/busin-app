@@ -1,0 +1,12 @@
+<ion-content class="page" fullscreen="true">
+  <ion-icon name="chevron-down-outline" class="return-icon" (click)="dismiss()"></ion-icon>
+  <form class="container" (ngSubmit)="confirmCreate()">
+    <h1 class="title">Create Department</h1>
+    <ion-item>
+      <ion-label position="stacked">Name</ion-label>
+      <ion-input name="name" [(ngModel)]="name" type="text" placeholder="Department name" required></ion-input>
+    </ion-item>
+    <ion-button expand="block" color="tertiary" type="submit">Create department</ion-button>
+    <span class="text non-primary-button" (click)="dismiss()">Cancel</span>
+  </form>
+</ion-content>
