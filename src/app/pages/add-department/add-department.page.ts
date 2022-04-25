@@ -4,8 +4,6 @@ import { ChatGroupService } from 'src/app/services/chat-group/chat-group.service
 import { DepartamentService } from 'src/app/services/departament/departament.service';
 import { ToastService } from 'src/app/services/toast/toast.service';
 import { ValidationService } from 'src/app/services/validation/validation.service';
-import { Departament } from 'src/model/classes/Departament';
-
 import { EditDepartment } from '../edit-departments/edit-departments.page';
 
 @Component({
