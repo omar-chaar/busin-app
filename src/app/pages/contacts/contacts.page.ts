@@ -8,6 +8,7 @@ import { UserService } from 'src/app/services/user/user.service';
 
 import { User } from 'src/model/classes/User';
 import { Departament } from 'src/model/classes/Departament';
+import { Subscription } from 'rxjs';
 
 
 @Component({
@@ -21,6 +22,7 @@ export class ContactsPage implements OnInit {
 
   departaments: Departament[] = []
   user: User;
+  subscription: Subscription;
 
   page: number = 1
   fullyLoaded = false
@@ -28,6 +30,13 @@ export class ContactsPage implements OnInit {
   constructor(private departamentService: DepartamentService, private userService: UserService,
     private router: Router, private chatService:ChatService) {
       this.user = this.userService.currentUser
+
+      this.subscription = this.departamentService.onDelete().subscribe(value => {
+        const index = this.departaments.indexOf(value)
+        if(index){
+          this.departaments.splice(index, 1);
+        }
+      })
   }
 
   ngOnInit(): void {

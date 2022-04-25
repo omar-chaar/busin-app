@@ -32,4 +32,13 @@ export class ChatMessageService {
     this.fakeDb.push(newMsg)
     return newMsg
    }
+
+   async deleteMessagesByUser(user: User): Promise<boolean> {
+    this.fakeDb.forEach((message: ChatMessage, index: number, arr: ChatMessage[]) => {
+      if (message.sender === user) {
+        arr.splice(index, 1)
+      }
+    })
+    return true;
+  }
 }

@@ -1,0 +1,23 @@
+<ion-content class="page" fullscreen="true">
+  <ion-icon name="chevron-down-outline" class="return-icon" (click)="dismiss()"></ion-icon>
+  <form class="container" (ngSubmit)="handleSubmit()">
+  <h1 class="title">Create New User</h1>
+  <ion-item>
+    <ion-label>Department</ion-label>
+    <ion-select placeholder="Select One" [(ngModel)]="selectedDepartment" name="selectedDepartment">
+      <ion-select-option *ngFor="let departmentItem of departments" [value]="departmentItem">{{departmentItem.name}}</ion-select-option>
+    </ion-select>
+  </ion-item>
+    <ion-item>
+      <ion-label>Admin</ion-label>
+      <ion-checkbox color="tertiary" [(ngModel)]="admin" [checked]="admin"></ion-checkbox>
+    </ion-item>
+    <ion-item *ngIf="code">
+      <p>Copy and send the code below to the user so he can create his account and join your company.</p>
+      <ion-label position="stacked">Access code</ion-label>
+      <ion-input [value]="code" readonly></ion-input>
+    </ion-item>
+    <ion-button expand="block" color="tertiary" type="submit">Generate Code</ion-button>
+    <span class="text non-primary-button" (click)="dismiss()">Cancel</span>
+  </form>
+</ion-content>

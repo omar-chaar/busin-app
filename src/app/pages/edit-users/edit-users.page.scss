@@ -1,0 +1,36 @@
+.return-icon{
+    font-size: 2rem;
+}
+
+ion-icon{
+    cursor: pointer;
+}
+
+ion-toolbar{
+    --padding-top: 10px;
+    --padding-bottom: 10px;
+}
+
+ion-item{
+    --padding-bottom: 5px;
+    --padding-top: 5px;
+    margin-right: auto;
+}
+
+ion-input{
+    border: 1px solid lightgrey;
+    border-bottom: none;
+    --background: #eee;
+    border-radius: 20px;
+    margin: 2px 20px 2px 0;
+    --padding-start: 7px;
+}
+
+.icons{
+    font-size: 1.7rem;
+    margin-left: auto;
+}
+
+.add-icon{
+    font-size: 2rem;
+}

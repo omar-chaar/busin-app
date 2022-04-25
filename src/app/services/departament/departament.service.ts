@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Subject, Observable } from 'rxjs';
 import { Company } from 'src/model/classes/Company';
 import { Departament } from 'src/model/classes/Departament';
 import { User } from 'src/model/classes/User';
@@ -11,9 +12,10 @@ import { UserService } from '../user/user.service';
 })
 export class DepartamentService {
 
-  deptsPerRequest = 4
+  deptsPerRequest = 10;
   company: Company;
   fakeDb: Departament[];
+  subject = new Subject;
 
   constructor() {
     this.company = new Company(0, 'Teste')
@@ -75,12 +77,16 @@ export class DepartamentService {
 
   async deleteDepartment(department: Departament, users: User[]):Promise<boolean>{
     if(users.length === 0){
+      const deletedDepartment = {...department};
       const index = this.fakeDb.indexOf(department)
       this.fakeDb.splice(index, 1);
+      this.subject.next(deletedDepartment)
       return true
     }else{
       return false
     }
   }
-
+  onDelete(): Observable<any> {
+    return this.subject.asObservable()
+  }
 }

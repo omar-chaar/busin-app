@@ -1,9 +1,27 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>edit-users</ion-title>
+  <ion-toolbar color="tertiary">
+    <ion-icon name="chevron-back-outline" class="return-icon" (click)="redirectTo('/tabs/contacts')"></ion-icon>
+    <ion-title>Users</ion-title>
   </ion-toolbar>
 </ion-header>
-
 <ion-content>
-
+  <ion-list lines="full">
+    <ion-item *ngFor="let user of users">
+      <ion-label>{{user.getFullName()}}</ion-label>
+      <div class="icons">
+        <ion-icon name="pencil-outline"
+          style="color: darkorange; margin-right: 20px;"></ion-icon>
+        <ion-icon (click)="confirmDelete(user)" name="trash-outline" style="color: brown;"></ion-icon>
+      </div>
+    </ion-item>
+  </ion-list>
+  <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
+    <ion-infinite-scroll-content loadingSpinner="bubbles">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button color="tertiary" (click)="presentModal()">
+      <ion-icon class="add-icon" name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 </ion-content>

@@ -51,7 +51,7 @@ export class CreatePage implements OnInit {
     const { role } = await actionSheet.onDidDismiss();
 
     if (role === 'destructive') {
-      this.toastService.presentToast('Welcome to your new company!', 5000, 'success')
+      this.toastService.presentToast('Welcome to your new company!', 3000, 'success')
       const resp = await this.userService.login('cliff@gmail.com')
       if(resp){
         this.router.navigateByUrl('/tabs/messages')

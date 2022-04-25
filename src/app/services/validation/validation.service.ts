@@ -52,5 +52,14 @@ export class ValidationService {
     return true
   }
 
+  validateSelectAndCheckbox(field: string = 'Field', value: any):boolean{
+    if(!value){
+      this.toastService.presentToast(field + ' is empty!', 3000, 'danger');
+      return false
+    }
+
+    return true
+  }
+
 
 }

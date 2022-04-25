@@ -21,14 +21,15 @@ export class MessagesPage implements OnInit {
   chats: Chat[] = []
   page: number = 1;
   fullyLoaded = false
-  subscription: Subscription
-  seubscriptionB: Subscription
+  subscription: Subscription;
+  subscriptionB: Subscription;
 
   //user for test
   user: User = this.userService.currentUser
 
   constructor(private router: Router, private chatService: ChatService, private userService: UserService,
     private messageService: MessagesService) {
+
     this.subscription = messageService.onChange().subscribe(value => {
       const chat = this.chatService.getChatByMessage(value)
       if (!this.chats.includes(chat)) {
@@ -37,6 +38,12 @@ export class MessagesPage implements OnInit {
         this.sortChatsByDate(this.chats)
       }
 
+    })
+    this.subscriptionB = this.chatService.onDelete().subscribe(value => {
+      const index = this.chats.indexOf(value);
+      if(index){
+        this.chats.splice(index, 1);
+      }
     })
   }
 

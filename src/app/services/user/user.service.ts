@@ -8,7 +8,7 @@ import { DepartamentService } from '../departament/departament.service';
 })
 export class UserService {
 
-  usersPerRequest: number = 4;
+  usersPerRequest: number = 10;
 
   currentUser: User;
 
@@ -36,6 +36,10 @@ export class UserService {
     return this.fakeDb
   }
 
+  getUsersPagination(page: number):User[]{
+    return this.fakeDb.slice((page - 1) * this.usersPerRequest, page * this.usersPerRequest);
+  }
+
   getUsersByDepartament(departament: Departament):User[]{
     return this.fakeDb.filter(user => user.departament.id === departament.id)
   }
@@ -61,6 +65,12 @@ export class UserService {
   logout():boolean{
     this.currentUser = null;
     return true
+  }
+
+  async deleteUser(user: User):Promise<boolean>{
+    const index = this.fakeDb.indexOf(user);
+    this.fakeDb.splice(index, 1);
+    return true;
   }
 
 

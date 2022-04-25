@@ -17,9 +17,9 @@ export class TabsPage implements OnInit {
   }
 
   ngOnInit(): void {
-    if(!this.user){
-      this.router.navigateByUrl('/user-login')
-    }
+    // if(!this.user){
+    //   this.router.navigateByUrl('/user-login')
+    // }
   }
 
   redirectTo(url: string){

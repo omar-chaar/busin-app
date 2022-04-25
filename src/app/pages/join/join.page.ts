@@ -23,7 +23,7 @@ export class JoinPage implements OnInit {
     if (this.validationService.validateLength('Name', this.code, undefined, 1)) {
       const resp = await this.userService.login('gabriel@gmail.com')
       if (resp) {
-        this.toastService.presentToast('Welcome to the team! ;)', 5000, 'success')
+        this.toastService.presentToast('Welcome to the team! ;)', 3000, 'success')
         this.router.navigateByUrl('/tabs/messages')
       }
     }

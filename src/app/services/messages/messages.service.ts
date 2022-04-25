@@ -14,10 +14,10 @@ export class MessagesService {
   private subject = new Subject();
   fakeDb: Message[];
 
-  constructor(private userService: UserService) { 
+  constructor(private userService: UserService) {
     this.fakeDb = [
       new Message(0, this.userService.getUser(0), this.userService.getUser(1), new Date('Mon Apr 18 2022 21:31:44 GMT-0300 (Horário Padrão de Brasília)'), 'Hello there', false),
-      new Message(1, this.userService.getUser(1), this.userService.getUser(0),  new Date('Mon Apr 18 2022 21:32:23 GMT-0300 (Horário Padrão de Brasília)'), 'General Kenobi!', false),
+      new Message(1, this.userService.getUser(1), this.userService.getUser(0), new Date('Mon Apr 18 2022 21:32:23 GMT-0300 (Horário Padrão de Brasília)'), 'General Kenobi!', false),
       new Message(2, this.userService.getUser(3), this.userService.getUser(5), new Date('Mon Apr 18 2022 21:32:44 GMT-0300 (Horário Padrão de Brasília)'), 'Hello, this is a test message.', false),
       new Message(3, this.userService.getUser(3), this.userService.getUser(5), new Date('Mon Apr 18 2022 21:32:59 GMT-0300 (Horário Padrão de Brasília)'), 'Hello, this is a second test message.', false),
       new Message(4, this.userService.getUser(3), this.userService.getUser(5), new Date('Mon Apr 18 2022 21:33:12 GMT-0300 (Horário Padrão de Brasília)'), 'Hello, this is a third test message.', false),
@@ -32,25 +32,25 @@ export class MessagesService {
     ]
   }
 
-  getMessages([userA, userB]:User[], chat:Chat):Message[]{
+  getMessages([userA, userB]: User[], chat: Chat): Message[] {
 
     return this.fakeDb.filter((message: Message) => {
-      if((message.sender === userA || message.receiver === userA) &&
-         (message.sender === userB || message.receiver === userB)){
-           message.chatId = chat;
-           return true
-         }else
-         return false
+      if ((message.sender === userA || message.receiver === userA) &&
+        (message.sender === userB || message.receiver === userB)) {
+        message.chatId = chat;
+        return true
+      } else
+        return false
     })
   }
 
-  getMessage(id: number):Message{
+  getMessage(id: number): Message {
     return this.fakeDb.filter((message: Message) => message.id === id)[0]
   }
-  
 
-  insertMessage(message:string, sender: User, receiver: User, chat:Chat):Message{
-    const parentMessage = chat.messages.length > 0 ? this.getMessage(chat.messages[chat.messages.length-1].id) : null;
+
+  insertMessage(message: string, sender: User, receiver: User, chat: Chat): Message {
+    const parentMessage = chat.messages.length > 0 ? this.getMessage(chat.messages[chat.messages.length - 1].id) : null;
     const newMsg = new Message(this.fakeDb.length, sender, receiver, new Date(), message, false, parentMessage)
     chat.insertMessage(newMsg)
     this.fakeDb.push(newMsg)
@@ -59,7 +59,17 @@ export class MessagesService {
     return newMsg
   }
 
-  onChange(): Observable<any>{
+  onChange(): Observable<any> {
     return this.subject.asObservable()
+  }
+
+  async deleteMessagesByUser(user: User): Promise<boolean> {
+    this.fakeDb.forEach((message: Message, index: number, arr: Message[]) => {
+      if (message.sender === user || message.receiver === user) {
+        arr.splice(index, 1)
+      }
+    })
+
+    return true;
   }
 }

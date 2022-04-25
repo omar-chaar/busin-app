@@ -21,32 +21,34 @@ export class ProfilePage implements OnInit {
   editMode: boolean = false;
 
   constructor(private route: ActivatedRoute, private _router: Router, private userService: UserService,
-     private chatService: ChatService, private departamentService: DepartamentService) { }
-
-  ngOnInit() {
+    private chatService: ChatService, private departamentService: DepartamentService) {
     const id = +this.route.snapshot.params['id'];
     const profileUser = this.userService.getUser(id);
-    if(typeof profileUser === 'boolean'){
+    if (typeof profileUser === 'boolean') {
       this._router.navigateByUrl('/tabs/messages')
-    }else{
+    } else {
       this.profileUser = profileUser;
       this.departament = profileUser.departament
       this.user = this.userService.currentUser;
     }
   }
 
-  redirectTo(url:string): void {
+  ngOnInit() {
+
+  }
+
+  redirectTo(url: string): void {
     //this.location.back()
     this._router.navigateByUrl(url)
   }
 
-  redirectToChat(contact:User){
+  redirectToChat(contact: User) {
     const chatId = this.chatService.verifyChat(contact, this.user)
     this._router.navigateByUrl('/message/' + chatId)
   }
 
 
-  switchEdit(){
+  switchEdit() {
     this.editMode = !this.editMode;
   }
 

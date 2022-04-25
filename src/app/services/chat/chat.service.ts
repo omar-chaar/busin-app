@@ -13,8 +13,9 @@ import { Message } from 'src/model/classes/Message';
 })
 export class ChatService {
 
-  chatsPerRequest: number = 4;
+  chatsPerRequest: number = 10;
   subscription: Subscription;
+  private subject = new Subject();
   fakeDb: Chat[];
 
   constructor(private userService: UserService, private messageService: MessagesService) {
@@ -91,6 +92,22 @@ export class ChatService {
       return newChat.id
     }
     
+  }
+
+  async deleteChat(user: User):Promise<boolean>{
+    let deletedChat: Chat;
+    this.fakeDb.forEach((chat: Chat, index: number, arr: Chat[]) => {
+      if(chat.participants.includes(user)){
+        deletedChat = chat; 
+        arr.splice(index, 1);
+      }
+    })
+    this.subject.next(deletedChat)
+    return true
+  }
+
+  onDelete(): Observable<any> {
+    return this.subject.asObservable()
   }
 
 }
