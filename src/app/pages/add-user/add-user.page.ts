@@ -17,6 +17,7 @@ export class AddUserPage implements OnInit {
   selectedDepartment: Departament;
   departments: Departament[];
   admin: boolean = false;
+  position: string;
   code: string;
 
   constructor(private modalController: ModalController, private departmentService: DepartamentService,
@@ -34,7 +35,8 @@ export class AddUserPage implements OnInit {
   }
   
   handleSubmit():void{
-    if(this.validationService.validateSelectAndCheckbox('Department', this.selectedDepartment)){
+    if(this.validationService.validateSelectAndCheckbox('Department', this.selectedDepartment) &&
+    this.validationService.validateLength('Position', this.position, 30, 2)){
       this.toastService.presentToast('Access code generated!', 3000, 'success');
       this.code = 'access-code-example'
     }
