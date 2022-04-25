@@ -61,5 +61,13 @@ export class ValidationService {
     return true
   }
 
+  validateEqualPasswords(password: string, passwordTwo: string){
+    const value: boolean = password == passwordTwo;
+    if(!value){
+      this.toastService.presentToast('Passwords are not equal.', 3000, 'danger');
+    } 
+    return value;
+  }
+
 
 }
