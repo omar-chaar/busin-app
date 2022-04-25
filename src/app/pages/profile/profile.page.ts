@@ -47,13 +47,8 @@ export class ProfilePage implements OnInit {
     this._router.navigateByUrl('/message/' + chatId)
   }
 
-
   switchEdit() {
     this.editMode = !this.editMode;
   }
-
-
-  startCall(): void {
-    this._router.navigateByUrl('/voice-call')
-  }
+  
 }

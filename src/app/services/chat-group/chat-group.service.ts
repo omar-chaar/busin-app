@@ -5,6 +5,7 @@ import { DepartamentService } from '../departament/departament.service';
 import { UserService } from '../user/user.service';
 import { ChatMessageService } from '../chat-message/chat-message.service';
 import { Departament } from 'src/model/classes/Departament';
+import { User } from 'src/model/classes/User';
 
 @Injectable({
   providedIn: 'root'
@@ -37,6 +38,26 @@ export class ChatGroupService {
   async deleteGroup(department: Departament):Promise<boolean>{
     this.fakeDb.splice(department.id, 1);
     return true;
+  }
+
+  async removeParticipant(id: number, user: User): Promise<boolean>{
+    this.fakeDb.forEach(chat => {
+      if(chat.id === id){
+        const index = chat.participants.indexOf(user)
+        chat.participants.splice(index, 1);
+      }
+    })
+    return true
+  }
+
+  async addParticipant(id: number, user: User):Promise<boolean>{
+    this.fakeDb.forEach(chat => {
+      if(chat.id === id){
+        chat.participants.push(user);
+      }
+    })
+
+    return true
   }
 
 }

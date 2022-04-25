@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActionSheetController, ModalController } from '@ionic/angular';
+import { ChatGroupService } from 'src/app/services/chat-group/chat-group.service';
 import { DepartamentService } from 'src/app/services/departament/departament.service';
 import { ToastService } from 'src/app/services/toast/toast.service';
 import { UserService } from 'src/app/services/user/user.service';
@@ -28,7 +29,8 @@ export class EditUserPage implements OnInit {
 
   constructor(private modalController: ModalController, private toastService: ToastService,
     private validationService: ValidationService, private departmentService: DepartamentService,
-    private userService: UserService, private actionSheetCtrl: ActionSheetController) {
+    private userService: UserService, private actionSheetCtrl: ActionSheetController,
+    private chatGroupService: ChatGroupService) {
       this.departments = this.departmentService.getAllDepartaments();
      }
 
@@ -88,6 +90,9 @@ export class EditUserPage implements OnInit {
   }
 
   async handleSubmit(): Promise<void>{
+    if(this.profile.departament !== this.department){
+      await this.changeDepartments(this.profile.departament, this.department);
+    }
     this.profile.name = this.name;
     this.profile.surname = this.lastname;
     this.profile.email = this.email;
@@ -99,6 +104,12 @@ export class EditUserPage implements OnInit {
       this.toastService.presentToast('User successfully altered!', 3500, 'success');
       this.dismiss()
     }
+  }
+
+  async changeDepartments(oldDepartment: Departament, newDepartment: Departament):Promise<boolean>{
+    await this.chatGroupService.removeParticipant(oldDepartment.id, this.profile);
+    await this.chatGroupService.addParticipant(newDepartment.id, this.profile);
+    return true
   }
 
 }
