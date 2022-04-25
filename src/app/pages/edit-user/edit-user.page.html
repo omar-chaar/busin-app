@@ -1,0 +1,37 @@
+<ion-content class="page" fullscreen="true">
+  <form class="container" (ngSubmit)="confirmAlter()">
+    <ion-item>
+      <ion-label>Department</ion-label>
+      <ion-select placeholder="Select One" [(ngModel)]="department" name="department">
+        <ion-select-option *ngFor="let department of departments" [value]="department">{{department.name}}
+        </ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">Name</ion-label>
+      <ion-input type="text" name="name" [(ngModel)]="name"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">Last name</ion-label>
+      <ion-input type="text" name="lastname" [(ngModel)]="lastname"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">Position</ion-label>
+      <ion-input type="text" name="position" [(ngModel)]="position"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">E-mail</ion-label>
+      <ion-input type="email" name="email" [(ngModel)]="email"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">Password</ion-label>
+      <ion-input type="password" name="password"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>Admin</ion-label>
+      <ion-checkbox color="tertiary" name="admin" [(ngModel)]="admin" [checked]="profile.admin"></ion-checkbox>
+    </ion-item>
+    <ion-button expand="block" color="tertiary" type="submit">Alter</ion-button>
+    <span class="text non-primary-button" (click)="dismiss()">Cancel</span>
+  </form>
+</ion-content>

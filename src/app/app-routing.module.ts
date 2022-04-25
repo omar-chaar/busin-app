@@ -66,6 +66,10 @@ const routes: Routes = [
   {
     path: 'add-department',
     loadChildren: () => import('./pages/add-department/add-department.module').then( m => m.AddDepartmentPageModule)
+  },
+  {
+    path: 'edit-user',
+    loadChildren: () => import('./pages/edit-user/edit-user.module').then( m => m.EditUserPageModule)
   }
 
 

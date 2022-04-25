@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { DepartamentService } from 'src/app/services/departament/departament.service';
 import { ToastService } from 'src/app/services/toast/toast.service';
 import { ValidationService } from 'src/app/services/validation/validation.service';
 import { Departament } from 'src/model/classes/Departament';
+import { User } from 'src/model/classes/User';
 
 @Component({
   selector: 'app-add-user',
@@ -12,6 +13,7 @@ import { Departament } from 'src/model/classes/Departament';
 })
 export class AddUserPage implements OnInit {
 
+  @Input() user: User;
   selectedDepartment: Departament;
   departments: Departament[];
   admin: boolean = false;

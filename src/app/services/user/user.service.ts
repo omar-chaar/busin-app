@@ -73,5 +73,14 @@ export class UserService {
     return true;
   }
 
+  async alterUser(editUser: User):Promise<boolean>{
+    this.fakeDb.forEach((user:User) => {
+      if(user.id === editUser.id){
+        user = editUser
+      }
+    })
+    return true
+  }
+
 
 }

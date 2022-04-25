@@ -7,6 +7,7 @@ import { MessagesService } from 'src/app/services/messages/messages.service';
 import { ToastService } from 'src/app/services/toast/toast.service';
 import { UserService } from 'src/app/services/user/user.service';
 import { AddUserPage } from '../add-user/add-user.page';
+import { EditUserPage } from '../edit-user/edit-user.page';
 import { User } from 'src/model/classes/User';
 
 @Component({
@@ -66,13 +67,26 @@ export class EditUsersPage implements OnInit {
     }
   }
 
-  async presentModal() {
+  async presentAdd() {
     const modal = await this.modalController.create({
       component: AddUserPage,
       cssClass: 'my-custom-class',
       componentProps: {
         users: this.users,
         user: this.user
+      }
+    });
+    return await modal.present();
+  }
+
+  async presentEdit(profile: User) {
+    const modal = await this.modalController.create({
+      component: EditUserPage,
+      cssClass: 'my-custom-class',
+      componentProps: {
+        users: this.users,
+        user: this.user,
+        profile: profile
       }
     });
     return await modal.present();

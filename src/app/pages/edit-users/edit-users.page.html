@@ -10,7 +10,7 @@
       <ion-label>{{user.getFullName()}}</ion-label>
       <div class="icons">
         <ion-icon name="pencil-outline"
-          style="color: darkorange; margin-right: 20px;"></ion-icon>
+          style="color: darkorange; margin-right: 20px;" (click)="presentEdit(user)"></ion-icon>
         <ion-icon (click)="confirmDelete(user)" name="trash-outline" style="color: brown;"></ion-icon>
       </div>
     </ion-item>
@@ -20,7 +20,7 @@
     </ion-infinite-scroll-content>
   </ion-infinite-scroll>
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-    <ion-fab-button color="tertiary" (click)="presentModal()">
+    <ion-fab-button color="tertiary" (click)="presentAdd()">
       <ion-icon class="add-icon" name="add"></ion-icon>
     </ion-fab-button>
   </ion-fab>
