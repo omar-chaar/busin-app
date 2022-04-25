@@ -70,7 +70,11 @@ const routes: Routes = [
   {
     path: 'edit-user',
     loadChildren: () => import('./pages/edit-user/edit-user.module').then( m => m.EditUserPageModule)
+  },  {
+    path: 'join-two',
+    loadChildren: () => import('./pages/join-two/join-two.module').then( m => m.JoinTwoPageModule)
   }
+
 
 
 
