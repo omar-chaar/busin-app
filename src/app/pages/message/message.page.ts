@@ -57,8 +57,8 @@ export class MessagePage implements OnInit {
     return `${hour}:${minutes}`
   }
 
-  startCall(): void {
-    this._router.navigateByUrl('/voice-call')
+  startCall(id: number): void {
+    this._router.navigateByUrl('/voice-call/' + id)
   }
 
 }

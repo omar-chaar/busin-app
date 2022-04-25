@@ -28,7 +28,7 @@ export class VoiceCallPage implements OnInit {
       this._router.navigateByUrl('/tabs/messages')
     }else{
       this.profileUser = profileUser;
-      this.departament = profileUser.departament
+      this.departament = profileUser.departament;
     }
   }
 
