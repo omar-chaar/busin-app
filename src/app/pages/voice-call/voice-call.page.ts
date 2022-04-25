@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from 'src/app/services/user/user.service';
-import { Location } from '@angular/common'
-import { DepartamentService } from 'src/app/services/departament/departament.service';
+import { Location } from '@angular/common';
 
 import { User } from 'src/model/classes/User';
 import { Departament } from 'src/model/classes/Departament';
+
 
 
 @Component({
@@ -19,7 +19,9 @@ export class VoiceCallPage implements OnInit {
   departament: Departament;
 
   constructor(private route: ActivatedRoute, private _router: Router, private userService: UserService,
-     private location: Location, private departamentService: DepartamentService) { }
+     private location: Location) { 
+      
+     }
 
   ngOnInit() {
     const id = +this.route.snapshot.params['id'];
@@ -32,10 +34,9 @@ export class VoiceCallPage implements OnInit {
     }
   }
 
-  redirectTo(url:string): void {
-    //this.location.back()
-    this._router.navigateByUrl(url)
+  goBack(): void {
+    this.location.back()
   }
-
+  
 
 }
