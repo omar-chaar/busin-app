@@ -40,7 +40,7 @@ const routes: Routes = [
     loadChildren: () => import('./pages/recovery/recovery.module').then( m => m.RecoveryPageModule)
   },
   {
-    path: 'voice-call',
+    path: 'voice-call/:id',
     loadChildren: () => import('./pages/voice-call/voice-call.module').then( m => m.VoiceCallPageModule)
   },
   {
@@ -70,7 +70,8 @@ const routes: Routes = [
   {
     path: 'edit-user',
     loadChildren: () => import('./pages/edit-user/edit-user.module').then( m => m.EditUserPageModule)
-  },  {
+  },
+  {
     path: 'join-two',
     loadChildren: () => import('./pages/join-two/join-two.module').then( m => m.JoinTwoPageModule)
   }
