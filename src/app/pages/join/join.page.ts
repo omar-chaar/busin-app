@@ -19,13 +19,9 @@ export class JoinPage implements OnInit {
   ngOnInit() {
   }
 
-  async handleSubmit(): Promise<void> {
+  handleSubmit(): void {
     if (this.validationService.validateLength('Name', this.code, undefined, 1)) {
-      const resp = await this.userService.login('gabriel@gmail.com')
-      if (resp) {
-        this.toastService.presentToast('Welcome to the team! ;)', 3000, 'success')
-        this.router.navigateByUrl('/tabs/messages')
-      }
+      this.redirectTo('/join-two')
     }
   }
 
