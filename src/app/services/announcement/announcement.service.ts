@@ -13,7 +13,7 @@ export class AnnouncementService {
 
   constructor(private userService: UserService) {
     this.fakeDb = [
-      new Announcement(0, 'Test Announcement', 'Testing announcement, this is a announcement test lol', new Date(), this.userService.getUser(5))
+      new Announcement(0, 'Test Announcement', 'Testing announcement, this is a announcement test', new Date(), this.userService.getUser(5))
     ]
    }
 
