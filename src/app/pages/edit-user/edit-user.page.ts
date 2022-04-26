@@ -94,6 +94,10 @@ export class EditUserPage implements OnInit {
     return false
   }
 
+  redirectTo(url: string):void{
+    this.router.navigateByUrl(url)
+  }
+
   async handleSubmit(): Promise<void>{
     if(this.profile.departament !== this.department){
       await this.changeDepartments(this.profile.departament, this.department);
