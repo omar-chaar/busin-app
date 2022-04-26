@@ -15,8 +15,7 @@ export class CreatePage implements OnInit {
   name: string;
 
   constructor(private router: Router, private toastService: ToastService,
-    private validationService: ValidationService, private actionSheetCtrl: ActionSheetController,
-    private userService: UserService) { }
+    private validationService: ValidationService, private actionSheetCtrl: ActionSheetController) { }
 
   ngOnInit() {
   }
@@ -51,11 +50,8 @@ export class CreatePage implements OnInit {
     const { role } = await actionSheet.onDidDismiss();
 
     if (role === 'destructive') {
-      this.toastService.presentToast('Welcome to your new company!', 3000, 'success')
-      const resp = await this.userService.login('cliff@gmail.com')
-      if(resp){
-        this.router.navigateByUrl('/tabs/messages')
-      }
+      this.toastService.presentToast('Welcome to your new company!', 3000, 'success')      
+      this.redirectTo('/join-two')      
     }
   }
 
