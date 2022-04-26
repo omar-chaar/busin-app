@@ -6,10 +6,16 @@
         <ion-icon name="enter"></ion-icon>
       </span>
       <p class="info">Enter your personal information below.</p>
+    
       <ion-label position="stacked">Email</ion-label>
+     
       <ion-input [(ngModel)]="email" name="email" type="email" placeholder="Enter your e-mail here." required></ion-input>
+      </ion-item>
+      <ion-item>
       <ion-label position="stacked">Password</ion-label>
       <ion-input [(ngModel)]="password" name="password" type="password" placeholder="Enter your password here." required></ion-input>
+    </ion-item> 
+      <ion-item>      
       <ion-label position="stacked">Repeat Password</ion-label>
       <ion-input [(ngModel)]="repeatedPassword" name="repeatedPassword" type="password" placeholder="Repeat your password here." required></ion-input>
     </ion-item>   
