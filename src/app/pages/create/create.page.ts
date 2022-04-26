@@ -3,8 +3,6 @@ import { Router } from '@angular/router';
 import { ToastService } from 'src/app/services/toast/toast.service';
 import { ValidationService } from 'src/app/services/validation/validation.service';
 import { ActionSheetController } from '@ionic/angular';
-import { UserService } from 'src/app/services/user/user.service';
-
 @Component({
   selector: 'app-create',
   templateUrl: './create.page.html',
@@ -14,7 +12,7 @@ export class CreatePage implements OnInit {
 
   name: string;
 
-  constructor(private router: Router, private toastService: ToastService,
+  constructor(private router: Router,
     private validationService: ValidationService, private actionSheetCtrl: ActionSheetController) { }
 
   ngOnInit() {
@@ -49,8 +47,7 @@ export class CreatePage implements OnInit {
 
     const { role } = await actionSheet.onDidDismiss();
 
-    if (role === 'destructive') {
-      this.toastService.presentToast('Welcome to your new company!', 3000, 'success')      
+    if (role === 'destructive') {     
       this.redirectTo('/join-two')      
     }
   }
