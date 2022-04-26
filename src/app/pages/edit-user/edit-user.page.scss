@@ -1,11 +1,31 @@
-.page{
-    --background: #5B3FFF;
-    position: relative;
+
+ion-toolbar{
+    --padding-top: 10px;
+    --padding-bottom: 10px;
+}
+
+.page-title{
+    background-color: #5B3FFF;
+    color: white;
+    display: flex;
+    align-items: center;
+    padding: 15px;
+}
+
+.page-title h1{
+    margin: 0;
+}
+
+.checkbox-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .container{
     background-color: #EEF1F2;
-    padding: 50px 25px 25px 25px;
+    padding: 0px 25px 25px 25px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -41,10 +61,6 @@ ion-item{
 }
 
 .return-icon{
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    color: #fff;
     font-size: 2rem;
     cursor: pointer;
 }
@@ -60,7 +76,7 @@ ion-item{
 }
 
 .second-row{
-    margin: 15px;
+    margin: 10px;
 }
 
 .time-display{
