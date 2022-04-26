@@ -1,6 +1,6 @@
-<ion-content scroll-y="true">  
-  <form class="container" (ngSubmit)="confirmAlter()" >
-    
+<ion-content scroll-y="true">
+  <form class="container" (ngSubmit)="confirmAlter()">
+
     <ion-item>
       <ion-label>Department</ion-label>
       <ion-select placeholder="Select One" [(ngModel)]="department" name="department">
@@ -30,33 +30,35 @@
     </ion-item>
     <ion-label>Working Days:</ion-label>
     <ion-grid>
-      <ion-row>      
-      <ion-label class="first-row">Mon</ion-label>
-      <ion-label class="first-row">Tue</ion-label>
-      <ion-label class="first-row">Wed</ion-label>
-      <ion-label class="first-row">Thu</ion-label>
-      <ion-label class="first-row">Fri</ion-label>
-      <ion-label class="first-row">Sat</ion-label>
-      <ion-label class="first-row">Sun</ion-label>
+      <ion-row>
+        <ion-label class="first-row">Mon</ion-label>
+        <ion-label class="first-row">Tue</ion-label>
+        <ion-label class="first-row">Wed</ion-label>
+        <ion-label class="first-row">Thu</ion-label>
+        <ion-label class="first-row">Fri</ion-label>
+        <ion-label class="first-row">Sat</ion-label>
+        <ion-label class="first-row">Sun</ion-label>
       </ion-row>
-      <ion-row>  
-      <ion-checkbox class="second-row" label="Monday" mode="ios"></ion-checkbox>      
-      <ion-checkbox class="second-row" label="Tuesday" mode="ios"></ion-checkbox>   
-      <ion-checkbox class="second-row" label="Wednesday" mode="ios"></ion-checkbox>     
-      <ion-checkbox class="second-row" label="Thursday" mode="ios"></ion-checkbox>       
-      <ion-checkbox class="second-row" label="Friday" mode="ios"></ion-checkbox>       
-      <ion-checkbox class="second-row" label="Saturday" mode="ios"></ion-checkbox>        
-      <ion-checkbox class="second-row" label="Sunday" mode="ios"></ion-checkbox>
-    </ion-row> 
-    <ion-label>Start Time:</ion-label>
-    <ion-label>End Time:</ion-label>
+      <ion-row>
+        <ion-checkbox class="second-row" label="Monday" mode="ios"></ion-checkbox>
+        <ion-checkbox class="second-row" label="Tuesday" mode="ios"></ion-checkbox>
+        <ion-checkbox class="second-row" label="Wednesday" mode="ios"></ion-checkbox>
+        <ion-checkbox class="second-row" label="Thursday" mode="ios"></ion-checkbox>
+        <ion-checkbox class="second-row" label="Friday" mode="ios"></ion-checkbox>
+        <ion-checkbox class="second-row" label="Saturday" mode="ios"></ion-checkbox>
+        <ion-checkbox class="second-row" label="Sunday" mode="ios"></ion-checkbox>
+      </ion-row>
     </ion-grid>
+    <ion-label>Start Time:</ion-label>
+    <ion-datetime presentation="time" class="time-display"></ion-datetime>
+    <ion-label>End Time:</ion-label>
+    <ion-datetime presentation="time" class="time-display"></ion-datetime>
     <ion-item>
-      
+
       <ion-label>Admin</ion-label>
       <ion-checkbox color="tertiary" name="admin" [(ngModel)]="admin" [checked]="profile.admin"></ion-checkbox>
     </ion-item>
-    <ion-button expand="block" color="tertiary" type="submit">Alter</ion-button>  
+    <ion-button expand="block" color="tertiary" type="submit">Alter</ion-button>
     <span class="text non-primary-button" (click)="redirectTo('/edit-users')">Cancel</span>
   </form>
-</ion-content>   
+</ion-content>
