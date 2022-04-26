@@ -25,6 +25,8 @@ export class UserService {
       new User(6, 'Ike', 'Mcmahon', 'Salesman', 'ike@gmail.com', '...', this.departmentService.getdepartment(3), false),
       new User(7, 'Coley', 'Frey', 'Stockist', 'coley@gmail.com', '...', this.departmentService.getdepartment(5), false),
       new User(8, 'Valentine', 'Lindsey', 'Driver', 'valetine@gmail.com', '...', this.departmentService.getdepartment(4), false),
+      new User(9, 'Omar', '2', 'Fullstack Developer', 'omar2@gmail.com', '...', this.departmentService.getdepartment(0), true),
+
     ]
    }
 
