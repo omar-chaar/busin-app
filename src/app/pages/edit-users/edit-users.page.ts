@@ -79,20 +79,6 @@ export class EditUsersPage implements OnInit {
     return await modal.present();
   }
 
-  async presentEdit(profile: User) {
-    const modal = await this.modalController.create({
-      component: EditUserPage,
-      cssClass: 'my-custom-class',
-      componentProps: {
-        users: this.users,
-        user: this.user,
-        profile: profile
-      }
-    });
-    return await modal.present();
-  }
-
-
   loadData(event): void {
     if (!this.fullyLoaded) {
       this.page += 1;

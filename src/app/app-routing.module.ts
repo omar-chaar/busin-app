@@ -68,7 +68,7 @@ const routes: Routes = [
     loadChildren: () => import('./pages/add-department/add-department.module').then( m => m.AddDepartmentPageModule)
   },
   {
-    path: 'edit-user',
+    path: 'edit-user/:id',
     loadChildren: () => import('./pages/edit-user/edit-user.module').then( m => m.EditUserPageModule)
   },
   {

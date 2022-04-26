@@ -10,7 +10,7 @@
       <ion-label>{{user.getFullName()}}</ion-label>
       <div class="icons">
         <ion-icon name="pencil-outline"
-          style="color: darkorange; margin-right: 20px;" (click)="presentEdit(user)"></ion-icon>
+          style="color: darkorange; margin-right: 20px;" (click)="redirectTo('/edit-user/' + user.id)"></ion-icon>
         <ion-icon (click)="confirmDelete(user)" name="trash-outline" style="color: brown;"></ion-icon>
       </div>
     </ion-item>

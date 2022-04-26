@@ -1,11 +1,13 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ActionSheetController, ModalController } from '@ionic/angular';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ActionSheetController} from '@ionic/angular';
 import { DepartamentService } from 'src/app/services/departament/departament.service';
 import { ToastService } from 'src/app/services/toast/toast.service';
 import { UserService } from 'src/app/services/user/user.service';
 import { ValidationService } from 'src/app/services/validation/validation.service';
 import { Departament } from 'src/model/classes/Departament';
 import { User } from 'src/model/classes/User';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-edit-user',
@@ -14,8 +16,8 @@ import { User } from 'src/model/classes/User';
 })
 export class EditUserPage implements OnInit {
 
-  @Input() user: User;
-  @Input() profile: User;
+  user: User;
+  profile: User;
   departments: Departament[];
 
   name: string;
@@ -26,25 +28,27 @@ export class EditUserPage implements OnInit {
   admin: boolean;
   department: Departament;
 
-  constructor(private modalController: ModalController, private toastService: ToastService,
+  constructor(private toastService: ToastService, private activatedRoute: ActivatedRoute,
     private validationService: ValidationService, private departmentService: DepartamentService,
-    private userService: UserService, private actionSheetCtrl: ActionSheetController) {
+    private userService: UserService, private actionSheetCtrl: ActionSheetController, private location: Location, private router:Router) {
       this.departments = this.departmentService.getAllDepartaments();
      }
 
   ngOnInit() {
-      this.name = this.profile.name;
-      this.lastname = this.profile.surname;
-      this.position = this.profile.position;
-      this.email = this.profile.email;
-      this.admin = this.profile.admin;
-      this.department = this.profile.departament;
-  }
-
-  dismiss() {
-    this.modalController.dismiss({
-      'dismissed': true
-    });
+    this.user = this.userService.currentUser;
+    const id = +this.activatedRoute.snapshot.params['id'];
+    const profileUser = this.userService.getUser(id);
+    if(typeof profileUser === 'boolean'){
+      this.router.navigateByUrl('/edit-users')
+    }else{
+      this.profile = profileUser;
+      this.name = profileUser.name;
+      this.lastname = profileUser.surname;
+      this.position = profileUser.position;
+      this.email = profileUser.email;
+      this.admin = profileUser.admin;
+      this.department = profileUser.departament;
+    }
   }
 
   async confirmAlter(): Promise<void> {
@@ -97,7 +101,7 @@ export class EditUserPage implements OnInit {
 
     if(await this.userService.alterUser(this.profile)){
       this.toastService.presentToast('User successfully altered!', 3500, 'success');
-      this.dismiss()
+      this.router.navigateByUrl('/edit-users')
     }
   }
 
