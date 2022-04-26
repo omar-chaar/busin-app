@@ -1,6 +1,7 @@
-<ion-content scroll-y="true">
-  <form class="container" (ngSubmit)="confirmAlter()">
 
+<ion-content>
+  <form class="container" (ngSubmit)="confirmAlter()">
+    
     <ion-item>
       <ion-label>Department</ion-label>
       <ion-select placeholder="Select One" [(ngModel)]="department" name="department">
@@ -38,6 +39,7 @@
         <ion-label class="first-row">Fri</ion-label>
         <ion-label class="first-row">Sat</ion-label>
         <ion-label class="first-row">Sun</ion-label>
+
       </ion-row>
       <ion-row>
         <ion-checkbox class="second-row" label="Monday" mode="ios"></ion-checkbox>
@@ -48,6 +50,7 @@
         <ion-checkbox class="second-row" label="Saturday" mode="ios"></ion-checkbox>
         <ion-checkbox class="second-row" label="Sunday" mode="ios"></ion-checkbox>
       </ion-row>
+
     </ion-grid>
     <ion-label>Start Time:</ion-label>
     <ion-datetime presentation="time" class="time-display"></ion-datetime>
