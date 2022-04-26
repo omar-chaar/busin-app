@@ -3,11 +3,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ActionSheetController} from '@ionic/angular';
 
 import { ChatGroupService } from 'src/app/services/chat-group/chat-group.service';
-import { DepartamentService } from 'src/app/services/departament/departament.service';
+import { departmentService } from 'src/app/services/department/department.service';
 import { ToastService } from 'src/app/services/toast/toast.service';
 import { UserService } from 'src/app/services/user/user.service';
 import { ValidationService } from 'src/app/services/validation/validation.service';
-import { Departament } from 'src/model/classes/Departament';
+import { department } from 'src/model/classes/department';
 import { User } from 'src/model/classes/User';
 import { Location } from '@angular/common';
 
@@ -20,7 +20,7 @@ export class EditUserPage implements OnInit {
 
   user: User;
   profile: User;
-  departments: Departament[];
+  departments: department[];
 
   name: string;
   lastname: string;
@@ -28,13 +28,13 @@ export class EditUserPage implements OnInit {
   position: string;
   password: string;
   admin: boolean;
-  department: Departament;
+  department: department;
 
   constructor(private toastService: ToastService, private activatedRoute: ActivatedRoute,
-    private validationService: ValidationService, private departmentService: DepartamentService,
+    private validationService: ValidationService, private departmentService: departmentService,
     private userService: UserService, private actionSheetCtrl: ActionSheetController, private location: Location, private router:Router, private chatGroupService: ChatGroupService) {
 
-      this.departments = this.departmentService.getAllDepartaments();
+      this.departments = this.departmentService.getAlldepartments();
      }
 
   ngOnInit() {
@@ -50,7 +50,7 @@ export class EditUserPage implements OnInit {
       this.position = profileUser.position;
       this.email = profileUser.email;
       this.admin = profileUser.admin;
-      this.department = profileUser.departament;
+      this.department = profileUser.department;
     }
   }
 
@@ -99,14 +99,14 @@ export class EditUserPage implements OnInit {
   }
 
   async handleSubmit(): Promise<void>{
-    if(this.profile.departament !== this.department){
-      await this.changeDepartments(this.profile.departament, this.department);
+    if(this.profile.department !== this.department){
+      await this.changeDepartments(this.profile.department, this.department);
     }
     this.profile.name = this.name;
     this.profile.surname = this.lastname;
     this.profile.email = this.email;
     this.profile.position = this.position;
-    this.profile.departament = this.department;
+    this.profile.department = this.department;
     this.profile.admin = this.admin;
 
     if(await this.userService.alterUser(this.profile)){
@@ -115,7 +115,7 @@ export class EditUserPage implements OnInit {
     }
   }
 
-  async changeDepartments(oldDepartment: Departament, newDepartment: Departament):Promise<boolean>{
+  async changeDepartments(oldDepartment: department, newDepartment: department):Promise<boolean>{
     await this.chatGroupService.removeParticipant(oldDepartment.id, this.profile);
     await this.chatGroupService.addParticipant(newDepartment.id, this.profile);
     return true

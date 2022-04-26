@@ -1,9 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
-import { DepartamentService } from 'src/app/services/departament/departament.service';
+import { departmentService } from 'src/app/services/department/department.service';
 import { ToastService } from 'src/app/services/toast/toast.service';
 import { ValidationService } from 'src/app/services/validation/validation.service';
-import { Departament } from 'src/model/classes/Departament';
+import { department } from 'src/model/classes/department';
 import { User } from 'src/model/classes/User';
 
 @Component({
@@ -14,15 +14,15 @@ import { User } from 'src/model/classes/User';
 export class AddUserPage implements OnInit {
 
   @Input() user: User;
-  selectedDepartment: Departament;
-  departments: Departament[];
+  selectedDepartment: department;
+  departments: department[];
   admin: boolean = false;
   position: string;
   code: string;
 
-  constructor(private modalController: ModalController, private departmentService: DepartamentService,
+  constructor(private modalController: ModalController, private departmentService: departmentService,
     private validationService: ValidationService, private toastService: ToastService) {
-    this.departments = this.departmentService.getAllDepartaments();
+    this.departments = this.departmentService.getAlldepartments();
    }
 
   ngOnInit() {

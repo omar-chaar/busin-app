@@ -1,6 +1,6 @@
 import { ChatMessage } from "../classes/ChatMessage";
 import { Company } from "../classes/Company";
-import { Departament } from "../classes/Departament";
+import { department } from "../classes/department";
 import { User } from "../classes/User";
 import { Message } from "../classes/Message";
 import { Chat } from "../classes/Chat";
@@ -22,12 +22,12 @@ export interface IUser {
     position: string,
     email: string,
     profilePicture: string,
-    departament: Departament,
+    department: department,
     admin: boolean,
     getFullName(): string,
 }
 
-export interface IDepartament {
+export interface Idepartment {
     id: number,
     name: string,
     company: Company
@@ -68,7 +68,7 @@ export interface IChat {
 
 export interface IChatGroup{
     id: number,
-    departament: Departament,
+    department: department,
     participants: User[],
     read: boolean,
     lastMessage?: Date,

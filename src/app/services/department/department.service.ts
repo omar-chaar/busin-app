@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Subject, Observable } from 'rxjs';
 import { Company } from 'src/model/classes/Company';
-import { Departament } from 'src/model/classes/Departament';
+import { department } from 'src/model/classes/department';
 import { User } from 'src/model/classes/User';
 import { UserService } from '../user/user.service';
 
@@ -10,27 +10,27 @@ import { UserService } from '../user/user.service';
 @Injectable({
   providedIn: 'root'
 })
-export class DepartamentService {
+export class departmentService {
 
   deptsPerRequest = 10;
   company: Company;
-  fakeDb: Departament[];
+  fakeDb: department[];
   subject = new Subject;
 
   constructor() {
     this.company = new Company(0, 'Teste')
     this.fakeDb = [
-      new Departament(0, 'IT Departament', this.company),
-      new Departament(1, 'Marketing', this.company),
-      new Departament(2, 'Accounting', this.company),
-      new Departament(3, 'Sales', this.company),
-      new Departament(4, 'Logistics', this.company),
-      new Departament(5, 'Stock Departament', this.company),
+      new department(0, 'IT department', this.company),
+      new department(1, 'Marketing', this.company),
+      new department(2, 'Accounting', this.company),
+      new department(3, 'Sales', this.company),
+      new department(4, 'Logistics', this.company),
+      new department(5, 'Stock department', this.company),
     ]
     //   [
     //     {
     //       id: 0,
-    //       name: 'IT Departament',
+    //       name: 'IT department',
     //       company: this.company
     //     },
     //     {
@@ -55,27 +55,27 @@ export class DepartamentService {
     //     },
     //     {
     //       id: 5,
-    //       name: 'Stock Departament',
+    //       name: 'Stock department',
     //       company: this.company
     //     }
     // ]
    }
 
-  getDepartaments(page:number):Departament[]{
-    return this.fakeDb.filter((departament: Departament, index: number) => {
+  getdepartments(page:number):department[]{
+    return this.fakeDb.filter((department: department, index: number) => {
       return this.deptsPerRequest*page >= index+1 && this.deptsPerRequest*page - this.deptsPerRequest < index+1 // for testing pagination
     })
   }
 
-  getAllDepartaments():Departament[]{
+  getAlldepartments():department[]{
     return this.fakeDb;
   }
 
-  getDepartament(id: number):Departament{
-    return this.fakeDb.filter(departament => departament.id === id)[0];
+  getdepartment(id: number):department{
+    return this.fakeDb.filter(department => department.id === id)[0];
   }
 
-  async deleteDepartment(department: Departament, users: User[]):Promise<boolean>{
+  async deleteDepartment(department: department, users: User[]):Promise<boolean>{
     if(users.length === 0){
       const deletedDepartment = {...department};
       const index = this.fakeDb.indexOf(department)
@@ -87,8 +87,8 @@ export class DepartamentService {
     }
   }
 
-  async createDepartment(name: string):Promise<Departament>{
-    const newDepartment = new Departament(this.fakeDb.length, name, this.company);
+  async createDepartment(name: string):Promise<department>{
+    const newDepartment = new department(this.fakeDb.length, name, this.company);
     this.fakeDb.push(newDepartment);
     this.subject.next(newDepartment)
     return newDepartment

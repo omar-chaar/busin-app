@@ -1,7 +1,7 @@
-import { IDepartament } from "../interfaces/interfaces";
+import { Idepartment } from "../interfaces/interfaces";
 import { Company } from "./Company";
 
-export class Departament implements IDepartament{
+export class department implements Idepartment{
 
     id: number;
     name: string;

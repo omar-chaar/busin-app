@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from 'src/app/services/user/user.service';
 import { Location } from '@angular/common'
-import { DepartamentService } from 'src/app/services/departament/departament.service';
+import { departmentService } from 'src/app/services/department/department.service';
 
 import { User } from 'src/model/classes/User';
-import { Departament } from 'src/model/classes/Departament';
+import { department } from 'src/model/classes/department';
 import { ChatService } from 'src/app/services/chat/chat.service';
 
 @Component({
@@ -16,19 +16,19 @@ import { ChatService } from 'src/app/services/chat/chat.service';
 export class ProfilePage implements OnInit {
 
   profileUser: User;
-  departament: Departament;
+  department: department;
   user: User;
   editMode: boolean = false;
 
   constructor(private route: ActivatedRoute, private _router: Router, private userService: UserService,
-    private chatService: ChatService, private departamentService: DepartamentService) {
+    private chatService: ChatService, private departmentService: departmentService) {
     const id = +this.route.snapshot.params['id'];
     const profileUser = this.userService.getUser(id);
     if (typeof profileUser === 'boolean') {
       this._router.navigateByUrl('/tabs/messages')
     } else {
       this.profileUser = profileUser;
-      this.departament = profileUser.departament
+      this.department = profileUser.department
       this.user = this.userService.currentUser;
     }
   }

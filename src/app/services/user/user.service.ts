@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { User } from 'src/model/classes/User';
-import { Departament } from 'src/model/classes/Departament';
-import { DepartamentService } from '../departament/departament.service';
+import { department } from 'src/model/classes/department';
+import { departmentService } from '../department/department.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,17 +14,17 @@ export class UserService {
 
   fakeDb: User[];
 
-  constructor(private departamentService: DepartamentService) {
+  constructor(private departmentService: departmentService) {
     this.fakeDb = [
-      new User(0, 'Omar', 'Chaar', 'Fullstack Developer', 'omar@gmail.com', '...', this.departamentService.getDepartament(0), false),
-      new User(1, 'Gabriel', 'Nunes', 'Front-end Developer', 'gabriel@gmail.com', '...', this.departamentService.getDepartament(0), false),
-      new User(2, 'Ahmed', 'Hassan', 'Senior Developer', 'ahmed@gmail.com', '...', this.departamentService.getDepartament(0), false),
-      new User(3, 'Omar', 'El Khoury', 'Junior Developer', 'omark@gmail.com', '...', this.departamentService.getDepartament(0), false),
-      new User(4, 'Marcell', 'da Silva', 'Accountant', 'marcell@gmail.com', '...', this.departamentService.getDepartament(2), false),
-      new User(5, 'Cliff', 'Gilmore', 'Influencer', 'cliff@gmail.com', '...', this.departamentService.getDepartament(1), true),
-      new User(6, 'Ike', 'Mcmahon', 'Salesman', 'ike@gmail.com', '...', this.departamentService.getDepartament(3), false),
-      new User(7, 'Coley', 'Frey', 'Stockist', 'coley@gmail.com', '...', this.departamentService.getDepartament(5), false),
-      new User(8, 'Valentine', 'Lindsey', 'Driver', 'valetine@gmail.com', '...', this.departamentService.getDepartament(4), false),
+      new User(0, 'Omar', 'Chaar', 'Fullstack Developer', 'omar@gmail.com', '...', this.departmentService.getdepartment(0), false),
+      new User(1, 'Gabriel', 'Nunes', 'Front-end Developer', 'gabriel@gmail.com', '...', this.departmentService.getdepartment(0), false),
+      new User(2, 'Ahmed', 'Hassan', 'Senior Developer', 'ahmed@gmail.com', '...', this.departmentService.getdepartment(0), false),
+      new User(3, 'Omar', 'El Khoury', 'Junior Developer', 'omark@gmail.com', '...', this.departmentService.getdepartment(0), false),
+      new User(4, 'Marcell', 'da Silva', 'Accountant', 'marcell@gmail.com', '...', this.departmentService.getdepartment(2), false),
+      new User(5, 'Cliff', 'Gilmore', 'Influencer', 'cliff@gmail.com', '...', this.departmentService.getdepartment(1), true),
+      new User(6, 'Ike', 'Mcmahon', 'Salesman', 'ike@gmail.com', '...', this.departmentService.getdepartment(3), false),
+      new User(7, 'Coley', 'Frey', 'Stockist', 'coley@gmail.com', '...', this.departmentService.getdepartment(5), false),
+      new User(8, 'Valentine', 'Lindsey', 'Driver', 'valetine@gmail.com', '...', this.departmentService.getdepartment(4), false),
     ]
    }
 
@@ -40,8 +40,8 @@ export class UserService {
     return this.fakeDb.slice((page - 1) * this.usersPerRequest, page * this.usersPerRequest);
   }
 
-  getUsersByDepartament(departament: Departament):User[]{
-    return this.fakeDb.filter(user => user.departament.id === departament.id)
+  getUsersBydepartment(department: department):User[]{
+    return this.fakeDb.filter(user => user.department.id === department.id)
   }
 
   async login(email: string):Promise<boolean>{
