@@ -3,14 +3,14 @@ import { Router } from '@angular/router';
 import { ActionSheetController, ModalController } from '@ionic/angular';
 import { AddDepartmentPage } from '../add-department/add-department.page';
 import { ChatGroupService } from 'src/app/services/chat-group/chat-group.service';
-import { DepartamentService } from 'src/app/services/departament/departament.service';
+import { DepartmentService } from 'src/app/services/department/department.service';
 import { ToastService } from 'src/app/services/toast/toast.service';
 import { UserService } from 'src/app/services/user/user.service';
-import { Departament } from 'src/model/classes/Departament';
+import { Department } from 'src/model/classes/Department';
 import { User } from 'src/model/classes/User';
 
 export type EditDepartment = {
-  department: Departament,
+  department: Department,
   edit: boolean
 }
 
@@ -26,11 +26,11 @@ export class EditDepartmentsPage implements OnInit {
   text: string;
 
   constructor(private router: Router, private userService: UserService,
-    private departmentService: DepartamentService, private toastService: ToastService,
+    private departmentService: DepartmentService, private toastService: ToastService,
     private actionSheetCtrl: ActionSheetController, private chatGroupService: ChatGroupService,
     private modalController: ModalController) {
     this.user = this.userService.currentUser;
-    const deptos = this.departmentService.getAllDepartaments().map((depto): EditDepartment => {
+    const deptos = this.departmentService.getAlldepartments().map((depto): EditDepartment => {
       return {
         department: depto,
         edit: false
@@ -43,14 +43,14 @@ export class EditDepartmentsPage implements OnInit {
 
   }
 
-  switchEdit(departament: EditDepartment): void {
-    departament.edit = !departament.edit;
+  switchEdit(department: EditDepartment): void {
+    department.edit = !department.edit;
   }
 
-  async confirmEdit(departament: EditDepartment): Promise<void> {
+  async confirmEdit(department: EditDepartment): Promise<void> {
     if (this.text.length > 1) {
       const actionSheet = await this.actionSheetCtrl.create({
-        header: `Rename "${departament.department.name}" to "${this.text}"?`,
+        header: `Rename "${department.department.name}" to "${this.text}"?`,
         buttons: [
           {
             text: 'Confirm',
@@ -69,16 +69,16 @@ export class EditDepartmentsPage implements OnInit {
 
       if (role === 'destructive') {
         this.toastService.presentToast('Department altered!', 3000, 'success')
-        departament.department.name = this.text
+        department.department.name = this.text
       }
     }
     this.text = ''
-    departament.edit = false
+    department.edit = false
   }
 
-  async confirmDelete(departament: EditDepartment): Promise<void> {
+  async confirmDelete(department: EditDepartment): Promise<void> {
     const actionSheet = await this.actionSheetCtrl.create({
-      header: `Are you sure you want to delete "${departament.department.name}"?`,
+      header: `Are you sure you want to delete "${department.department.name}"?`,
       buttons: [
         {
           text: 'Delete',
@@ -96,12 +96,12 @@ export class EditDepartmentsPage implements OnInit {
     const { role } = await actionSheet.onDidDismiss();
 
     if (role === 'destructive') {
-      const users = this.userService.getUsersByDepartament(departament.department);
-      const resp = await this.departmentService.deleteDepartment(departament.department, users);
+      const users = this.userService.getUsersBydepartment(department.department);
+      const resp = await this.departmentService.deleteDepartment(department.department, users);
       if(resp){
-        await this.chatGroupService.deleteGroup(departament.department);
+        await this.chatGroupService.deleteGroup(department.department);
         this.toastService.presentToast('Department deleted!', 3000, 'success')
-        const index = this.departments.indexOf(departament);
+        const index = this.departments.indexOf(department);
         this.departments.splice(index, 1);
       }else{
         this.toastService.presentToast('Remove all members from the department before deleting it!', 7000, 'danger')

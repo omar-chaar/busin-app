@@ -1,5 +1,5 @@
 import { IUser } from "../interfaces/interfaces";
-import { Departament } from "./Departament";
+import { Department } from "./Department";
 
 export class User implements IUser{
 
@@ -9,18 +9,18 @@ export class User implements IUser{
     position: string;
     email: string;
     profilePicture: string;
-    departament: Departament;
+    department: Department;
     admin: boolean;
 
     constructor(id:number, name:string, surname:string, position:string,
-                email: string, profilePicture:string, departament:Departament, admin:boolean){
+                email: string, profilePicture:string, department:Department, admin:boolean){
             this.id = id;
             this.name = name;
             this.surname = surname;
             this.position = position;
             this.email = email;
             this.profilePicture = profilePicture;
-            this.departament = departament;
+            this.department = department;
             this.admin = admin;
     }
 

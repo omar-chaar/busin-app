@@ -1,5 +1,13 @@
+
+
 <ion-content>
-  <form class="container" (ngSubmit)="confirmAlter()">
+
+  <ion-toolbar mode="ios" color="tertiary">
+    <ion-icon name="chevron-back-outline" class="return-icon" (click)="redirectTo('/edit-users')"></ion-icon>
+    <ion-title>Editing {{profile.getFullName()}}</ion-title>
+  </ion-toolbar>
+
+  <form class="container" (ngSubmit)="confirmAlter()">    
     <ion-item>
       <ion-label>Department</ion-label>
       <ion-select placeholder="Select One" [(ngModel)]="department" name="department">
@@ -28,28 +36,40 @@
       <ion-input type="password" name="password"></ion-input>
     </ion-item>
     <ion-label>Working Days:</ion-label>
-    <ion-grid>
-      <ion-row>
-        <ion-label class="first-row">Mon</ion-label>
-        <ion-label class="first-row">Tue</ion-label>
-        <ion-label class="first-row">Wed</ion-label>
-        <ion-label class="first-row">Thu</ion-label>
-        <ion-label class="first-row">Fri</ion-label>
-        <ion-label class="first-row">Sat</ion-label>
-        <ion-label class="first-row">Sun</ion-label>
-      </ion-row>
-      <ion-row>
-        <ion-checkbox class="second-row" label="Monday" mode="ios"></ion-checkbox>
-        <ion-checkbox class="second-row" label="Tuesday" mode="ios"></ion-checkbox>
-        <ion-checkbox class="second-row" label="Wednesday" mode="ios"></ion-checkbox>
-        <ion-checkbox class="second-row" label="Thursday" mode="ios"></ion-checkbox>
-        <ion-checkbox class="second-row" label="Friday" mode="ios"></ion-checkbox>
-        <ion-checkbox class="second-row" label="Saturday" mode="ios"></ion-checkbox>
-        <ion-checkbox class="second-row" label="Sunday" mode="ios"></ion-checkbox>
-      </ion-row>
-      <ion-label>Start Time:</ion-label>
-      <ion-label>End Time:</ion-label>
-    </ion-grid>
+    <div style="display: flex; justify-content: space-between; flex-wrap: wrap;">
+      <div class="checkbox-container">
+        <ion-label class="first-row" size="1">Mon</ion-label>
+        <ion-checkbox class="second-row" label="Monday" mode="ios" size="1"></ion-checkbox>
+      </div>
+      <div class="checkbox-container">
+        <ion-label class="first-row" size="1">Tue</ion-label>
+        <ion-checkbox class="second-row" label="Tuesday" mode="ios" size="1"></ion-checkbox>
+      </div>
+      <div class="checkbox-container">
+        <ion-label class="first-row" size="1">Wed</ion-label>
+        <ion-checkbox class="second-row" label="Wednesday" mode="ios" size="1"></ion-checkbox>
+      </div>
+      <div class="checkbox-container">
+        <ion-label class="first-row" size="1">Thur</ion-label>
+        <ion-checkbox class="second-row" label="Thursday" mode="ios" size="1"></ion-checkbox>
+      </div>
+      <div class="checkbox-container">
+        <ion-label class="first-row" size="1">Fri</ion-label>
+        <ion-checkbox class="second-row" label="Friday" mode="ios" size="1"></ion-checkbox>
+      </div>
+      <div class="checkbox-container">
+        <ion-label class="first-row" size="1">Sat</ion-label>
+        <ion-checkbox class="second-row" label="Saturday" mode="ios" size="1"></ion-checkbox>
+      </div>
+      <div class="checkbox-container">
+        <ion-label class="first-row" size="1">Sun</ion-label>
+        <ion-checkbox class="second-row" label="Sunday" mode="ios" size="1"></ion-checkbox>
+      </div>
+    </div>
+    <ion-label>Start Time:</ion-label>
+    <ion-datetime presentation="time" class="time-display"></ion-datetime>
+    <ion-label>End Time:</ion-label>
+    <ion-datetime presentation="time" class="time-display"></ion-datetime>
     <ion-item>
 
       <ion-label>Admin</ion-label>

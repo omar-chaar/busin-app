@@ -3,11 +3,11 @@ import { Router } from '@angular/router';
 import { IonInfiniteScroll } from '@ionic/angular';
 import { IonAccordionGroup } from '@ionic/angular';
 import { ChatService } from 'src/app/services/chat/chat.service';
-import { DepartamentService } from 'src/app/services/departament/departament.service';
+import { DepartmentService } from 'src/app/services/department/department.service';
 import { UserService } from 'src/app/services/user/user.service';
 
 import { User } from 'src/model/classes/User';
-import { Departament } from 'src/model/classes/Departament';
+import { Department } from 'src/model/classes/Department';
 import { Subscription } from 'rxjs';
 
 
@@ -20,44 +20,44 @@ export class ContactsPage implements OnInit {
   @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
   @ViewChild(IonAccordionGroup, { static: true }) accordionGroup: IonAccordionGroup;
 
-  departaments: Departament[] = []
+  departments: Department[] = []
   user: User;
   subscription: Subscription;
 
   page: number = 1
   fullyLoaded = false
 
-  constructor(private departamentService: DepartamentService, private userService: UserService,
+  constructor(private departmentService: DepartmentService, private userService: UserService,
     private router: Router, private chatService:ChatService) {
       this.user = this.userService.currentUser
 
-      this.subscription = this.departamentService.onChange().subscribe(value => {
-        const index = this.departaments.indexOf(value);
+      this.subscription = this.departmentService.onChange().subscribe(value => {
+        const index = this.departments.indexOf(value);
         this.fullyLoaded = false;
         if(index){
-          this.departaments.splice(index, 1);
+          this.departments.splice(index, 1);
         }else{
-          this.departaments.push(value);
+          this.departments.push(value);
         }
       })
   }
 
   ngOnInit(): void {
-    this.loadMoreDepartaments()
+    this.loadMoredepartments()
   }
 
   loadData(event):void {
     setTimeout(() => {
-      this.loadMoreDepartaments();
+      this.loadMoredepartments();
       event.target.complete();
     }, 2000);
   }
 
-  loadMoreDepartaments(): void {
+  loadMoredepartments(): void {
     if (!this.fullyLoaded) {
-      const arr = this.departamentService.getDepartaments(this.page)
+      const arr = this.departmentService.getdepartments(this.page)
       if (arr.length > 0) {
-        this.departaments.push(...arr)
+        this.departments.push(...arr)
         this.page++
       } else {
         this.fullyLoaded = true
@@ -65,8 +65,8 @@ export class ContactsPage implements OnInit {
     }
   }
 
-  getUsers(departament: Departament):User[]{
-    return this.userService.getUsersByDepartament(departament)
+  getUsers(department: Department):User[]{
+    return this.userService.getUsersBydepartment(department)
   }
 
   redirectTo(url:string):void{

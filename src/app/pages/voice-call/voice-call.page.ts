@@ -4,7 +4,7 @@ import { UserService } from 'src/app/services/user/user.service';
 import { Location } from '@angular/common';
 
 import { User } from 'src/model/classes/User';
-import { Departament } from 'src/model/classes/Departament';
+import { Department } from 'src/model/classes/Department';
 
 
 
@@ -16,7 +16,7 @@ import { Departament } from 'src/model/classes/Departament';
 export class VoiceCallPage implements OnInit {
 
   profileUser: User;
-  departament: Departament;
+  department: Department;
 
   constructor(private route: ActivatedRoute, private _router: Router, private userService: UserService,
      private location: Location) { 
@@ -30,7 +30,7 @@ export class VoiceCallPage implements OnInit {
       this._router.navigateByUrl('/tabs/messages')
     }else{
       this.profileUser = profileUser;
-      this.departament = profileUser.departament;
+      this.department = profileUser.department;
     }
   }
 

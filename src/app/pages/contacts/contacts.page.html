@@ -1,18 +1,18 @@
 <ion-content>
 
   <ion-list lines="full">
-    <ion-accordion-group value="numbers" *ngFor="let departament of departaments">
-      <ion-accordion value="colors" class="departament-item">
+    <ion-accordion-group value="numbers" *ngFor="let department of departments">
+      <ion-accordion value="colors" class="department-item">
         <ion-item slot="header">
           <ion-label>
-            <h2 class="departament-name">{{departament.name}}</h2>
+            <h2 class="department-name">{{department.name}}</h2>
           </ion-label>
         </ion-item>
         <ion-list slot="content">
           <ion-item>
-            <ion-button (click)="redirectTo('/chat-group/' + departament.id)" color="tertiary" class="group-btn">{{departament.name}} Group</ion-button>
+            <ion-button (click)="redirectTo('/chat-group/' + department.id)" color="tertiary" class="group-btn">{{department.name}} Group</ion-button>
           </ion-item>
-          <ion-item *ngFor="let contact of getUsers(departament)" class="border-none">
+          <ion-item *ngFor="let contact of getUsers(department)" class="border-none">
             <ion-avatar slot="start" (click)="redirectTo('/profile/' + contact.id)">
               <img src="../../../assets/images/gw50h17a.bmp">
             </ion-avatar>
