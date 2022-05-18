@@ -2,6 +2,9 @@ import { Injectable } from '@angular/core';
 import { User } from 'src/model/classes/User';
 import { Departament } from 'src/model/classes/Departament';
 import { DepartamentService } from '../departament/departament.service';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -9,12 +12,14 @@ import { DepartamentService } from '../departament/departament.service';
 export class UserService {
 
   usersPerRequest: number = 10;
+  token: string;
+  headers: {'Content-Type': 'application/json'};
 
   currentUser: User;
 
   fakeDb: User[];
 
-  constructor(private departamentService: DepartamentService) {
+  constructor(private departamentService: DepartamentService, private http: HttpClient) {
     this.fakeDb = [
       new User(0, 'Omar', 'Chaar', 'Fullstack Developer', 'omar@gmail.com', '...', this.departamentService.getDepartament(0), false),
       new User(1, 'Gabriel', 'Nunes', 'Front-end Developer', 'gabriel@gmail.com', '...', this.departamentService.getDepartament(0), false),
@@ -65,6 +70,22 @@ export class UserService {
   logout():boolean{
     this.currentUser = null;
     return true
+  }
+
+  generateToken(departamentId: number, position: string, admin: boolean):Observable<any>{
+    const url=`${environment.apiUrl}/user/generate-token?departamentId=${departamentId}&position=${position}&admin=${admin}`;
+    return this.http.get(url);
+  }
+
+  validateToken(token: string):Observable<any>{
+    const url = `${environment.apiUrl}/user/validate-token?token=${token}`;
+    return this.http.get(url);
+  }
+
+  createAccount(name: string, surname: string, email: string, password: string): Observable<any>{
+    const url = `${environment.apiUrl}/user/create-user`;
+    const body = {name, surname, email, password, token: this.token};
+    return this.http.post(url, body, {headers: this.headers});
   }
 
   async deleteUser(user: User):Promise<boolean>{

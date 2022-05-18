@@ -20,8 +20,18 @@ export class JoinPage implements OnInit {
   }
 
   handleSubmit(): void {
-    if (this.validationService.validateLength('Name', this.code, undefined, 1)) {
-      this.redirectTo('/join-two')
+    if (this.validationService.validateLength('Code', this.code, undefined, 1)) {
+      this.userService.validateToken(this.code).subscribe(
+        (resp) => {
+          if (resp) {
+            this.userService.token = resp.data;
+            this.redirectTo('/join-two');
+          }
+        },
+        (err) => {
+          this.toastService.presentToast('Invalid code!', 3500, 'danger');
+        }
+      );
     }
   }
 
