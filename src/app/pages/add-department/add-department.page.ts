@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActionSheetController, ModalController } from '@ionic/angular';
 import { ChatGroupService } from 'src/app/services/chat-group/chat-group.service';
-import { departmentService } from 'src/app/services/department/department.service';
+import { DepartmentService } from 'src/app/services/department/department.service';
 import { ToastService } from 'src/app/services/toast/toast.service';
 import { ValidationService } from 'src/app/services/validation/validation.service';
 import { EditDepartment } from '../edit-departments/edit-departments.page';
@@ -17,7 +17,7 @@ export class AddDepartmentPage implements OnInit {
   name: string;
 
   constructor(private modalController: ModalController, private validationService: ValidationService,
-    private departmentService: departmentService, private toastService: ToastService,
+    private departmentService: DepartmentService, private toastService: ToastService,
     private chatGroupService: ChatGroupService, private actionSheetCtrl: ActionSheetController) { }
 
   ngOnInit() {

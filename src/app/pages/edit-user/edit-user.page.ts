@@ -3,11 +3,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ActionSheetController} from '@ionic/angular';
 
 import { ChatGroupService } from 'src/app/services/chat-group/chat-group.service';
-import { departmentService } from 'src/app/services/department/department.service';
+import { DepartmentService } from 'src/app/services/department/department.service';
 import { ToastService } from 'src/app/services/toast/toast.service';
 import { UserService } from 'src/app/services/user/user.service';
 import { ValidationService } from 'src/app/services/validation/validation.service';
-import { department } from 'src/model/classes/department';
+import { Department } from 'src/model/classes/Department';
 import { User } from 'src/model/classes/User';
 import { Location } from '@angular/common';
 
@@ -20,7 +20,7 @@ export class EditUserPage implements OnInit {
 
   user: User;
   profile: User;
-  departments: department[];
+  departments: Department[];
 
   name: string;
   lastname: string;
@@ -28,10 +28,10 @@ export class EditUserPage implements OnInit {
   position: string;
   password: string;
   admin: boolean;
-  department: department;
+  department: Department;
 
   constructor(private toastService: ToastService, private activatedRoute: ActivatedRoute,
-    private validationService: ValidationService, private departmentService: departmentService,
+    private validationService: ValidationService, private departmentService: DepartmentService,
     private userService: UserService, private actionSheetCtrl: ActionSheetController, private location: Location, private router:Router, private chatGroupService: ChatGroupService) {
 
       this.departments = this.departmentService.getAlldepartments();
@@ -115,7 +115,7 @@ export class EditUserPage implements OnInit {
     }
   }
 
-  async changeDepartments(oldDepartment: department, newDepartment: department):Promise<boolean>{
+  async changeDepartments(oldDepartment: Department, newDepartment: Department):Promise<boolean>{
     await this.chatGroupService.removeParticipant(oldDepartment.id, this.profile);
     await this.chatGroupService.addParticipant(newDepartment.id, this.profile);
     return true

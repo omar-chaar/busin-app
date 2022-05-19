@@ -6,7 +6,10 @@
         <ion-icon name="enter"></ion-icon>
       </span>
       <p class="info">Enter your personal information below.</p>
-    
+      <ion-label position="stacked">Name</ion-label>
+      <ion-input [(ngModel)]="name" name="name" type="text" placeholder="Enter your name here." required></ion-input>
+      <ion-label position="stacked">Surname</ion-label>
+      <ion-input [(ngModel)]="surname" name="surname" type="text" placeholder="Enter your surname here." required></ion-input>
       <ion-label position="stacked">Email</ion-label>
      
       <ion-input [(ngModel)]="email" name="email" type="email" placeholder="Enter your e-mail here." required></ion-input>

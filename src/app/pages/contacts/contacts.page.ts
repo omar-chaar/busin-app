@@ -3,11 +3,11 @@ import { Router } from '@angular/router';
 import { IonInfiniteScroll } from '@ionic/angular';
 import { IonAccordionGroup } from '@ionic/angular';
 import { ChatService } from 'src/app/services/chat/chat.service';
-import { departmentService } from 'src/app/services/department/department.service';
+import { DepartmentService } from 'src/app/services/department/department.service';
 import { UserService } from 'src/app/services/user/user.service';
 
 import { User } from 'src/model/classes/User';
-import { department } from 'src/model/classes/department';
+import { Department } from 'src/model/classes/Department';
 import { Subscription } from 'rxjs';
 
 
@@ -20,14 +20,14 @@ export class ContactsPage implements OnInit {
   @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
   @ViewChild(IonAccordionGroup, { static: true }) accordionGroup: IonAccordionGroup;
 
-  departments: department[] = []
+  departments: Department[] = []
   user: User;
   subscription: Subscription;
 
   page: number = 1
   fullyLoaded = false
 
-  constructor(private departmentService: departmentService, private userService: UserService,
+  constructor(private departmentService: DepartmentService, private userService: UserService,
     private router: Router, private chatService:ChatService) {
       this.user = this.userService.currentUser
 
@@ -65,7 +65,7 @@ export class ContactsPage implements OnInit {
     }
   }
 
-  getUsers(department: department):User[]{
+  getUsers(department: Department):User[]{
     return this.userService.getUsersBydepartment(department)
   }
 

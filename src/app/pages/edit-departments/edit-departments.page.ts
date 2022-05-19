@@ -3,14 +3,14 @@ import { Router } from '@angular/router';
 import { ActionSheetController, ModalController } from '@ionic/angular';
 import { AddDepartmentPage } from '../add-department/add-department.page';
 import { ChatGroupService } from 'src/app/services/chat-group/chat-group.service';
-import { departmentService } from 'src/app/services/department/department.service';
+import { DepartmentService } from 'src/app/services/department/department.service';
 import { ToastService } from 'src/app/services/toast/toast.service';
 import { UserService } from 'src/app/services/user/user.service';
-import { department } from 'src/model/classes/department';
+import { Department } from 'src/model/classes/Department';
 import { User } from 'src/model/classes/User';
 
 export type EditDepartment = {
-  department: department,
+  department: Department,
   edit: boolean
 }
 
@@ -26,7 +26,7 @@ export class EditDepartmentsPage implements OnInit {
   text: string;
 
   constructor(private router: Router, private userService: UserService,
-    private departmentService: departmentService, private toastService: ToastService,
+    private departmentService: DepartmentService, private toastService: ToastService,
     private actionSheetCtrl: ActionSheetController, private chatGroupService: ChatGroupService,
     private modalController: ModalController) {
     this.user = this.userService.currentUser;

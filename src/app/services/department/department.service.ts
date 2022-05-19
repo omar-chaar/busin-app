@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Subject, Observable } from 'rxjs';
 import { Company } from 'src/model/classes/Company';
-import { department } from 'src/model/classes/department';
+import { Department } from 'src/model/classes/Department';
 import { User } from 'src/model/classes/User';
 import { UserService } from '../user/user.service';
 
@@ -10,22 +10,22 @@ import { UserService } from '../user/user.service';
 @Injectable({
   providedIn: 'root'
 })
-export class departmentService {
+export class DepartmentService {
 
   deptsPerRequest = 10;
   company: Company;
-  fakeDb: department[];
+  fakeDb: Department[];
   subject = new Subject;
 
   constructor() {
     this.company = new Company(0, 'Teste')
     this.fakeDb = [
-      new department(0, 'IT department', this.company),
-      new department(1, 'Marketing', this.company),
-      new department(2, 'Accounting', this.company),
-      new department(3, 'Sales', this.company),
-      new department(4, 'Logistics', this.company),
-      new department(5, 'Stock department', this.company),
+      new Department(0, 'IT department', this.company),
+      new Department(1, 'Marketing', this.company),
+      new Department(2, 'Accounting', this.company),
+      new Department(3, 'Sales', this.company),
+      new Department(4, 'Logistics', this.company),
+      new Department(5, 'Stock department', this.company),
     ]
     //   [
     //     {
@@ -61,21 +61,21 @@ export class departmentService {
     // ]
    }
 
-  getdepartments(page:number):department[]{
-    return this.fakeDb.filter((department: department, index: number) => {
+  getdepartments(page:number):Department[]{
+    return this.fakeDb.filter((department: Department, index: number) => {
       return this.deptsPerRequest*page >= index+1 && this.deptsPerRequest*page - this.deptsPerRequest < index+1 // for testing pagination
     })
   }
 
-  getAlldepartments():department[]{
+  getAlldepartments():Department[]{
     return this.fakeDb;
   }
 
-  getdepartment(id: number):department{
+  getdepartment(id: number):Department{
     return this.fakeDb.filter(department => department.id === id)[0];
   }
 
-  async deleteDepartment(department: department, users: User[]):Promise<boolean>{
+  async deleteDepartment(department: Department, users: User[]):Promise<boolean>{
     if(users.length === 0){
       const deletedDepartment = {...department};
       const index = this.fakeDb.indexOf(department)
@@ -87,8 +87,8 @@ export class departmentService {
     }
   }
 
-  async createDepartment(name: string):Promise<department>{
-    const newDepartment = new department(this.fakeDb.length, name, this.company);
+  async createDepartment(name: string):Promise<Department>{
+    const newDepartment = new Department(this.fakeDb.length, name, this.company);
     this.fakeDb.push(newDepartment);
     this.subject.next(newDepartment)
     return newDepartment

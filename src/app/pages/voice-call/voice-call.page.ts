@@ -4,7 +4,7 @@ import { UserService } from 'src/app/services/user/user.service';
 import { Location } from '@angular/common';
 
 import { User } from 'src/model/classes/User';
-import { department } from 'src/model/classes/department';
+import { Department } from 'src/model/classes/Department';
 
 
 
@@ -16,7 +16,7 @@ import { department } from 'src/model/classes/department';
 export class VoiceCallPage implements OnInit {
 
   profileUser: User;
-  department: department;
+  department: Department;
 
   constructor(private route: ActivatedRoute, private _router: Router, private userService: UserService,
      private location: Location) { 

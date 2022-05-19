@@ -1,17 +1,17 @@
 import { IChatGroup } from "../interfaces/interfaces";
 import { ChatMessage } from "./ChatMessage";
-import { department } from "./department";
+import { Department } from "./Department";
 import { User } from "./User";
 
 export class ChatGroup implements IChatGroup{
 
     id: number;
-    department: department;
+    department: Department;
     participants: User[];
     read: boolean;
     lastMessage?: Date;
 
-    constructor(id: number, department: department, participants: User[], read: boolean, messages?: ChatMessage[]){
+    constructor(id: number, department: Department, participants: User[], read: boolean, messages?: ChatMessage[]){
         this.id = id;
         this.department = department;
         this.participants = participants;
