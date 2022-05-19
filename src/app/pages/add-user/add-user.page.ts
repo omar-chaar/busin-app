@@ -50,4 +50,13 @@ export class AddUserPage implements OnInit {
     }
   }
 
+  generateCode(): string {
+    let length = 5, chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz", returnValue = "";
+    for (var i = 0, n = chars.length; i < length; ++i) {
+      returnValue += chars.charAt(Math.floor(Math.random() * n
+      ));
+    }
+    return returnValue;
+  }
+
 }
