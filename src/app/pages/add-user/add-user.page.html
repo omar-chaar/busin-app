@@ -3,6 +3,14 @@
   <form class="container" (ngSubmit)="handleSubmit()">
     <h1 class="title">Create New User</h1>
     <ion-item>
+      <ion-label position="stacked">Name of the Employee</ion-label>
+      <ion-input type="text" [(ngModel)]="name" name="name"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">Surname</ion-label>
+      <ion-input type="text" [(ngModel)]="surname" name="surname"></ion-input>
+    </ion-item>   
+    <ion-item>
       <ion-label>Department</ion-label>
       <ion-select placeholder="Select One" [(ngModel)]="selectedDepartment" name="selectedDepartment">
         <ion-select-option *ngFor="let departmentItem of departments" [value]="departmentItem">{{departmentItem.name}}

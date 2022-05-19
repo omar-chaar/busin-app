@@ -20,6 +20,10 @@ export class AddUserPage implements OnInit {
   admin: boolean = false;
   position: string;
   code: string;
+  name: string;
+  surname: string;
+  //TODO: ADD CONSTRAINTS TO INPUTS SUCH AS LENGTH
+  //TODO: SCHEDULE
 
   constructor(private modalController: ModalController, private departmentService: DepartmentService,
     private validationService: ValidationService, private toastService: ToastService,
