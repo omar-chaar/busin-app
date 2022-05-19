@@ -24,7 +24,7 @@ export class JoinPage implements OnInit {
       this.userService.validateToken(this.code).subscribe(
         (resp) => {
           if (resp) {
-            this.userService.token = resp.data;
+            this.userService.code = resp.data;
             this.redirectTo('/join-two');
           }
         },

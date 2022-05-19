@@ -14,8 +14,6 @@ export class JoinTwoPage implements OnInit {
   email: string;
   password: string;
   repeatedPassword: string;
-  name: string;
-  surname: string;
 
   constructor(private validationService: ValidationService, private toastService: ToastService, private _router: Router,
     private userService: UserService) { 
@@ -28,15 +26,13 @@ export class JoinTwoPage implements OnInit {
   handleSubmit():void{
     if(this.validationService.validateEmail(this.email) &&
        this.validationService.validatePassword(this.password) &&
-       this.validationService.validateEqualPasswords(this.password, this.repeatedPassword) &&
-       this.validationService.validateLength('Name', this.name, 30, 1) &&
-       this.validationService.validateLength('Surname', this.surname, 30, 1)){
+       this.validationService.validateEqualPasswords(this.password, this.repeatedPassword)){
         this.createAccount();
        }
   }
 
   createAccount():void{
-    this.userService.createAccount(this.name, this.surname, this.email, this.password).subscribe(
+    this.userService.createAccount(this.email, this.password).subscribe(
       (resp) => {
         if(resp){
           this.redirectTo('/login');

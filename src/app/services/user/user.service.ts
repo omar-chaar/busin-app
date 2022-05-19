@@ -12,7 +12,7 @@ import { DepartmentService } from '../department/department.service';
 export class UserService {
 
   usersPerRequest: number = 10;
-  token: string;
+  code: string;
   headers: { 'Content-Type': 'application/json' };
 
   currentUser: User;
@@ -76,19 +76,20 @@ export class UserService {
       return true
     }
 
-    generateToken(departamentId: number, position: string, admin: boolean): Observable < any > {
-      const url = `${environment.apiUrl}/user/generate-token?departamentId=${departamentId}&position=${position}&admin=${admin}`;
+    generateToken(name: string, surname: string, departamentId: number, position: string, admin: boolean): Observable < any > {
+      const body = { name, surname, departamentId, position, admin };
+      const url = `${environment.apiUrl}/user/generate-code`;
+      return this.http.post(url, body, { headers: this.headers });
+    }
+
+    validateToken(code: string): Observable < any > {
+      const url = `${environment.apiUrl}/user/validate-code?token=${code}`;
       return this.http.get(url);
     }
 
-    validateToken(token: string): Observable < any > {
-      const url = `${environment.apiUrl}/user/validate-token?token=${token}`;
-      return this.http.get(url);
-    }
-
-    createAccount(name: string, surname: string, email: string, password: string): Observable < any > {
+    createAccount(email: string, password: string): Observable < any > {
       const url = `${environment.apiUrl}/user/create-user`;
-      const body = { name, surname, email, password, token: this.token };
+      const body = { email, password, code: this.code };
       return this.http.post(url, body, { headers: this.headers });
     }
 

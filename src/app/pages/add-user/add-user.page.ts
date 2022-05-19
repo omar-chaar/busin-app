@@ -19,9 +19,9 @@ export class AddUserPage implements OnInit {
   departments: Department[];
   admin: boolean = false;
   position: string;
-  code: string;
   name: string;
   surname: string;
+  code: string;
   //TODO: ADD CONSTRAINTS TO INPUTS SUCH AS LENGTH
   //TODO: SCHEDULE
 
@@ -41,26 +41,19 @@ export class AddUserPage implements OnInit {
 
   handleSubmit(): void {
     if (this.validationService.validateSelectAndCheckbox('Department', this.selectedDepartment) &&
-      this.validationService.validateLength('Position', this.position, 30, 2)) {
-      this.userService.generateToken(this.selectedDepartment.id, this.position, this.admin).subscribe(
+      this.validationService.validateLength('Position', this.position, 30, 2) &&
+      this.validationService.validateLength('Name', this.name, 30, 2) &&
+      this.validationService.validateLength('Surname', this.surname, 30, 2)) {
+      this.userService.generateToken(this.name, this.surname, this.selectedDepartment.id, this.position, this.admin).subscribe(
         (response) => {
           this.toastService.presentToast(response.response, 5000, 'success');
           this.code = response.data;
         },
         (error) => {
-          this.toastService.presentToast('Error generating code. Try again later.', 2500, 'danger');
+          console.log(error)
+          this.toastService.presentToast(error.error, 2500, 'danger');
         }
       );
     }
   }
-
-  generateCode(): string {
-    let length = 5, chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz", returnValue = "";
-    for (var i = 0, n = chars.length; i < length; ++i) {
-      returnValue += chars.charAt(Math.floor(Math.random() * n
-      ));
-    }
-    return returnValue;
-  }
-
 }
