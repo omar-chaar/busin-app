@@ -11,7 +11,6 @@ import { UserService } from '../user/user.service';
 export class ChatMessageService {
 
   constructor(private userService: UserService, private chatGroupService: ChatGroupService) {
-
    }
 
 }

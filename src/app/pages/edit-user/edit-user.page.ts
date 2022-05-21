@@ -34,7 +34,6 @@ export class EditUserPage implements OnInit {
     private validationService: ValidationService, private departmentService: DepartmentService,
     private userService: UserService, private actionSheetCtrl: ActionSheetController, private location: Location, private router:Router, private chatGroupService: ChatGroupService) {
 
-      this.departments = this.departmentService.getAlldepartments();
      }
 
   ngOnInit() {

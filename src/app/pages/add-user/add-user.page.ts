@@ -28,7 +28,6 @@ export class AddUserPage implements OnInit {
   constructor(private modalController: ModalController, private departmentService: DepartmentService,
     private validationService: ValidationService, private toastService: ToastService,
     private userService: UserService) {
-    this.departments = this.departmentService.getAlldepartments();
   }
   ngOnInit() {
   }

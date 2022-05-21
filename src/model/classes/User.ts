@@ -9,13 +9,13 @@ export class User implements IUser{
     position: string;
     email: string;
     profilePicture: string;
-    department: Department;
+    department_id: number;
     admin: boolean;
     owner: boolean;
     token: string;
 
     constructor(id:number, name:string, surname:string, position:string,
-                email: string, profilePicture:string, department:Department, admin:boolean,
+                email: string, profilePicture:string, department:number, admin:boolean,
                 owner: boolean, token?:string){
             this.id = id;
             this.name = name;
@@ -23,7 +23,7 @@ export class User implements IUser{
             this.position = position;
             this.email = email;
             this.profilePicture = profilePicture;
-            this.department = department;
+            this.department_id = department;
             this.admin = admin;
             this.owner = owner;
             this.token = token;

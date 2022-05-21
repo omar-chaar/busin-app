@@ -29,14 +29,7 @@ export class EditDepartmentsPage implements OnInit {
     private departmentService: DepartmentService, private toastService: ToastService,
     private actionSheetCtrl: ActionSheetController, private chatGroupService: ChatGroupService,
     private modalController: ModalController) {
-    this.user = this.userService.currentUser;
-    const deptos = this.departmentService.getAlldepartments().map((depto): EditDepartment => {
-      return {
-        department: depto,
-        edit: false
-      }
-    });
-    this.departments.push(...deptos);
+    
   }
 
   ngOnInit() {
