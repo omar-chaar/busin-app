@@ -1,9 +1,11 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Subject, Observable } from 'rxjs';
 import { Company } from 'src/model/classes/Company';
 import { Department } from 'src/model/classes/Department';
 import { User } from 'src/model/classes/User';
 import { UserService } from '../user/user.service';
+import { environment } from 'src/environments/environment';
 
 
 
@@ -16,8 +18,10 @@ export class DepartmentService {
   company: Company;
   fakeDb: Department[];
   subject = new Subject;
+  companyId = 1;
+  headers = { 'Content-Type': 'application/json' };
 
-  constructor() {
+  constructor( private httpClient: HttpClient) {
     this.company = new Company(0, 'Teste')
     this.fakeDb = [
       new Department(0, 'IT department', this.company),
@@ -87,11 +91,35 @@ export class DepartmentService {
     }
   }
 
+  
+
   async createDepartment(name: string):Promise<Department>{
     const newDepartment = new Department(this.fakeDb.length, name, this.company);
     this.fakeDb.push(newDepartment);
     this.subject.next(newDepartment)
     return newDepartment
+  }
+
+  postCreateDepartment(name: string): Observable<any> {
+    const url = `${environment.apiUrl}/department/create`;
+    const body = { name, owner: this.companyId };
+    return this.httpClient.post(url, body, {headers: this.headers});
+  }
+
+  updateDepartment(id: number, name: string): Observable<any> {
+    const url = `${environment.apiUrl}/department/update`;
+    const body = { id, name };
+    return this.httpClient.put(url, body, {headers: this.headers});
+  }
+
+  getAllDepartmentsDb(): Observable<any> {
+    const url = `${environment.apiUrl}/department/get-all`;
+    return this.httpClient.get(url, {headers: this.headers});
+  }
+
+  deleteDepartmentDb(id: number):Observable<any>{
+    const url = `${environment.apiUrl}/department/delete/${id}`;
+    return this.httpClient.delete(url, {headers: this.headers});
   }
 
   onChange(): Observable<any> {

@@ -13,7 +13,7 @@ export class Message implements IMessage{
     parentMessage?: Message;
     chatId?: Chat;
 
-    constructor(id:number, sender:User, receiver:User, time: Date|string, message:string, read: boolean, parentMessage?: Message){
+    constructor(id:number, sender:User, receiver:User, time: Date|string, message:string, parentMessage?: Message, read?: boolean){
         this.id = id;
         this.sender = sender;
         this.receiver = receiver;

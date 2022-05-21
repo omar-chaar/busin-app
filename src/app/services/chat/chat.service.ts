@@ -17,6 +17,7 @@ export class ChatService {
 
   chatsPerRequest: number = 10;
   subscription: Subscription;
+  subscription2: Subscription;
   private subject = new Subject();
   fakeDb: Chat[];
 
@@ -26,13 +27,17 @@ export class ChatService {
     this.fakeDb = [
       new Chat(0, [this.userService.getUser(0), this.userService.getUser(1)]),
       new Chat(1, [this.userService.getUser(5), this.userService.getUser(3)]),
-      new Chat(2, [this.userService.getUser(2), this.userService.getUser(5)]),
+      new Chat(2, [this.userService.getUser(2), this.userService.getUser(3)]),
       new Chat(3, [this.userService.getUser(5), this.userService.getUser(4)]),
       new Chat(4, [this.userService.getUser(5), this.userService.getUser(1)]),
       new Chat(5, [this.userService.getUser(6), this.userService.getUser(5)]),
     ]
-    this.updateMessages()
-    this.subscription = messageService.onChange().subscribe(value => {
+
+    this.subscription = messageService.onLoad().subscribe(() => {
+      this.updateMessages()
+      this.subject.next(this.fakeDb)
+    })
+    this.subscription2 = messageService.onChange().subscribe(value => {
       this.fakeDb.forEach(chat => {
         if(chat.id === value.chatId)
           chat.insertMessage(value)
@@ -107,6 +112,10 @@ export class ChatService {
     })
     this.subject.next(deletedChat)
     return true
+  }
+
+  onLoad():Observable<any>{
+    return this.subject.asObservable()
   }
 
   onDelete(): Observable<any> {

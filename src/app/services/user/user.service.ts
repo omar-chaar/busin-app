@@ -88,7 +88,7 @@ export class UserService {
     }
 
     createAccount(email: string, password: string): Observable < any > {
-      const url = `${environment.apiUrl}/user/create-user`;
+      const url = `${environment.apiUrl}/user/create`;
       const body = { email, password, code: this.code };
       return this.http.post(url, body, { headers: this.headers });
     }

@@ -4,6 +4,7 @@ import { ChatGroupService } from 'src/app/services/chat-group/chat-group.service
 import { DepartmentService } from 'src/app/services/department/department.service';
 import { ToastService } from 'src/app/services/toast/toast.service';
 import { ValidationService } from 'src/app/services/validation/validation.service';
+import { Department } from 'src/model/classes/Department';
 import { EditDepartment } from '../edit-departments/edit-departments.page';
 
 @Component({
@@ -29,7 +30,7 @@ export class AddDepartmentPage implements OnInit {
     });
   }
 
-  async handleSubmit(): Promise<void> {
+  async handleSubmitOld(): Promise<void> {
     const resp = await this.departmentService.createDepartment(this.name);
     await this.chatGroupService.createGroup(resp);
     this.departments.push({
@@ -37,6 +38,23 @@ export class AddDepartmentPage implements OnInit {
       edit: false
     });
     this.toastService.presentToast('Department created!', 3000, 'success');
+    this.dismiss();
+  }
+
+  handleSubmit():void{
+    this.departmentService.postCreateDepartment(this.name).subscribe(
+      (response: any) => {
+        this.toastService.presentToast(response.response, 5000, 'success');
+        this.departments.push({
+          department: new Department(response.data.id, response.data.name, this.departmentService.company),
+          edit: false
+        });
+        this.dismiss();
+      },
+      (error) => {
+        this.toastService.presentToast(error.error.error, 2500, 'danger');
+      }
+    );
     this.dismiss();
   }
 

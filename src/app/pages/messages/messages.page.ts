@@ -34,8 +34,6 @@ export class MessagesPage implements OnInit {
       const chat = this.chatService.getChatByMessage(value)
       if (!this.chats.includes(chat)) {
         this.chats.unshift(chat)
-      } else {
-        this.sortChatsByDate(this.chats)
       }
 
     })
@@ -48,8 +46,12 @@ export class MessagesPage implements OnInit {
   }
 
   ngOnInit(): void {
-    const chats = this.chatService.getChats(this.user, this.page)
-    this.sortChatsByDate(chats)
+    this.chatService.onLoad().subscribe(value => {
+      const chats = this.chatService.getChats(this.user, this.page);
+      console.log(chats)
+      return
+      this.chats = chats;
+    })
   }
 
   loadData(event): void {

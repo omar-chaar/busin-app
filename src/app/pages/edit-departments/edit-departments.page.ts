@@ -30,13 +30,20 @@ export class EditDepartmentsPage implements OnInit {
     private actionSheetCtrl: ActionSheetController, private chatGroupService: ChatGroupService,
     private modalController: ModalController) {
     this.user = this.userService.currentUser;
-    const deptos = this.departmentService.getAlldepartments().map((depto): EditDepartment => {
-      return {
-        department: depto,
-        edit: false
-      }
+    this.departmentService.getAllDepartmentsDb().subscribe(resp => {
+      const deptos = resp.data.map((department: any): EditDepartment => {
+        console.log(department)
+        department = new Department(department.department_id, department.name, this.departmentService.company);
+        return {
+          department: department,
+          edit: false
+        }
+      })
+      this.departments.push(...deptos);
+    }, err => {
+      console.log(err)
+      this.toastService.presentToast(err.error.error, 3000, 'danger');
     });
-    this.departments.push(...deptos);
   }
 
   ngOnInit() {
@@ -68,8 +75,15 @@ export class EditDepartmentsPage implements OnInit {
       const { role } = await actionSheet.onDidDismiss();
 
       if (role === 'destructive') {
-        this.toastService.presentToast('Department altered!', 3000, 'success')
-        department.department.name = this.text
+        console.log(department.department.id)
+        this.departmentService.updateDepartment(department.department.id, this.text).subscribe(resp => {
+          department.department.name = this.text;
+          this.text = '';
+          this.toastService.presentToast('Department altered!', 3000, 'success')
+          department.edit = false;
+        }, err => {
+          this.toastService.presentToast(err.error.error, 3000, 'danger')
+        })
       }
     }
     this.text = ''
@@ -97,15 +111,15 @@ export class EditDepartmentsPage implements OnInit {
 
     if (role === 'destructive') {
       const users = this.userService.getUsersBydepartment(department.department);
-      const resp = await this.departmentService.deleteDepartment(department.department, users);
-      if(resp){
-        await this.chatGroupService.deleteGroup(department.department);
-        this.toastService.presentToast('Department deleted!', 3000, 'success')
-        const index = this.departments.indexOf(department);
-        this.departments.splice(index, 1);
-      }else{
-        this.toastService.presentToast('Remove all members from the department before deleting it!', 7000, 'danger')
-      }
+      //const resp = await this.departmentService.deleteDepartment(department.department, users)
+      const resp = this.departmentService.deleteDepartmentDb(department.department.id).subscribe(
+        resp => {
+          this.toastService.presentToast('Department deleted!', 3000, 'success');
+          this.departments = this.departments.filter(dept => dept.department.id !== department.department.id);
+        },
+        err => {
+          this.toastService.presentToast(err.error.error, 3000, 'danger')
+      });
     }
   }
 

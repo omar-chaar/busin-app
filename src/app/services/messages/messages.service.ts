@@ -17,21 +17,34 @@ export class MessagesService {
   fakeDb: Message[];
 
   constructor(private userService: UserService, private http: HttpClient) {
-    this.fakeDb = [
-      new Message(0, this.userService.getUser(0), this.userService.getUser(1), new Date('Mon Apr 18 2022 21:31:44 GMT-0300 (Horário Padrão de Brasília)'), 'Hello there', false),
-      new Message(1, this.userService.getUser(1), this.userService.getUser(0), new Date('Mon Apr 18 2022 21:32:23 GMT-0300 (Horário Padrão de Brasília)'), 'General Kenobi!', false),
-      new Message(2, this.userService.getUser(3), this.userService.getUser(5), new Date('Mon Apr 18 2022 21:32:44 GMT-0300 (Horário Padrão de Brasília)'), 'Hello, this is a test message.', false),
-      new Message(3, this.userService.getUser(3), this.userService.getUser(5), new Date('Mon Apr 18 2022 21:32:59 GMT-0300 (Horário Padrão de Brasília)'), 'Hello, this is a second test message.', false),
-      new Message(4, this.userService.getUser(3), this.userService.getUser(5), new Date('Mon Apr 18 2022 21:33:12 GMT-0300 (Horário Padrão de Brasília)'), 'Hello, this is a third test message.', false),
-      new Message(5, this.userService.getUser(3), this.userService.getUser(5), new Date('Mon Apr 18 2022 21:33:32 GMT-0300 (Horário Padrão de Brasília)'), 'Hello, this is a fourth test message.', false),
-      new Message(6, this.userService.getUser(3), this.userService.getUser(5), new Date('Mon Apr 18 2022 21:33:45 GMT-0300 (Horário Padrão de Brasília)'), 'Hello, this is a fifth test message.', false),
-      new Message(7, this.userService.getUser(2), this.userService.getUser(5), new Date('Mon Apr 18 2022 21:33:55 GMT-0300 (Horário Padrão de Brasília)'), 'Hello, this is another test message.', false),
-      new Message(8, this.userService.getUser(5), this.userService.getUser(2), new Date('Mon Apr 18 2022 21:34:15 GMT-0300 (Horário Padrão de Brasília)'), 'This is a nice test message.', false),
-      new Message(9, this.userService.getUser(4), this.userService.getUser(5), new Date('Mon Apr 18 2022 21:34:57 GMT-0300 (Horário Padrão de Brasília)'), 'Wow, another test message.', false),
-      new Message(10, this.userService.getUser(1), this.userService.getUser(5), new Date('Mon Apr 18 2022 21:35:10 GMT-0300 (Horário Padrão de Brasília)'), 'Hello mister.', false),
-      new Message(11, this.userService.getUser(6), this.userService.getUser(5), new Date('Mon Apr 18 2022 21:35:24 GMT-0300 (Horário Padrão de Brasília)'), 'One last test message.', false),
+    // this.fakeDb = [
+    //   new Message(0, this.userService.getUser(0), this.userService.getUser(1), new Date('Mon Apr 18 2022 21:31:44 GMT-0300 (Horário Padrão de Brasília)'), 'Hello there'),
+    //   new Message(1, this.userService.getUser(1), this.userService.getUser(0), new Date('Mon Apr 18 2022 21:32:23 GMT-0300 (Horário Padrão de Brasília)'), 'General Kenobi!'),
+    //   new Message(2, this.userService.getUser(3), this.userService.getUser(5), new Date('Mon Apr 18 2022 21:32:44 GMT-0300 (Horário Padrão de Brasília)'), 'Hello, this is a test message.'),
+    //   new Message(3, this.userService.getUser(3), this.userService.getUser(5), new Date('Mon Apr 18 2022 21:32:59 GMT-0300 (Horário Padrão de Brasília)'), 'Hello, this is a second test message.'),
+    //   new Message(4, this.userService.getUser(3), this.userService.getUser(5), new Date('Mon Apr 18 2022 21:33:12 GMT-0300 (Horário Padrão de Brasília)'), 'Hello, this is a third test message.'),
+    //   new Message(5, this.userService.getUser(3), this.userService.getUser(5), new Date('Mon Apr 18 2022 21:33:32 GMT-0300 (Horário Padrão de Brasília)'), 'Hello, this is a fourth test message.'),
+    //   new Message(6, this.userService.getUser(3), this.userService.getUser(5), new Date('Mon Apr 18 2022 21:33:45 GMT-0300 (Horário Padrão de Brasília)'), 'Hello, this is a fifth test message.'),
+    //   new Message(7, this.userService.getUser(2), this.userService.getUser(5), new Date('Mon Apr 18 2022 21:33:55 GMT-0300 (Horário Padrão de Brasília)'), 'Hello, this is another test message.'),
+    //   new Message(8, this.userService.getUser(5), this.userService.getUser(2), new Date('Mon Apr 18 2022 21:34:15 GMT-0300 (Horário Padrão de Brasília)'), 'This is a nice test message.'),
+    //   new Message(9, this.userService.getUser(4), this.userService.getUser(5), new Date('Mon Apr 18 2022 21:34:57 GMT-0300 (Horário Padrão de Brasília)'), 'Wow, another test message.'),
+    //   new Message(10, this.userService.getUser(1), this.userService.getUser(5), new Date('Mon Apr 18 2022 21:35:10 GMT-0300 (Horário Padrão de Brasília)'), 'Hello mister.'),
+    //   new Message(11, this.userService.getUser(6), this.userService.getUser(5), new Date('Mon Apr 18 2022 21:35:24 GMT-0300 (Horário Padrão de Brasília)'), 'One last test message.'),
 
-    ]
+    // ]
+
+    this.getMessagesDb(this.userService.currentUser.id).subscribe(({messages}) => {
+      const newmessages = messages.map((message) => {
+        console.log(message)
+        if(message.receiver === this.userService.currentUser.id){
+          return new Message(message.id, message.sender_id, message.receiver_id, new Date(message.time), message.message_body, message.parentMessage);
+        }else{
+          return new Message(message.id, message.receiver_id, message.sender_id, new Date(message.time), message.message_body, message.parentMessage);
+        }
+      })
+      this.fakeDb = newmessages;
+      this.subject.next(newmessages)
+    });
   }
 
   getMessages([userA, userB]: User[], chat: Chat): Message[] {
@@ -51,18 +64,22 @@ export class MessagesService {
   }
   
   getMessagesDb(id: number, lastMessage?: number):Observable<any>{
-    const url = `${environment.apiUrl}/message/messages/${id}${lastMessage ? `?lastMessageId=${lastMessage}` : ''}`;
+    const url = `${environment.apiUrl}/messages/messages/${id}${lastMessage ? `?lastMessageId=${lastMessage}` : ''}`;
     return this.http.get(url);
   }
 
   insertMessage(message: string, sender: User, receiver: User, chat: Chat): Message {
     const parentMessage = chat.messages.length > 0 ? this.getMessage(chat.messages[chat.messages.length - 1].id) : null;
-    const newMsg = new Message(this.fakeDb.length, sender, receiver, new Date(), message, false, parentMessage)
+    const newMsg = new Message(this.fakeDb.length, sender, receiver, new Date(), message, parentMessage)
     chat.insertMessage(newMsg)
     this.fakeDb.push(newMsg)
     this.subject.next(newMsg)
 
     return newMsg
+  }
+
+  onLoad():Observable<any>{
+    return this.subject.asObservable();
   }
 
   onChange(): Observable<any> {
