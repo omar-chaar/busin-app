@@ -32,8 +32,7 @@ export class EditUsersPage implements OnInit {
     }
 
   ngOnInit() {
-    const users = this.userService.getUsersPagination(this.page);
-    this.users.push(...users);
+
   }
   
   async confirmDelete(user: User): Promise<void> {
@@ -56,14 +55,7 @@ export class EditUsersPage implements OnInit {
     const { role } = await actionSheet.onDidDismiss();
 
     if (role === 'destructive') {
-      await this.chatService.deleteChat(user);
-      await this.messageService.deleteMessagesByUser(user);
-      await this.chatMessageService.deleteMessagesByUser(user);
-      await this.userService.deleteUser(user);
-      const index = this.users.indexOf(user);
-      this.users.splice(index, 1);
-      
-      this.toastService.presentToast('User account deleted!', 3000, 'success')
+
     }
   }
 
@@ -93,9 +85,6 @@ export class EditUsersPage implements OnInit {
   }
 
   addMoreItems(): boolean {
-    const users = this.userService.getUsersPagination(this.page)
-    if (users.length === 0) return false
-    this.users.push(...users)
     return true
   }
 

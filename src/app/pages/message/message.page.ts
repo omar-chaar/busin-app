@@ -27,14 +27,6 @@ export class MessagePage implements OnInit {
 
   ngOnInit() {
     const id = +this.route.snapshot.params['id'];
-    const chat = this.chatService.getChat(id, this.user);
-    if(typeof chat === 'boolean'){
-      this._router.navigateByUrl('/tabs/messages')
-    }else{
-      chat.unreads = 0;
-      this.chat = chat;
-      this.contact = chat.participants.filter(participant => participant.id !== this.user.id)[0];
-    }
   }
 
   goBack(): void {
@@ -46,10 +38,7 @@ export class MessagePage implements OnInit {
   }
 
   onSubmit(): void {
-    if (this.text.length > 0) {
-      const msg = this.messagesService.insertMessage(this.text, this.user, this.contact, this.chat)
-      this.text = ''
-    }
+
   }
 
   formatTime(date: Date):string{

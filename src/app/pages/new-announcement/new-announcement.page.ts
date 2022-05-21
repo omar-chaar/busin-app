@@ -37,15 +37,7 @@ export class NewAnnouncementPage implements OnInit {
   }
 
   handleSubmit():void {
-    if(this.validationService.validateLength('Title', this.title, 50, 3)){
-      if(this.validationService.validateLength('Content', this.content, 300, 25)){
-        const announcement = this.announcementService.insertAnnouncement(this.title, this.content, this.user)
-        this.toastService.presentToast('Announcement published!', 3000, 'success')
-        this.announcements.push(announcement)
-        this.sortByDate(this.announcements)
-        this.dismiss()
-      }
-    }
+
   }
 
 }

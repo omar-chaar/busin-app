@@ -30,14 +30,7 @@ export class AddDepartmentPage implements OnInit {
   }
 
   async handleSubmit(): Promise<void> {
-    const resp = await this.departmentService.createDepartment(this.name);
-    await this.chatGroupService.createGroup(resp);
-    this.departments.push({
-      department: resp,
-      edit: false
-    });
-    this.toastService.presentToast('Department created!', 3000, 'success');
-    this.dismiss();
+    
   }
 
   async confirmCreate(): Promise<void> {

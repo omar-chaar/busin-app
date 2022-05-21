@@ -23,12 +23,6 @@ export class UserLoginPage implements OnInit {
   async handleSubmit():Promise<void> {
     if(!this.validationService.validateEmail(this.email)) return 
     if(!this.validationService.validatePassword(this.password)) return 
-    const resp = await this.userService.login(this.email)
-    if(resp){
-      this.router.navigateByUrl('/tabs/messages');
-    }else{
-      this.toastService.presentToast('Invalid credentials!', 3000, 'warning');
-    }
   }
 
   redirectTo(url: string):void{

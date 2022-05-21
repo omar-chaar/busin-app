@@ -23,14 +23,7 @@ export class ProfilePage implements OnInit {
   constructor(private route: ActivatedRoute, private _router: Router, private userService: UserService,
     private chatService: ChatService, private departmentService: DepartmentService) {
     const id = +this.route.snapshot.params['id'];
-    const profileUser = this.userService.getUser(id);
-    if (typeof profileUser === 'boolean') {
-      this._router.navigateByUrl('/tabs/messages')
-    } else {
-      this.profileUser = profileUser;
-      this.department = profileUser.department
-      this.user = this.userService.currentUser;
-    }
+
   }
 
   ngOnInit() {
@@ -43,8 +36,7 @@ export class ProfilePage implements OnInit {
   }
 
   redirectToChat(contact: User) {
-    const chatId = this.chatService.verifyChat(contact, this.user)
-    this._router.navigateByUrl('/message/' + chatId)
+    this._router.navigateByUrl('/message/' + '')
   }
 
   switchEdit() {

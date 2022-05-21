@@ -68,8 +68,7 @@ export class EditDepartmentsPage implements OnInit {
       const { role } = await actionSheet.onDidDismiss();
 
       if (role === 'destructive') {
-        this.toastService.presentToast('Department altered!', 3000, 'success')
-        department.department.name = this.text
+        
       }
     }
     this.text = ''
@@ -96,16 +95,7 @@ export class EditDepartmentsPage implements OnInit {
     const { role } = await actionSheet.onDidDismiss();
 
     if (role === 'destructive') {
-      const users = this.userService.getUsersBydepartment(department.department);
-      const resp = await this.departmentService.deleteDepartment(department.department, users);
-      if(resp){
-        await this.chatGroupService.deleteGroup(department.department);
-        this.toastService.presentToast('Department deleted!', 3000, 'success')
-        const index = this.departments.indexOf(department);
-        this.departments.splice(index, 1);
-      }else{
-        this.toastService.presentToast('Remove all members from the department before deleting it!', 7000, 'danger')
-      }
+     
     }
   }
 

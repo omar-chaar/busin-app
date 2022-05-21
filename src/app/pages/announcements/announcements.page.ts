@@ -31,8 +31,7 @@ export class AnnouncementsPage implements OnInit {
   }
 
   ngOnInit(): void {
-    this.announcements.push(...this.announcementService.getAnnouncements(this.page));
-    this.page += 1;
+
   }
 
   async presentModal() {
@@ -52,10 +51,7 @@ export class AnnouncementsPage implements OnInit {
     if (!this.fullyLoaded) {
       this.page += 1
       setTimeout(() => {
-        const arr = this.announcementService.getAnnouncements(this.page);
-        this.announcements.push(...arr)
-        this.sortByDate(this.announcements)
-        if (arr.length === 0) this.fullyLoaded = true
+
         event.target.complete();
       }, 2000);
     }
@@ -74,15 +70,6 @@ export class AnnouncementsPage implements OnInit {
     });
     this.announcements = sortedArr
   }
-
-  confirmRead(announcement: Announcement): void {
-    if (!announcement.read) {
-      setTimeout(() => {
-        announcement.read = true
-      }, 2000)
-    }
-  }
-
   openModal(): void {
     if(this.user.admin)
       this.presentModal()

@@ -30,26 +30,10 @@ export class MessagesPage implements OnInit {
   constructor(private router: Router, private chatService: ChatService, private userService: UserService,
     private messageService: MessagesService) {
 
-    this.subscription = messageService.onChange().subscribe(value => {
-      const chat = this.chatService.getChatByMessage(value)
-      if (!this.chats.includes(chat)) {
-        this.chats.unshift(chat)
-      } else {
-        this.sortChatsByDate(this.chats)
-      }
-
-    })
-    this.subscriptionB = this.chatService.onDelete().subscribe(value => {
-      const index = this.chats.indexOf(value);
-      if(index){
-        this.chats.splice(index, 1);
-      }
-    })
-  }
+    }
 
   ngOnInit(): void {
-    const chats = this.chatService.getChats(this.user, this.page)
-    this.sortChatsByDate(chats)
+
   }
 
   loadData(event): void {
@@ -66,31 +50,8 @@ export class MessagesPage implements OnInit {
   }
 
   addMoreItems(): boolean {
-    const chats = this.chatService.getChats(this.user, this.page)
-    if (chats.length === 0) return false
-    this.chats.push(...chats)
-    return true
+    return false;
   }
-
-  redirectToMessage(chatId: number) {
-    this.router.navigateByUrl('/message/' + chatId);
-  }
-
-  sortChatsByDate(chats: Chat[]): void {
-    const sortedArr = chats.sort(function (a, b) {
-      const msgA = a.messages[a.messages.length - 1]
-      const msgB = b.messages[b.messages.length - 1]
-      return msgB.time.getTime() - msgA.time.getTime();
-    });
-    this.chats = sortedArr
-  }
-
-  formatTime(date: Date): string {
-    const hour: string = date.getHours().toString().length === 1 ? `0${date.getHours().toString()}` : date.getHours().toString();
-    const minutes: string = date.getMinutes().toString().length === 1 ? `0${date.getMinutes().toString()}` : date.getMinutes().toString();
-    return `${hour}:${minutes}`
-  }
-
   goToProfile(id: number): void {
     this.router.navigateByUrl('/profile/' + id)
   }

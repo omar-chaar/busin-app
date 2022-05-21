@@ -38,20 +38,7 @@ export class EditUserPage implements OnInit {
      }
 
   ngOnInit() {
-    this.user = this.userService.currentUser;
-    const id = +this.activatedRoute.snapshot.params['id'];
-    const profileUser = this.userService.getUser(id);
-    if(typeof profileUser === 'boolean'){
-      this.router.navigateByUrl('/edit-users')
-    }else{
-      this.profile = profileUser;
-      this.name = profileUser.name;
-      this.lastname = profileUser.surname;
-      this.position = profileUser.position;
-      this.email = profileUser.email;
-      this.admin = profileUser.admin;
-      this.department = profileUser.department;
-    }
+    
   }
 
   async confirmAlter(): Promise<void> {
@@ -98,27 +85,8 @@ export class EditUserPage implements OnInit {
     this.router.navigateByUrl(url)
   }
 
-  async handleSubmit(): Promise<void>{
-    if(this.profile.department !== this.department){
-      await this.changeDepartments(this.profile.department, this.department);
-    }
-    this.profile.name = this.name;
-    this.profile.surname = this.lastname;
-    this.profile.email = this.email;
-    this.profile.position = this.position;
-    this.profile.department = this.department;
-    this.profile.admin = this.admin;
+  handleSubmit():void{
 
-    if(await this.userService.alterUser(this.profile)){
-      this.toastService.presentToast('User successfully altered!', 3500, 'success');
-      this.router.navigateByUrl('/edit-users')
-    }
-  }
-
-  async changeDepartments(oldDepartment: Department, newDepartment: Department):Promise<boolean>{
-    await this.chatGroupService.removeParticipant(oldDepartment.id, this.profile);
-    await this.chatGroupService.addParticipant(newDepartment.id, this.profile);
-    return true
   }
 
 }
