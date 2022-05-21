@@ -18,7 +18,12 @@
   </ion-toolbar>
 </ion-header>
 <ion-content>
+
   <ion-list>
+    <ion-infinite-scroll threshold="10%" (ionInfinite)="loadData($event)" [disabled]="fullyLoaded" position="top">
+      <ion-infinite-scroll-content loadingSpinner="bubbles">
+      </ion-infinite-scroll-content>
+    </ion-infinite-scroll>
     <ion-grid>
       <ion-row *ngFor="let message of chat.messages" class="messagebox-container"
         [ngClass]="{'user-message': message.sender.id === user.id}">

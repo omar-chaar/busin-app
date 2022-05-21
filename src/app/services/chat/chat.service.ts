@@ -6,6 +6,8 @@ import { UserService } from '../user/user.service';
 import { User } from 'src/model/classes/User';
 import { Chat } from 'src/model/classes/Chat';
 import { Message } from 'src/model/classes/Message';
+import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
 
 
 @Injectable({
@@ -18,7 +20,8 @@ export class ChatService {
   private subject = new Subject();
   fakeDb: Chat[];
 
-  constructor(private userService: UserService, private messageService: MessagesService) {
+  constructor(private userService: UserService, private messageService: MessagesService, 
+    http: HttpClient) {
 
     this.fakeDb = [
       new Chat(0, [this.userService.getUser(0), this.userService.getUser(1)]),

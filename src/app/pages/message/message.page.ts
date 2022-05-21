@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild} from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ChatService } from 'src/app/services/chat/chat.service';
 import { MessagesService } from 'src/app/services/messages/messages.service';
 import { UserService } from 'src/app/services/user/user.service';
+import { IonInfiniteScroll} from '@ionic/angular';
 
 import { User } from 'src/model/classes/User';
 import { Chat } from 'src/model/classes/Chat';
@@ -13,7 +14,7 @@ import { Chat } from 'src/model/classes/Chat';
   styleUrls: ['./message.page.scss'],
 })
 export class MessagePage implements OnInit {
-
+  @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
   contact: User;
   chat: Chat;
   user: User;
@@ -60,5 +61,21 @@ export class MessagePage implements OnInit {
   startCall(id: number): void {
     this._router.navigateByUrl('/voice-call/' + id)
   }
+  
+  loadMessages(event) {
+    setTimeout(() => {
+      this.chat.messages = this.chat.messages.concat(this.chat.messages);
+      event.target.complete();
+      if(this.chat.messages.length === 0){
+        this.toggleInfiniteScroll()
+      }
+    }, 500);
+  }
 
+  toggleInfiniteScroll() {
+    this.infiniteScroll.disabled = !this.infiniteScroll.disabled;
+  }
+
+
+  
 }

@@ -5,6 +5,8 @@ import { Observable, Subject } from 'rxjs';
 import { User } from 'src/model/classes/User';
 import { Chat } from 'src/model/classes/Chat';
 import { Message } from 'src/model/classes/Message';
+import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +16,7 @@ export class MessagesService {
   private subject = new Subject();
   fakeDb: Message[];
 
-  constructor(private userService: UserService) {
+  constructor(private userService: UserService, private http: HttpClient) {
     this.fakeDb = [
       new Message(0, this.userService.getUser(0), this.userService.getUser(1), new Date('Mon Apr 18 2022 21:31:44 GMT-0300 (Horário Padrão de Brasília)'), 'Hello there', false),
       new Message(1, this.userService.getUser(1), this.userService.getUser(0), new Date('Mon Apr 18 2022 21:32:23 GMT-0300 (Horário Padrão de Brasília)'), 'General Kenobi!', false),
@@ -47,7 +49,11 @@ export class MessagesService {
   getMessage(id: number): Message {
     return this.fakeDb.filter((message: Message) => message.id === id)[0]
   }
-
+  
+  getMessagesDb(id: number, lastMessage?: number):Observable<any>{
+    const url = `${environment.apiUrl}/message/messages/${id}${lastMessage ? `?lastMessageId=${lastMessage}` : ''}`;
+    return this.http.get(url);
+  }
 
   insertMessage(message: string, sender: User, receiver: User, chat: Chat): Message {
     const parentMessage = chat.messages.length > 0 ? this.getMessage(chat.messages[chat.messages.length - 1].id) : null;
