@@ -20,9 +20,22 @@ export class UserLoginPage implements OnInit {
   ngOnInit() {
   }
 
-  async handleSubmit():Promise<void> {
+  handleSubmit():void {
     if(!this.validationService.validateEmail(this.email)) return 
     if(!this.validationService.validatePassword(this.password)) return 
+    this.userService.login(this.email, this.password).subscribe(
+      (resp) => {
+        if(resp){
+          this.toastService.presentToast('Login successful', 4000, 'success');
+          console.log(resp)
+          this.redirectTo('/');
+        }
+      },
+      (err) => {
+        this.toastService.presentToast(err.error.error, 4500, 'danger');
+        this.toastService.presentToast(err.error.error, 4500, 'danger');
+      }
+    );
   }
 
   redirectTo(url: string):void{

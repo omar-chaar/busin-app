@@ -1,0 +1,30 @@
+<ion-content class="page" fullscreen="true">
+  <ion-icon name="chevron-back-outline" class="return-icon" (click)="redirectTo('/join')"></ion-icon>
+  <form class="container" (ngSubmit)="handleSubmit()">
+      <ion-item>
+        <ion-label position="stacked">Nome</ion-label>
+        <ion-input [(ngModel)]="name" name="name" type="text" placeholder="Enter your name here." required></ion-input>
+      </ion-item> 
+      <ion-item>
+        <ion-label position="stacked">Surname</ion-label>
+        <ion-input [(ngModel)]="surname" name="surname" type="text" placeholder="Enter your surname here." required></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Position</ion-label>
+        <ion-input [(ngModel)]="position" name="position" type="text" placeholder="Enter your position here." required></ion-input>
+      </ion-item>
+      <ion-item>
+      <ion-label position="stacked">Email</ion-label>
+      <ion-input [(ngModel)]="email" name="email" type="email" placeholder="Enter your e-mail here." required></ion-input>
+      </ion-item>
+      <ion-item>
+      <ion-label position="stacked">Password</ion-label>
+      <ion-input [(ngModel)]="password" name="password" type="password" placeholder="Enter your password here." required></ion-input>
+    </ion-item> 
+      <ion-item>      
+      <ion-label position="stacked">Repeat Password</ion-label>
+      <ion-input [(ngModel)]="repeatedPassword" name="repeatedPassword" type="password" placeholder="Repeat your password here." required></ion-input>
+    </ion-item>   
+    <ion-button expand="block" color="tertiary" type="submit">Join company</ion-button>
+  </form>
+</ion-content>

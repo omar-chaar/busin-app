@@ -11,9 +11,12 @@ export class User implements IUser{
     profilePicture: string;
     department: Department;
     admin: boolean;
+    owner: boolean;
+    token: string;
 
     constructor(id:number, name:string, surname:string, position:string,
-                email: string, profilePicture:string, department:Department, admin:boolean){
+                email: string, profilePicture:string, department:Department, admin:boolean,
+                owner: boolean, token?:string){
             this.id = id;
             this.name = name;
             this.surname = surname;
@@ -22,6 +25,8 @@ export class User implements IUser{
             this.profilePicture = profilePicture;
             this.department = department;
             this.admin = admin;
+            this.owner = owner;
+            this.token = token;
     }
 
     getFullName(): string {

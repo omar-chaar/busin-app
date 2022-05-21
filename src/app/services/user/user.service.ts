@@ -16,6 +16,7 @@ export class UserService {
   headers: { 'Content-Type': 'application/json' };
 
   currentUser: User;
+  companyName: string;
 
   constructor(private departmentService: DepartmentService, private http: HttpClient) {
 
@@ -40,6 +41,18 @@ export class UserService {
   createAccount(email: string, password: string): Observable<any> {
     const url = `${environment.apiUrl}/user/create-user`;
     const body = { email, password, code: this.code };
+    return this.http.post(url, body, { headers: this.headers });
+  }
+
+  createCompany(name: string, surname: string, email: string, password: string, position: string): Observable<any> {
+    const url = `${environment.apiUrl}/company/create`;
+    const body = { name, email, surname, password, position, companyName: this.companyName };
+    return this.http.post(url, body, { headers: this.headers });
+  }
+
+  login(email: string, password: string): Observable<any> {
+    const url = `${environment.apiUrl}/user/login`;
+    const body = { email, password };
     return this.http.post(url, body, { headers: this.headers });
   }
 
