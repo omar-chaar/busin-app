@@ -17,6 +17,7 @@ export class UserService {
 
   currentUser: User;
   companyName: string;
+  companyId: number;
 
   constructor(private departmentService: DepartmentService, private http: HttpClient) {
 

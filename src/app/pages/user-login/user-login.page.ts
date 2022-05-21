@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { ToastService } from 'src/app/services/toast/toast.service';
 import { UserService } from 'src/app/services/user/user.service';
 import { ValidationService } from 'src/app/services/validation/validation.service';
+import { User } from 'src/model/classes/User';
 
 @Component({
   selector: 'app-user-login',
@@ -18,6 +19,7 @@ export class UserLoginPage implements OnInit {
     private userService: UserService, private toastService: ToastService) { }
 
   ngOnInit() {
+
   }
 
   handleSubmit():void {
@@ -27,12 +29,13 @@ export class UserLoginPage implements OnInit {
       (resp) => {
         if(resp){
           this.toastService.presentToast('Login successful', 4000, 'success');
-          console.log(resp)
-          this.redirectTo('/');
+          this.userService.currentUser = new User(resp.data.user_id, resp.data.name, resp.data.surname,
+            resp.data.position, resp.data.email, resp.data.profilePicture, resp.data.department_id,
+            resp.data.is_adm, resp.data.is_owner, resp.data.token);
+          this.redirectTo('/tabs/announcements');
         }
       },
       (err) => {
-        this.toastService.presentToast(err.error.error, 4500, 'danger');
         this.toastService.presentToast(err.error.error, 4500, 'danger');
       }
     );

@@ -4,6 +4,7 @@ import { IonAccordionGroup } from '@ionic/angular';
 import { ModalController } from '@ionic/angular';
 import { AnnouncementService } from 'src/app/services/announcement/announcement.service';
 import { NewAnnouncementPage } from '../new-announcement/new-announcement.page';
+import { ToastService } from 'src/app/services/toast/toast.service';
 
 import { Announcement } from 'src/model/classes/Announcement';
 import { User } from 'src/model/classes/User';
@@ -26,12 +27,23 @@ export class AnnouncementsPage implements OnInit {
   user: User;
 
   constructor(public modalController: ModalController, private announcementService: AnnouncementService,
-    private userService: UserService) {
+    private userService: UserService, private toastService: ToastService) {
       this.user = this.userService.currentUser;
+      this.announcementService.getAnnouncements().subscribe(
+        (resp:any) => {
+          this.announcements = resp.data.map(announcement => {
+            announcement = new Announcement(announcement.announcement_id, announcement.announcement_title, announcement.announcement_body,
+               announcement.time, announcement.sender_id)
+            return announcement
+          })
+          this.fullyLoaded = true;
+        },(err) => {
+            this.toastService.presentToast(err.error.error, 4500, 'danger');
+        })
   }
 
   ngOnInit(): void {
-
+    console.log(this.userService.currentUser)
   }
 
   async presentModal() {
@@ -39,7 +51,6 @@ export class AnnouncementsPage implements OnInit {
       component: NewAnnouncementPage,
       cssClass: 'my-custom-class',
       componentProps: {
-        sortByDate: this.sortByDate,
         announcements: this.announcements,
         user: this.user
       }
@@ -64,12 +75,12 @@ export class AnnouncementsPage implements OnInit {
     return `${day}/${month}/${year}`
   }
 
-  sortByDate(announcements: Announcement[]): void {
-    const sortedArr = announcements.sort(function (a, b) {
-      return b.date.getTime() - a.date.getTime();
-    });
-    this.announcements = sortedArr
-  }
+  // sortByDate(announcements: Announcement[]): void {
+  //   const sortedArr = announcements.sort(function (a, b) {
+  //     return b.date.getTime() - a.date.getTime();
+  //   });
+  //   this.announcements = sortedArr
+  // }
   openModal(): void {
     if(this.user.admin)
       this.presentModal()

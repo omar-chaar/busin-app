@@ -37,7 +37,17 @@ export class NewAnnouncementPage implements OnInit {
   }
 
   handleSubmit():void {
-
+    if (this.validationService.validateLength('Title', this.title, 50) && this.validationService.validateLength('Text', this.content, 500)) {
+      this.announcementService.createAnnouncement(this.title, this.content).subscribe(
+        (resp) => {
+          this.announcements.push(resp.announcement)
+          this.toastService.presentToast('Announcement created', 3000, 'success')
+          this.dismiss()
+        },(err) => {
+          console.log(err)
+          this.toastService.presentToast(err.error.error, 4500, 'danger')
+        })
+    }
   }
 
 }

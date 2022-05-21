@@ -10,7 +10,7 @@ export interface IAnnouncement {
     id: number,
     title: string,
     text: string,
-    date: Date,
+    date: string,
     read: boolean,
     sender: User,
 }

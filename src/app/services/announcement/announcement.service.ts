@@ -2,6 +2,9 @@ import { Injectable } from '@angular/core';
 import { Announcement } from 'src/model/classes/Announcement';
 import { User } from 'src/model/classes/User';
 import { UserService } from '../user/user.service';
+import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -9,8 +12,17 @@ import { UserService } from '../user/user.service';
 export class AnnouncementService {
 
 
-  constructor(private userService: UserService) {
+  constructor(private userService: UserService, private http: HttpClient) { }
 
-   }
+  getAnnouncements(): Observable<any[]> {
+    const url = `${environment.apiUrl}/announcement/get-all-announcements-for-user/${this.userService.currentUser.id}`;
+    return this.http.get<any[]>(url);
+  }
+
+  createAnnouncement(text: string, title: string):Observable<any>{
+    const url = `${environment.apiUrl}/announcement/create`;
+    const body = { body: text, title, senderId: this.userService.currentUser.id };
+    return this.http.post(url, body, { headers: this.userService.headers });
+  }
 
 }
