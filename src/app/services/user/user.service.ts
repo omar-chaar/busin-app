@@ -57,4 +57,10 @@ export class UserService {
     return this.http.post(url, body, { headers: this.headers });
   }
 
+  getUserByToken(token: string): Observable<any> {
+    const url = `${environment.apiUrl}/user/get-by-token`;
+    const headers = { 'Content-Type': 'application/json', 'authorization': 'Bearer ' + token };
+    return this.http.get(url, { headers: headers });
+  }
+
 }

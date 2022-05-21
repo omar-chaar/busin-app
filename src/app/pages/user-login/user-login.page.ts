@@ -32,6 +32,10 @@ export class UserLoginPage implements OnInit {
           this.userService.currentUser = new User(resp.data.user_id, resp.data.name, resp.data.surname,
             resp.data.position, resp.data.email, resp.data.profilePicture, resp.data.department_id,
             resp.data.is_adm, resp.data.is_owner, resp.token);
+
+          if(localStorage){
+            localStorage.setItem('token', resp.token);
+          }
           this.redirectTo('/tabs/announcements');
         }
       },
