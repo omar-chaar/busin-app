@@ -16,13 +16,15 @@ export class AnnouncementService {
 
   getAnnouncements(): Observable<any[]> {
     const url = `${environment.apiUrl}/announcement/get-all-announcements-for-user/${this.userService.currentUser.id}`;
-    return this.http.get<any[]>(url);
+    const headers = {'Content-Type': 'application/json', 'authorization': 'Bearer ' + this.userService.currentUser.token};
+    return this.http.get<any[]>(url, { headers: headers });
   }
 
   createAnnouncement(text: string, title: string):Observable<any>{
     const url = `${environment.apiUrl}/announcement/create`;
+    const headers = {'Content-Type': 'application/json', 'authorization': 'Bearer ' + this.userService.currentUser.token};
     const body = { body: text, title, senderId: this.userService.currentUser.id };
-    return this.http.post(url, body, { headers: this.userService.headers });
+    return this.http.post(url, body, { headers: headers });
   }
 
 }
