@@ -5,18 +5,16 @@ import { User } from "./User";
 export class Chat implements IChat{
 
     id: number;
-    participants: User[];
     messages?: Message[] = [];
     unreads?: number;
     lastMessage?: Date;
 
-    constructor(id: number, participants: User[], unreads?: number, messages?: Message[]){
+    constructor(id: number, messages?: Message[], unreads?: number){
         this.id = id;
-        this.participants = participants;
         if(unreads) this.unreads = unreads;
         if(messages){
             this.messages = messages;
-            this.lastMessage = messages[messages.length].time;
+            this.lastMessage = messages[messages.length-1].time;
         }
     }
 

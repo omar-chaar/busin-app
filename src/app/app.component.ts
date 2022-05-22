@@ -4,6 +4,7 @@ import { DepartmentService } from './services/department/department.service';
 import { CompanyService } from './services/company/company.service';
 import { User } from 'src/model/classes/User';
 import { Router } from '@angular/router';
+import { ChatService } from './services/chat/chat.service';
 
 
 @Component({
@@ -12,7 +13,8 @@ import { Router } from '@angular/router';
   styleUrls: ['app.component.scss'],
 })
 export class AppComponent {
-  constructor(private userService: UserService, private companyService: CompanyService, private departmentService: DepartmentService, private router: Router) {
+  constructor(private userService: UserService, private companyService: CompanyService, private departmentService: DepartmentService, private router: Router,
+    private chatService: ChatService) {
     this.router.navigateByUrl('/login')
     if (localStorage && localStorage.getItem('token')) {
       userService.getUserByToken(localStorage.getItem('token')).subscribe(
@@ -22,11 +24,10 @@ export class AppComponent {
             resp.data.is_adm, resp.data.is_owner, resp.token);
             this.userService.currentUser = user;
             this.userService.isLoaded(user);
+            this.chatService.getChats(user);
             this.companyService.setCompany(user);
             this.departmentService.setUserDepartment(user.department_id);
             router.navigateByUrl('/tabs/messages');
-            setTimeout(() => {
-            }, 500)
         },
         (err) => {
           localStorage.removeItem('token');
