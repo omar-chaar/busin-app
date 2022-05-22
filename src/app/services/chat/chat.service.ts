@@ -40,8 +40,6 @@ export class ChatService {
                 const user = new User(message.user_id, message.name, message.surname, message.position, message.email, message.profilePicture,
                   message.department_id, message.is_adm, message.is_owner);
 
-                  console.log(user)
-
                 return new Message(message.message_id, user, message.receiver_id, message.time, message.message_body,
                   message.was_seen, message.parent_message_id);
               }

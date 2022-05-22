@@ -41,7 +41,7 @@ export class MessagesPage implements OnInit {
       }
     )
   }
-
+  
   loadData(event): void {
     if (!this.fullyLoaded) {
       this.page += 1;
