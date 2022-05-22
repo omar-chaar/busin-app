@@ -15,10 +15,10 @@ import { UserService } from '../user/user.service';
 export class DepartmentService implements OnInit {
 
   departaments: Department[];
-
-  constructor(private http: HttpClient,
-    private userService: UserService) {
-
+  currentUserDepartment: Department;
+  
+  constructor(private http: HttpClient, private userService: UserService) {
+    
   }
 
   ngOnInit(): void {
@@ -49,5 +49,16 @@ export class DepartmentService implements OnInit {
     const headers = { authorization: `Bearer ${this.userService.currentUser.token}` };
     return this.http.get<any>(url, { headers: headers });
   }
+
+  setUserDepartment(department_id: number): void {
+    const url = `${environment.apiUrl}/department/get-department/${department_id}`;
+    const headers = { authorization: `Bearer ${this.userService.currentUser.token}` };
+    this.http.get<any>(url, { headers: headers }).subscribe((data: any) => {    
+      this.currentUserDepartment = data.data;
+      console.log(this.currentUserDepartment);
+    });
+    
+  }
+
 
 }

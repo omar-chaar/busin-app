@@ -12,6 +12,20 @@ import { UserService } from 'src/app/services/user/user.service';
 import { TouchSequence } from 'selenium-webdriver';
 import { Router } from '@angular/router';
 
+import { Pipe, PipeTransform } from '@angular/core';
+
+@Pipe({
+  name: 'reverse'
+})
+export class ReversePipe implements PipeTransform {
+
+  transform(value) {
+   if (!value) return;
+
+   return value.reverse();
+  }
+}
+
 @Component({
   selector: 'app-announcements',
   templateUrl: 'announcements.page.html',
@@ -48,7 +62,6 @@ export class AnnouncementsPage implements OnInit {
           return announcement
         })
         this.fullyLoaded = true;
-        this.sortByDate(this.announcements);
       },(err) => {
           this.toastService.presentToast(err.error.error, 4500, 'danger');
       })

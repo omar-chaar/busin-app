@@ -9,7 +9,7 @@ import { ChatGroup } from "../classes/ChatGroup";
 export interface IAnnouncement {
     id: number,
     title: string,
-    text: string,
+    body: string,
     date: Date,
     read: boolean,
     sender: User,
@@ -30,7 +30,7 @@ export interface IUser {
 export interface IDepartment {
     department_id: number,
     name: string,
-    company: Company
+    company_id: number
 }
 
 export interface ICompany {

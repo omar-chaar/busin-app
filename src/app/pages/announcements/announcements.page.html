@@ -4,7 +4,7 @@
     </ion-button>
   </div>
   <ion-list lines="full">
-    <ion-accordion-group value="numbers" *ngFor="let announcement of announcements">
+    <ion-accordion-group value="numbers" *ngFor="let announcement of announcements.reverse()">
       <ion-accordion value="colors" class="annoucement-item" (click)="confirmRead(announcement)">
         <ion-item slot="header" [attr.disabled]="announcement.read ? true : null" class="announcement-title">
           <div>

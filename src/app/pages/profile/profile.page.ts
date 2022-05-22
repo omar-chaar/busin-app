@@ -22,12 +22,12 @@ export class ProfilePage implements OnInit {
 
   constructor(private route: ActivatedRoute, private _router: Router, private userService: UserService,
     private chatService: ChatService, private departmentService: DepartmentService) {
-    const id = +this.route.snapshot.params['id'];
-
+    const id = +this.route.snapshot.params['id'];    
   }
 
   ngOnInit() {
-
+    this.profileUser = this.userService.currentUser;
+    this.department = this.departmentService.currentUserDepartment;
   }
 
   redirectTo(url: string): void {
