@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from 'src/app/services/user/user.service';
 import { Location } from '@angular/common'
 import { DepartmentService } from 'src/app/services/department/department.service';
-
+import { NavController } from '@ionic/angular';
 import { User } from 'src/model/classes/User';
 import { Department } from 'src/model/classes/Department';
 import { ChatService } from 'src/app/services/chat/chat.service';
@@ -22,7 +22,7 @@ export class ProfilePage implements OnInit {
 
 
   constructor(private route: ActivatedRoute, private _router: Router, private userService: UserService,
-    private chatService: ChatService, private departmentService: DepartmentService) {
+    private chatService: ChatService, private departmentService: DepartmentService, private location: Location, private navController: NavController) {
   }
 
   ngOnInit() {
@@ -32,8 +32,8 @@ export class ProfilePage implements OnInit {
     const id = +this.route.snapshot.params['id'];
     if (id == this.userService.currentUser.id) {
       this.profileUser = this.userService.currentUser;
+      this.user = this.userService.currentUser;
       this.department = this.departmentService.currentUserDepartment;
-      this.switchEdit();
     } else {
       this.userService.getUserById(id).subscribe(
         (resp) => {
@@ -49,12 +49,17 @@ export class ProfilePage implements OnInit {
   }
 
   redirectTo(url: string): void {
-    //this.location.back()
+
     this._router.navigateByUrl(url)
   }
 
   redirectToChat(contact: User) {
     this._router.navigateByUrl('/message/' + '')
+  }
+
+  backButton() {
+    this.navController.setDirection("back", true, "back");
+    this.location.back();
   }
 
   switchEdit() {
