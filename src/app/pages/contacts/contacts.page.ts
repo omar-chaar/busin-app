@@ -45,6 +45,10 @@ export class ContactsPage implements OnInit {
           return new User(user.user_id, user.name, user.surname, user.position, user.email,
              null, user.department_id, user.is_adm, user.is_owner);
         })
+      } , (err) => {
+        if(err.status == 400){ //No user found
+          department.users = null;
+        }
       }
     )
   }
