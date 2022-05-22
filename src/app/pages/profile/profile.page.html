@@ -14,8 +14,8 @@
         <h1 *ngIf="!editMode" class="profile-title">{{profileUser.getFullName()}}</h1>
         <ion-input *ngIf="editMode" [(ngModel)]="profileUser.name" class="edit-input"></ion-input>
         <ion-input *ngIf="editMode" [(ngModel)]="profileUser.surname" class="edit-input"></ion-input>
-        <button (click)="switchEdit()" *ngIf="user === profileUser && editMode" class="edit-btn"><ion-icon name="checkmark"></ion-icon></button>
-        <button (click)="switchEdit()" *ngIf="user === profileUser && !editMode" class="edit-btn"><ion-icon name="pencil"></ion-icon></button>
+        <button (click)="checkMark()" *ngIf="(user === profileUser || user.admin || user.owner) && editMode" class="edit-btn"><ion-icon name="checkmark"></ion-icon></button>
+        <button (click)="switchEdit()" *ngIf="(user === profileUser || user.admin || user.owner) && !editMode" class="edit-btn"><ion-icon name="pencil"></ion-icon></button>
         <button (click)="switchEdit()" *ngIf="editMode" class="edit-btn"><ion-icon name="close"></ion-icon></button>
       </div>
       <span class="profile-info">
