@@ -8,11 +8,11 @@ export class User implements IUser{
     surname: string;
     position: string;
     email: string;
-    profilePicture: string;
+    profilePicture: string = null;
     department_id: number;
-    admin: boolean;
-    owner: boolean;
-    token: string;
+    admin: boolean = false;
+    owner: boolean = false;
+    token: string = '-1'; 
 
     constructor(id:number, name:string, surname:string, position:string,
                 email: string, profilePicture:string, department:number, admin:boolean,
