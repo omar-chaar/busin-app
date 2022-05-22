@@ -7,6 +7,7 @@ import { NavController } from '@ionic/angular';
 import { User } from 'src/model/classes/User';
 import { Department } from 'src/model/classes/Department';
 import { ChatService } from 'src/app/services/chat/chat.service';
+import { ToastService } from 'src/app/services/toast/toast.service';
 
 @Component({
   selector: 'app-profile',
@@ -22,13 +23,13 @@ export class ProfilePage implements OnInit {
 
 
   constructor(private route: ActivatedRoute, private _router: Router, private userService: UserService,
-    private chatService: ChatService, private departmentService: DepartmentService, private location: Location, private navController: NavController) {
+    private chatService: ChatService, private departmentService: DepartmentService, private toastService:ToastService, private location: Location, private navController: NavController) {
   }
 
   ngOnInit() {
     this.profileUser = new User(0, '', '', '', '', '', 0, false, false, '');
     this.department = new Department(0, '', 0);
-    this.user = new User(0, '', '', '', '', '', 0, false, false, '');
+    this.user = this.userService.currentUser;
     const id = +this.route.snapshot.params['id'];
     if (id == this.userService.currentUser.id) {
       this.profileUser = this.userService.currentUser;
@@ -64,6 +65,21 @@ export class ProfilePage implements OnInit {
 
   switchEdit() {
     this.editMode = !this.editMode;
+    
+  }
+  
+  checkMark(){
+    if(this.user.admin || this.user.owner || this.profileUser.id == this.userService.currentUser.id){
+      this.userService.setName(this.profileUser.id, this.profileUser.name, this.profileUser.surname).subscribe(
+        (resp) => {
+          this.toastService.presentToast("Name changed", 3000, "success");
+          this.editMode = false;
+        }
+      )
+    } else {
+      this.toastService.presentToast("You are not allowed to change username", 3000, "danger");
+    }
+      
   }
 
 }

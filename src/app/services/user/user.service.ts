@@ -83,6 +83,13 @@ export class UserService {
     return this.http.get(url, {headers: headers});
   }
 
+  setName(id: number, name: string, surname: string): Observable<any> {
+    const headers = {authorization: 'Bearer ' + this.currentUser.token};
+    const url = `${environment.apiUrl}/user/set-username/${id}`;
+    const body = {name, surname};
+    return this.http.put(url, body, {headers: headers});
+  }
+
   onLoad(): Observable<any> {
     return this.subject.asObservable();
   }
