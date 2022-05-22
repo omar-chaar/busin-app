@@ -35,7 +35,8 @@ export class JoinTwoPage implements OnInit {
     this.userService.createAccount(this.email, this.password).subscribe(
       (resp) => {
         if(resp){
-          this.redirectTo('/login');
+          this.toastService.presentToast('Account created successfully', 3000, 'success');
+          this.redirectTo('/user-login');
         }
       },
       (err) => {

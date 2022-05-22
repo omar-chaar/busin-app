@@ -40,7 +40,7 @@ export class NewAnnouncementPage implements OnInit {
     if (this.validationService.validateLength('Title', this.title, 50) && this.validationService.validateLength('Text', this.content, 500)) {
       this.announcementService.createAnnouncement(this.title, this.content).subscribe(
         (resp) => {
-          const announcement = new Announcement(resp.data.id, resp.data.title, resp.data.body, 'Just now', resp.data.sender)
+          const announcement = new Announcement(resp.data.id, resp.data.title, resp.data.body, new Date(), resp.data.sender)
           this.announcements.push(announcement)
           this.toastService.presentToast('Announcement created', 3000, 'success')
           this.dismiss()

@@ -30,11 +30,23 @@ export class ContactsPage implements OnInit {
   constructor(private departmentService: DepartmentService, private userService: UserService,
     private router: Router, private chatService:ChatService) {
       this.user = this.userService.currentUser
-
+      const deptos = this.departmentService.departaments
+      this.departments = deptos;
   }
 
   ngOnInit(): void {
 
+  }
+
+  loadUsers(department: Department):void{
+    this.userService.getUsersByDepartment(department.department_id).subscribe(
+      (resp) => {
+        department.users = resp.data.map(user => {
+          return new User(user.user_id, user.name, user.surname, user.position, user.email,
+             null, user.department_id, user.is_adm, user.is_owner);
+        })
+      }
+    )
   }
 
   loadData(event):void {

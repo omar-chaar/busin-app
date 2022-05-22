@@ -29,7 +29,16 @@ export class EditDepartmentsPage implements OnInit {
     private departmentService: DepartmentService, private toastService: ToastService,
     private actionSheetCtrl: ActionSheetController, private chatGroupService: ChatGroupService,
     private modalController: ModalController) {
-    
+
+    let deptos: Department[] | EditDepartment[] = this.departmentService.departaments;
+    deptos = deptos.map(department => {
+      return {
+        department: department,
+        edit: false
+      }
+    })
+
+    this.departments = deptos;
   }
 
   ngOnInit() {
@@ -61,11 +70,20 @@ export class EditDepartmentsPage implements OnInit {
       const { role } = await actionSheet.onDidDismiss();
 
       if (role === 'destructive') {
-        
+        this.departmentService.updateDepartment(this.text, department.department.department_id).subscribe(
+          (data: any) => {
+            department.department.name = this.text;
+            this.toastService.presentToast('Department renamed successfully', 3000, 'success');
+            department.department.name = this.text;
+            this.text = ''
+            department.edit = false
+          },
+          (error: any) => {
+            this.toastService.presentToast(error.error.error, 3000, 'danger');
+          }
+        )
       }
     }
-    this.text = ''
-    department.edit = false
   }
 
   async confirmDelete(department: EditDepartment): Promise<void> {

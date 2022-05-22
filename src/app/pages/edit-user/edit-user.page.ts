@@ -33,7 +33,6 @@ export class EditUserPage implements OnInit {
   constructor(private toastService: ToastService, private activatedRoute: ActivatedRoute,
     private validationService: ValidationService, private departmentService: DepartmentService,
     private userService: UserService, private actionSheetCtrl: ActionSheetController, private location: Location, private router:Router, private chatGroupService: ChatGroupService) {
-
      }
 
   ngOnInit() {

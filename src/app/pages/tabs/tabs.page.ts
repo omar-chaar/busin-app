@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { CompanyService } from 'src/app/services/company/company.service';
 import { UserService } from 'src/app/services/user/user.service';
 import { User } from 'src/model/classes/User';
 
@@ -13,13 +14,10 @@ export class TabsPage implements OnInit {
   user: User;
 
   constructor(private userService: UserService, private router: Router) {
-    this.user = this.userService.currentUser;
-  }
+      this.user = this.userService.currentUser;
+    }
 
   ngOnInit(): void {
-    // if(!this.user){
-    //   this.router.navigateByUrl('/user-login')
-    // }
   }
 
   redirectTo(url: string){

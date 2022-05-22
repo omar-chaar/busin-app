@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { CompanyService } from 'src/app/services/company/company.service';
 import { ToastService } from 'src/app/services/toast/toast.service';
 import { UserService } from 'src/app/services/user/user.service';
 import { ValidationService } from 'src/app/services/validation/validation.service';
@@ -19,7 +20,7 @@ export class CreateOwnerPage implements OnInit {
   position='';
 
   constructor(private validationService: ValidationService, private _router: Router,
-    private toastService: ToastService, private userService: UserService) { }
+    private toastService: ToastService, private companyService: CompanyService) { }
 
   ngOnInit() {
   }
@@ -36,7 +37,7 @@ export class CreateOwnerPage implements OnInit {
   }
 
   createAccount():void{
-    this.userService.createCompany(this.name, this.surname, this.email, this.password,
+    this.companyService.createCompany(this.name, this.surname, this.email, this.password,
       this.position).subscribe(
       (resp) => {
         if(resp){

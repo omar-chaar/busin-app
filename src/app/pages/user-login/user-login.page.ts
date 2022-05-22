@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { CompanyService } from 'src/app/services/company/company.service';
 import { ToastService } from 'src/app/services/toast/toast.service';
 import { UserService } from 'src/app/services/user/user.service';
 import { ValidationService } from 'src/app/services/validation/validation.service';
@@ -16,7 +17,8 @@ export class UserLoginPage implements OnInit {
   password: string
 
   constructor(private router: Router, private validationService: ValidationService,
-    private userService: UserService, private toastService: ToastService) { }
+    private userService: UserService, private toastService: ToastService,
+    private companyService: CompanyService) { }
 
   ngOnInit() {
 
@@ -29,10 +31,12 @@ export class UserLoginPage implements OnInit {
       (resp) => {
         if(resp){
           this.toastService.presentToast('Login successful', 4000, 'success');
-          this.userService.currentUser = new User(resp.data.user_id, resp.data.name, resp.data.surname,
+          const user = new User(resp.data.user_id, resp.data.name, resp.data.surname,
             resp.data.position, resp.data.email, resp.data.profilePicture, resp.data.department_id,
             resp.data.is_adm, resp.data.is_owner, resp.token);
-
+            this.userService.currentUser = user
+            this.companyService.setCompany(user);
+            this.userService.isLoaded(user);
           if(localStorage){
             localStorage.setItem('token', resp.token);
           }

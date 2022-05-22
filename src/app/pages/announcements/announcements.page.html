@@ -9,7 +9,7 @@
         <ion-item slot="header" [attr.disabled]="announcement.read ? true : null" class="announcement-title">
           <div>
             <ion-label>{{announcement.title}}</ion-label>
-            <ion-label class="date">{{announcement.date}}</ion-label>
+            <ion-label class="date">{{formatDate(announcement.date)}}</ion-label>
           </div>
         </ion-item>
         <ion-item slot="content" class="content">

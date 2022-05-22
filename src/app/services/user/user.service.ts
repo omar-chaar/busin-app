@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { User } from 'src/model/classes/User';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Department } from 'src/model/classes/Department';
 import { DepartmentService } from '../department/department.service';
@@ -16,22 +16,30 @@ export class UserService {
   headers: { 'Content-Type': 'application/json' };
 
   currentUser: User;
-  companyName: string;
-  companyId: number;
 
-  constructor(private departmentService: DepartmentService, private http: HttpClient) {
+  subject = new Subject()
+
+  constructor(private http: HttpClient) {
 
   }
 
   logout(): boolean {
     this.currentUser = null;
+    if(localStorage){
+      localStorage.removeItem('token');
+    }
     return true
   }
 
-  generateToken(name: string, surname: string, departamentId: number, position: string, admin: boolean): Observable<any> {
-    const body = { name, surname, departamentId, position, admin };
+  isLoaded(user: User):void{
+    this.subject.next(this.currentUser);
+  }
+
+  generateToken(name: string, surname: string, departmentId: number, position: string, admin: boolean): Observable<any> {
+    const body = { name, surname, departmentId, position, admin };
+    const headers = { 'Content-Type': 'application/json', 'authorization': 'Bearer ' + this.currentUser.token };
     const url = `${environment.apiUrl}/user/generate-code`;
-    return this.http.post(url, body, { headers: this.headers });
+    return this.http.post(url, body, { headers: headers });
   }
 
   validateToken(code: string): Observable<any> {
@@ -40,14 +48,8 @@ export class UserService {
   }
 
   createAccount(email: string, password: string): Observable<any> {
-    const url = `${environment.apiUrl}/user/create-user`;
+    const url = `${environment.apiUrl}/user/create`;
     const body = { email, password, code: this.code };
-    return this.http.post(url, body, { headers: this.headers });
-  }
-
-  createCompany(name: string, surname: string, email: string, password: string, position: string): Observable<any> {
-    const url = `${environment.apiUrl}/company/create`;
-    const body = { name, email, surname, password, position, companyName: this.companyName };
     return this.http.post(url, body, { headers: this.headers });
   }
 
@@ -61,6 +63,22 @@ export class UserService {
     const url = `${environment.apiUrl}/user/get-by-token`;
     const headers = { 'Content-Type': 'application/json', 'authorization': 'Bearer ' + token };
     return this.http.get(url, { headers: headers });
+  }
+
+  getUsersByDepartment(departmentId: number): Observable<any> {
+    const headers = {authorization: 'Bearer ' + this.currentUser.token};
+    const url = `${environment.apiUrl}/user/get-by-department/${departmentId}`;
+    return this.http.get(url, {headers: headers});
+  }
+
+  getUsersByCompany(companyId: number): Observable<User[]> {
+    const headers = {authorization: 'Bearer ' + this.currentUser.token};
+    const url = `${environment.apiUrl}/user/get-by-company/${companyId}`;
+    return this.http.get<User[]>(url, {headers: headers});
+  }
+
+  onLoad(): Observable<any> {
+    return this.subject.asObservable();
   }
 
 }

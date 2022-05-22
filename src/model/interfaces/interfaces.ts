@@ -10,7 +10,7 @@ export interface IAnnouncement {
     id: number,
     title: string,
     text: string,
-    date: string,
+    date: Date,
     read: boolean,
     sender: User,
 }
@@ -28,13 +28,13 @@ export interface IUser {
 }
 
 export interface IDepartment {
-    id: number,
+    department_id: number,
     name: string,
     company: Company
 }
 
 export interface ICompany {
-    id: number,
+    company_id: number,
     name: string,
 }
 

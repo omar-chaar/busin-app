@@ -7,7 +7,7 @@
 <ion-content>
   <ion-list lines="full">
     <ion-item *ngFor="let user of users">
-      <ion-label>{{user.getFullName()}}</ion-label>
+      <ion-label>{{user.name}} {{user.surname}}</ion-label>
       <div class="icons">
         <ion-icon name="pencil-outline"
           style="color: darkorange; margin-right: 20px;" (click)="redirectTo('/edit-user/' + user.id)"></ion-icon>

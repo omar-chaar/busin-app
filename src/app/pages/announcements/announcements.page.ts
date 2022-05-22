@@ -9,6 +9,8 @@ import { ToastService } from 'src/app/services/toast/toast.service';
 import { Announcement } from 'src/model/classes/Announcement';
 import { User } from 'src/model/classes/User';
 import { UserService } from 'src/app/services/user/user.service';
+import { TouchSequence } from 'selenium-webdriver';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-announcements',
@@ -27,23 +29,29 @@ export class AnnouncementsPage implements OnInit {
   user: User;
 
   constructor(public modalController: ModalController, private announcementService: AnnouncementService,
-    private userService: UserService, private toastService: ToastService) {
+    private userService: UserService, private toastService: ToastService, private router: Router) {
       this.user = this.userService.currentUser;
-      this.announcementService.getAnnouncements().subscribe(
-        (resp:any) => {
-          this.announcements = resp.data.map(announcement => {
-            announcement = new Announcement(announcement.announcement_id, announcement.announcement_title, announcement.announcement_body,
-               announcement.time, announcement.sender_id)
-            return announcement
-          })
-          this.fullyLoaded = true;
-        },(err) => {
-            this.toastService.presentToast(err.error.error, 4500, 'danger');
-        })
+      this.loadAnnouncements();
   }
 
   ngOnInit(): void {
     console.log(this.userService.currentUser)
+  }
+
+  loadAnnouncements():void{
+    this.announcementService.getAnnouncements().subscribe(
+      (resp:any) => {
+        this.announcements = resp.data.map(announcement => {
+          const date = this.toDate(announcement.time);
+          announcement = new Announcement(announcement.announcement_id, announcement.announcement_title, announcement.announcement_body,
+             date, announcement.sender_id)
+          return announcement
+        })
+        this.fullyLoaded = true;
+        this.sortByDate(this.announcements);
+      },(err) => {
+          this.toastService.presentToast(err.error.error, 4500, 'danger');
+      })
   }
 
   async presentModal() {
@@ -69,18 +77,42 @@ export class AnnouncementsPage implements OnInit {
   }
 
   formatDate(date: Date): string {
-    const day: string = date.getDate().toString().length === 1 ? `0${date.getDate().toString()}` : date.getDate().toString();
-    const month: string = (date.getMonth()+1).toString().length === 1 ? `0${(date.getMonth()+1).toString()}` : (date.getMonth()+1).toString();
-    const year: string = date.getFullYear().toString()
-    return `${day}/${month}/${year}`
+    const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+      "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    let day = date.getDate().toString();
+    let monthIndex = date.getMonth().toString();
+    let year = date.getFullYear().toString();
+    let hours = date.getHours().toString();
+    let minutes = date.getMinutes().toString();
+
+    if (day.length == 1) {
+      day = '0' + day
+    }
+    if (hours.length == 1) {
+      hours = '0' + hours
+    }
+    if( minutes.length == 1) {
+      minutes = '0' + minutes
+    }
+
+    return day + ' ' + monthNames[monthIndex] + ' ' + year + ' ' + hours + ':' + minutes;
   }
 
-  // sortByDate(announcements: Announcement[]): void {
-  //   const sortedArr = announcements.sort(function (a, b) {
-  //     return b.date.getTime() - a.date.getTime();
-  //   });
-  //   this.announcements = sortedArr
-  // }
+
+  toDate(date: String): Date {
+    const strArr = date.toString().split('T');
+    const dateArr = strArr[0].toString().split('-');
+    const timeArr = strArr[1].toString().split(':');
+    return new Date(+dateArr[0], +dateArr[1] - 1, +dateArr[2], +timeArr[0], +timeArr[1]);
+  }
+
+  sortByDate(announcements: Announcement[]): void {
+    const sortedArr = announcements.sort(function (a, b) {
+      return b.date.getTime() - a.date.getTime();
+    });
+    this.announcements = sortedArr
+  }
+
   openModal(): void {
     if(this.user.admin)
       this.presentModal()

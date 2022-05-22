@@ -3,12 +3,13 @@ import { Company } from "./Company";
 
 export class Department implements IDepartment{
 
-    id: number;
+    department_id: number;
     name: string;
     company: Company;
+    users?: any[];
 
     constructor(id:number, name: string, company:Company){
-        this.id = id;
+        this.department_id = id;
         this.name = name;
         this.company = company;
     }

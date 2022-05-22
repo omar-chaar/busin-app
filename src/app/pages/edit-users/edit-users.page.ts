@@ -9,6 +9,7 @@ import { UserService } from 'src/app/services/user/user.service';
 import { AddUserPage } from '../add-user/add-user.page';
 import { EditUserPage } from '../edit-user/edit-user.page';
 import { User } from 'src/model/classes/User';
+import { CompanyService } from 'src/app/services/company/company.service';
 
 @Component({
   selector: 'app-edit-users',
@@ -26,10 +27,20 @@ export class EditUsersPage implements OnInit {
   constructor(private userService: UserService, private actionSheetCtrl: ActionSheetController,
     private messageService: MessagesService, private chatMessageService: ChatMessageService,
     private chatService: ChatService, private toastService: ToastService, private router: Router,
-    private modalController: ModalController) { 
+    private modalController: ModalController, private companyService: CompanyService) { 
 
-
-    }
+    this.user = this.userService.currentUser;
+    const id = this.companyService.company.company_id;
+    this.userService.getUsersByCompany(id).subscribe(
+      (data: User[]) => {
+        this.users = data;
+        this.fullyLoaded = true;
+      },
+      (error) => {
+        this.toastService.presentToast(error.error.error, 4000, 'danger');
+      }
+    )
+  }
 
   ngOnInit() {
 

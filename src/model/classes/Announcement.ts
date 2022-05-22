@@ -6,11 +6,11 @@ export class Announcement implements IAnnouncement{
     id: number;
     title: string;
     text: string;
-    date: string;
+    date: Date;
     read: boolean;
     sender: User;
 
-    constructor(id: number, title:string, text:string, date:string, sender: User){
+    constructor(id: number, title:string, text:string, date:Date, sender: User){
         this.id = id;
         this.title = title;
         this.text = text;

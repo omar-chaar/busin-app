@@ -1,8 +1,10 @@
-import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Injectable, OnInit } from '@angular/core';
 import { Subject, Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 import { Company } from 'src/model/classes/Company';
 import { Department } from 'src/model/classes/Department';
-import { User } from 'src/model/classes/User';
+import { CompanyService } from '../company/company.service';
 import { UserService } from '../user/user.service';
 
 
@@ -10,9 +12,42 @@ import { UserService } from '../user/user.service';
 @Injectable({
   providedIn: 'root'
 })
-export class DepartmentService {
+export class DepartmentService implements OnInit {
 
-  constructor() {    
-   }
+  departaments: Department[];
+
+  constructor(private http: HttpClient,
+    private userService: UserService) {
+
+  }
+
+  ngOnInit(): void {
+  }
+
+  createDepartment(name: string, companyId: number): Observable<any> {
+    const url = `${environment.apiUrl}/department/create`;
+    const headers = { authorization: `Bearer ${this.userService.currentUser.token}`, 'Content-Type': 'application/json' };
+    return this.http.post<any>(url, { name, companyId }, { headers: headers });
+  }
+
+  setDepartaments(id: number): void {
+    this.getDepartments(id).subscribe((data: any) => {
+      this.departaments = data.data;
+      console.log(data);
+    });
+  }
+
+  updateDepartment(name: string, id: number): Observable<any> {
+    const url = `${environment.apiUrl}/department/update`;
+    const headers = { authorization: `Bearer ${this.userService.currentUser.token}`, 'Content-Type': 'application/json' };
+    const body = { name, department_id: id };
+    return this.http.put<any>(url, body, { headers: headers });
+  }
+
+  getDepartments(id: number): Observable<any> {
+    const url = `${environment.apiUrl}/department/get-departments/${id}`;
+    const headers = { authorization: `Bearer ${this.userService.currentUser.token}` };
+    return this.http.get<any>(url, { headers: headers });
+  }
 
 }

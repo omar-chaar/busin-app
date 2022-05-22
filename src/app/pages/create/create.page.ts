@@ -4,6 +4,7 @@ import { ToastService } from 'src/app/services/toast/toast.service';
 import { ValidationService } from 'src/app/services/validation/validation.service';
 import { ActionSheetController } from '@ionic/angular';
 import { UserService } from 'src/app/services/user/user.service';
+import { CompanyService } from 'src/app/services/company/company.service';
 @Component({
   selector: 'app-create',
   templateUrl: './create.page.html',
@@ -15,7 +16,7 @@ export class CreatePage implements OnInit {
 
   constructor(private router: Router,
     private validationService: ValidationService, private actionSheetCtrl: ActionSheetController,
-    private userService: UserService) { }
+    private companyService: CompanyService) { }
 
   ngOnInit() {
   }
@@ -50,7 +51,7 @@ export class CreatePage implements OnInit {
     const { role } = await actionSheet.onDidDismiss();
 
     if (role === 'destructive') {    
-      this.userService.companyName = this.name;
+      this.companyService.companyName = this.name;
       this.redirectTo('/create-owner')      
     }
   }
