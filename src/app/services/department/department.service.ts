@@ -50,6 +50,12 @@ export class DepartmentService implements OnInit {
     return this.http.get<any>(url, { headers: headers });
   }
 
+  getDepartment(id: number): Observable<any> {
+    const url = `${environment.apiUrl}/department/get-department/${id}`;
+    const headers = { authorization: `Bearer ${this.userService.currentUser.token}` };
+    return this.http.get<any>(url, { headers: headers });
+  }  
+
   setUserDepartment(department_id: number): void {
     const url = `${environment.apiUrl}/department/get-department/${department_id}`;
     const headers = { authorization: `Bearer ${this.userService.currentUser.token}` };
