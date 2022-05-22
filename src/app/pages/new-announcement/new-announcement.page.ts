@@ -38,7 +38,7 @@ export class NewAnnouncementPage implements OnInit {
 
   handleSubmit():void {
     if (this.validationService.validateLength('Title', this.title, 50) && this.validationService.validateLength('Text', this.content, 500)) {
-      this.announcementService.createAnnouncement(this.title, this.content).subscribe(
+      this.announcementService.createAnnouncement(this.content, this.title).subscribe(
         (resp) => {
           const announcement = new Announcement(resp.data.id, resp.data.title, resp.data.body, new Date(), resp.data.sender)
           this.announcements.push(announcement)
