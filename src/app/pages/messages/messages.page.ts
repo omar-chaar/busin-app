@@ -41,7 +41,7 @@ export class MessagesPage implements OnInit {
       }
     )
   }
-  
+
   loadData(event): void {
     if (!this.fullyLoaded) {
       this.page += 1;
@@ -55,10 +55,10 @@ export class MessagesPage implements OnInit {
     }
   }
 
-  //format date to time
-  formatDate(date: Date): string {
-    const d = new Date(date)
-    return d.toLocaleTimeString()
+  formatTime(date: Date): string {
+    const hour: string = date.getHours().toString().length === 1 ? `0${date.getHours().toString()}` : date.getHours().toString();
+    const minutes: string = date.getMinutes().toString().length === 1 ? `0${date.getMinutes().toString()}` : date.getMinutes().toString();
+    return `${hour}:${minutes}`
   }
 
   addMoreItems(): boolean {

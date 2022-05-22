@@ -2,17 +2,19 @@
 
   <ion-list lines="full">
     <ion-item *ngFor="let chat of chats;" ion-button>
-      <ion-avatar slot="start" (click)="console.log('')">
+      <ion-avatar slot="start" (click)="goToProfile(chat.user.id)">
         <img src="../../../assets/images/gw50h17a.bmp">
       </ion-avatar>
       <ion-label (click)="redirectToMessage(chat.id)">
-        <h2>{{}}</h2>
+        <h2>{{chat.user.name}} {{chat.user.surname}}</h2>
         <ion-label class="message-info">
-          <p class="text-info">{{chat.messages[chat.messages.length-1].message_body}}</p>
-          <p class="hour-info">{{formatDate(chat.messages[chat.messages.length-1].time)}}</p>
+          <p class="text-info">{{chat.messages[0].message}}</p>
         </ion-label>
       </ion-label>
-      <ion-badge color="tertiary" *ngIf="chat.unreads > 0">0</ion-badge>
+      <ion-label class="meta-info">
+        <p class="">{{formatTime(chat.messages[0].time)}}</p>
+        <ion-badge color="tertiary" *ngIf="!chat.messages[0].was_seen">Not Seen</ion-badge>
+      </ion-label>
     </ion-item>
 
   </ion-list>

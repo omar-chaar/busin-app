@@ -5,15 +5,15 @@ import { User } from "./User";
 export class Message implements IMessage{
 
     id: number;
-    sender: User;
-    receiver: User;
+    sender: any;
+    receiver: any;
     time: Date;
     message: string;
     was_seen: boolean;
     parentMessage?: Message;
     chatId?: Chat;
 
-    constructor(id:number, sender:User, receiver:User, time: Date|string, message:string, was_seen: boolean, parentMessage?: Message){
+    constructor(id:number, sender:any, receiver:any, time: Date|string, message:string, was_seen: boolean, parentMessage?: Message){
         this.id = id;
         this.sender = sender;
         this.receiver = receiver;

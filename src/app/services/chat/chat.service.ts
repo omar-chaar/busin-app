@@ -10,11 +10,6 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 
 
-type ChatData = {
-  messages: {
-    id: any[];
-  }
-}
 
 @Injectable({
   providedIn: 'root'
@@ -31,22 +26,15 @@ export class ChatService {
 
   getChats(user: User): void {
     const headers = { 'authorization': 'Bearer ' + user.token };
-    this.http.get<any>(environment.apiUrl + '/messages/get-messages/' + user.id).subscribe(
-      (data: ChatData) => {
-        this.chats = Object.entries(data.messages).map(
-          ([key, value]) => {
-            const messages = value.map(
-              (message: any) => {
-                const user = new User(message.user_id, message.name, message.surname, message.position, message.email, message.profilePicture,
-                  message.department_id, message.is_adm, message.is_owner);
-
-                return new Message(message.message_id, user, message.receiver_id, message.time, message.message_body,
-                  message.was_seen, message.parent_message_id);
-              }
-            )
-            return new Chat(parseInt(key), messages);
-          }
-        )
+    this.http.get<any>(environment.apiUrl + '/messages/get-messages/' + user.id, {headers: headers}).subscribe(
+      (data) => {
+        this.chats = data.messages.map((data) => {
+          const user = {name: data.user.name, surname: data.user.surname, picture: data.user.profilePicture, id: data.user.id};
+          const message = new Message(data.chatMessageId, data.chatSenderId, data.chatReceiverId, data.chatTime, data.chatMessage, 
+            data.wasSeen, data.parentMessageId);
+          const messages: Message[] = [message];
+          return new Chat(data.chatId, messages, null, user);
+        })
         this.subject.next(this.chats);
       },
       (error) => {
