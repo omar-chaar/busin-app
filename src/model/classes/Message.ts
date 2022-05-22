@@ -9,17 +9,17 @@ export class Message implements IMessage{
     receiver: User;
     time: Date;
     message: string;
-    read: boolean;
+    was_seen: boolean;
     parentMessage?: Message;
     chatId?: Chat;
 
-    constructor(id:number, sender:User, receiver:User, time: Date|string, message:string, read: boolean, parentMessage?: Message){
+    constructor(id:number, sender:User, receiver:User, time: Date|string, message:string, was_seen: boolean, parentMessage?: Message){
         this.id = id;
         this.sender = sender;
         this.receiver = receiver;
         this.message = message;
         this.message = message;
-        this.read = read;
+        this.was_seen = was_seen;
 
         if(typeof time === 'string') this.time = new Date(time)
         else this.time = time;

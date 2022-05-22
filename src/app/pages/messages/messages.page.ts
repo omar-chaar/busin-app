@@ -18,11 +18,11 @@ import { Message } from 'src/model/classes/Message';
 export class MessagesPage implements OnInit {
   @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
   //users: {name: string, unread: number}[]  = []
-  chats: Chat[] = []
+  chats: Chat[] = [];
+  users: User[] = [];
+  currentUser: User;
   page: number = 1;
-  fullyLoaded = false
-  subscription: Subscription;
-  subscriptionB: Subscription;
+  fullyLoaded = false;
 
   //user for test
   user: User = this.userService.currentUser
@@ -33,9 +33,15 @@ export class MessagesPage implements OnInit {
     }
 
   ngOnInit(): void {
-
+    this.chatService.onLoad().subscribe 
+    (
+      (chats: Chat[]) => {
+        this.currentUser = this.userService.currentUser;
+        this.chats = chats
+      }
+    )
   }
-
+  
   loadData(event): void {
     if (!this.fullyLoaded) {
       this.page += 1;
@@ -47,6 +53,12 @@ export class MessagesPage implements OnInit {
         event.target.complete();
       }, 2000);
     }
+  }
+
+  //format date to time
+  formatDate(date: Date): string {
+    const d = new Date(date)
+    return d.toLocaleTimeString()
   }
 
   addMoreItems(): boolean {

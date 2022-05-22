@@ -44,7 +44,7 @@ export interface IMessage {
     receiver: User,
     time: Date,
     message: string,
-    read: boolean,
+    was_seen: boolean,
     parentMessage?: Message,
     chat?: Chat,
 }
@@ -60,9 +60,7 @@ export interface IChatMessage {
 
 export interface IChat {
     id: number,
-    participants: User[],
     messages?: Message[],
-    unreads?: number,
     lastMessage?: Date,
 }
 

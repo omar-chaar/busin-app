@@ -2,17 +2,17 @@
 
   <ion-list lines="full">
     <ion-item *ngFor="let chat of chats;" ion-button>
-      <ion-avatar slot="start" (click)="goToProfile(chat.participants[0].id === user.id ? chat.participants[1].id : chat.participants[0].id)">
+      <ion-avatar slot="start" (click)="console.log('')">
         <img src="../../../assets/images/gw50h17a.bmp">
       </ion-avatar>
       <ion-label (click)="redirectToMessage(chat.id)">
-        <h2>{{chat.participants[0].id === user.id ? chat.participants[1].getFullName() : chat.participants[0].getFullName()}}</h2>
+        <h2>{{}}</h2>
         <ion-label class="message-info">
-          <p class="text-info">{{chat.messages[chat.messages.length-1].message}}</p>
-          <p class="hour-info">{{formatTime(chat.messages[chat.messages.length-1].time)}}</p>
+          <p class="text-info">{{chat.messages[chat.messages.length-1].message_body}}</p>
+          <p class="hour-info">{{formatDate(chat.messages[chat.messages.length-1].time)}}</p>
         </ion-label>
       </ion-label>
-      <ion-badge color="tertiary" *ngIf="chat.unreads > 0">{{chat.unreads}}</ion-badge>
+      <ion-badge color="tertiary" *ngIf="chat.unreads > 0">0</ion-badge>
     </ion-item>
 
   </ion-list>
