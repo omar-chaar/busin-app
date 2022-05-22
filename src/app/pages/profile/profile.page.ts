@@ -20,14 +20,32 @@ export class ProfilePage implements OnInit {
   user: User;
   editMode: boolean = false;
 
+
   constructor(private route: ActivatedRoute, private _router: Router, private userService: UserService,
     private chatService: ChatService, private departmentService: DepartmentService) {
-    const id = +this.route.snapshot.params['id'];    
   }
 
   ngOnInit() {
-    this.profileUser = this.userService.currentUser;
-    this.department = this.departmentService.currentUserDepartment;
+    this.profileUser = new User(0, '', '', '', '', '', 0, false, false, '');
+    this.department = new Department(0, '', 0);
+    this.user = new User(0, '', '', '', '', '', 0, false, false, '');
+    const id = +this.route.snapshot.params['id'];
+    if (id == this.userService.currentUser.id) {
+      this.profileUser = this.userService.currentUser;
+      this.department = this.departmentService.currentUserDepartment;
+      this.switchEdit();
+    } else {
+      this.userService.getUserById(id).subscribe(
+        (resp) => {
+          this.profileUser = new User(id, resp.data.name, resp.data.surname, resp.data.position, null,
+            resp.data.profile_picture, resp.data.department_id, resp.data.is_adm, resp.data.is_owner);
+          this.departmentService.getDepartment(resp.data.department_id).subscribe(
+            (resp) => {
+              this.department = new Department(resp.data.department_id, resp.data.name, resp.data.company_id);
+            }
+          )
+        })
+    }
   }
 
   redirectTo(url: string): void {
@@ -42,5 +60,5 @@ export class ProfilePage implements OnInit {
   switchEdit() {
     this.editMode = !this.editMode;
   }
-  
+
 }
