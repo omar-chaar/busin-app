@@ -16,7 +16,46 @@ export class MessagesService {
   private subject = new Subject();
 
   constructor(private userService: UserService, private http: HttpClient) {
-   
+
+  }
+
+  updateMessages(user:number, user2:number, id:number): Observable<any> {
+    const headers = {authorization: `Bearer ${this.userService.currentUser.token}`, 'Content-Type': 'application/json'};
+    const url = `${environment.apiUrl}/messages/parentmessage/${id}?userId=${user}&user2Id=${user2}`;
+    return this.http.get(url, {headers});
+  }
+
+  getMessages(user: number, user2: number): Observable<any> {
+    const headers = {authorization: `Bearer ${this.userService.currentUser.token}`, 'Content-Type': 'application/json'};
+    const url = `${environment.apiUrl}/messages/get-messages/${user}/${user2}`;
+    return this.http.get(url, {headers});
+  }
+
+  sendMessage(sender: number, receiver: number, message: string, parent: number): Observable<any> {
+    const headers = {authorization: `Bearer ${this.userService.currentUser.token}`, 'Content-Type': 'application/json'};
+    const url = `${environment.apiUrl}/messages/insert-message`;
+    const body = {senderId: sender, receiverId: receiver, message: message, parentId: parent};
+    return this.http.post(url, body, {headers});
+  }
+
+  onInsert(message: Message): void{
+    this.subject.next(message);
+  }
+
+  setAsSeen(user1: number, user2: number): Observable<any> {
+    const headers = {authorization: `Bearer ${this.userService.currentUser.token}`, 'Content-Type': 'application/json'};
+    const url = `${environment.apiUrl}/messages/was-seen/${user1}/${user2}`;
+    return this.http.put(url, null, {headers});
+  }
+
+  setAsUnseen(user1: number, user2: number): Observable<any> {
+    const headers = {authorization: `Bearer ${this.userService.currentUser.token}`, 'Content-Type': 'application/json'};
+    const url = `${environment.apiUrl}/messages/unseen/${user1}/${user2}`;
+    return this.http.put(url, null, {headers});
+  }
+
+  onInsertObservable(): Observable<any>{
+    return this.subject.asObservable();
   }
 
 }

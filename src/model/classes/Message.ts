@@ -10,7 +10,7 @@ export class Message implements IMessage{
     time: Date;
     message: string;
     was_seen: boolean;
-    parentMessage?: Message;
+    parentMessage?: any;
     chatId?: Chat;
 
     constructor(id:number, sender:any, receiver:any, time: Date|string, message:string, was_seen: boolean, parentMessage?: Message){

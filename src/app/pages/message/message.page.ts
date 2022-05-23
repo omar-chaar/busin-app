@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ChatService } from 'src/app/services/chat/chat.service';
 import { MessagesService } from 'src/app/services/messages/messages.service';
@@ -7,6 +7,7 @@ import { IonInfiniteScroll } from '@ionic/angular';
 import { Message } from 'src/model/classes/Message';
 import { User } from 'src/model/classes/User';
 import { Chat } from 'src/model/classes/Chat';
+import { Observable, Subject } from 'rxjs';
 
 @Component({
   selector: 'app-message',
@@ -15,7 +16,7 @@ import { Chat } from 'src/model/classes/Chat';
 })
 export class MessagePage implements OnInit {
   @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
-  contact: User;
+  contact: any = new User(0, '', '', '', '', null, 0, false, false);
   messages: Message[] = [];
   user: User;
   text: string;
@@ -25,7 +26,7 @@ export class MessagePage implements OnInit {
     private route: ActivatedRoute,
     private chatService: ChatService,
     private userService: UserService,
-    private messagesService: MessagesService
+    private messagesService: MessagesService,
   ) {
     this.user = this.userService.currentUser;
   }
@@ -34,6 +35,13 @@ export class MessagePage implements OnInit {
     const id = +this.route.snapshot.params['id'];
     this.userService.getUserById(id).subscribe((user) => {
       this.contact = user.data;
+      this.messagesService.getMessages(this.user.id, this.contact.user_id).subscribe((data) => {
+        this.messages = data.messages.map(
+          (message) => new Message(message.message_id, message.sender_id, message.receiver_id, message.time, message.message_body,
+            message.was_seen, message.parent_message_id)
+        )
+      }
+      );
     });
   }
 
@@ -45,7 +53,23 @@ export class MessagePage implements OnInit {
     this._router.navigateByUrl('/profile/' + id);
   }
 
-  onSubmit(): void {}
+  onSubmit(): void {
+    if(this.text){
+      this.messagesService.sendMessage(this.user.id, this.contact.user_id, this.text, this.messages[this.messages.length - 1].id).subscribe((data) => {
+        const newmessage = new Message(data.response.insertId, this.user.id, this.contact.user_id, new Date(), this.text, false, null)
+        this.messages.push(newmessage);
+        this.messagesService.onInsert(newmessage);
+        this.text = '';
+        this.messagesService.setAsUnseen(this.user.id, this.contact.user_id);
+      });
+    }
+  }
+
+  orderByDate(messages: Message[]): Message[] {
+    return messages.sort((a, b) => {
+      return +a.time - +b.time;
+    });
+  }
 
   formatTime(date: Date): string {
     const hour: string =
@@ -59,21 +83,26 @@ export class MessagePage implements OnInit {
     return `${hour}:${minutes}`;
   }
 
-  startCall(id: number): void {
-    this._router.navigateByUrl('/voice-call/' + id);
+  loadMoreMessages():void{
+    const id = this.messages[0].id;
+    this.messagesService.updateMessages(this.user.id, this.contact.user_id, id).subscribe((data) => {
+      const newmessages = data.messages.map(
+        (message) => new Message(message.message_id, message.sender_id, message.receiver_id, message.time, message.message_body,
+          message.was_seen, message.parent_message_id)
+      )
+
+      this.messages = [...this.messages, ...newmessages];
+      this.orderByDate(this.messages);
+    }
+    );
   }
 
-  loadMessages(event) {
+
+  
+  loadData(event) {
     setTimeout(() => {
-      this.messages = this.messages.concat(this.chat.messages);
+      console.log('Done');
       event.target.complete();
-      if (this.messages.length === 0) {
-        this.toggleInfiniteScroll();
-      }
     }, 500);
-  }
-
-  toggleInfiniteScroll() {
-    this.infiniteScroll.disabled = !this.infiniteScroll.disabled;
   }
 }

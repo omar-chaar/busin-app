@@ -50,12 +50,11 @@ export class ProfilePage implements OnInit {
   }
 
   redirectTo(url: string): void {
-
     this._router.navigateByUrl(url)
   }
 
   redirectToChat(contact: User) {
-    this._router.navigateByUrl('/message/' + '')
+    this._router.navigateByUrl('/message/' + contact.id)
   }
 
   backButton() {

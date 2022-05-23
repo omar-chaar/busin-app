@@ -29,17 +29,32 @@ export class MessagesPage implements OnInit {
 
   constructor(private router: Router, private chatService: ChatService, private userService: UserService,
     private messageService: MessagesService) {
-
-    }
-
-  ngOnInit(): void {
-    this.chatService.onLoad().subscribe 
+      this.chatService.onLoad().subscribe 
     (
       (chats: Chat[]) => {
         this.currentUser = this.userService.currentUser;
         this.chats = chats
       }
     )
+
+    messageService.onInsertObservable().subscribe(
+      (message: Message) => {
+        this.chats.forEach(
+          (chat: Chat, index) => {
+            if (chat.user.id === message.receiver) {
+              message.was_seen = true;
+              const topchat = this.chats.splice(index, 1)[0];
+              topchat.messages[0] = message;
+              this.chats.unshift(topchat);
+            }
+          }
+        )
+      })
+
+    }
+
+  ngOnInit(): void {
+    
   }
 
   loadData(event): void {
@@ -68,6 +83,11 @@ export class MessagesPage implements OnInit {
     this.router.navigateByUrl('/profile/' + id)
   }
 
-  
+  redirectToChat(id: number, chat: Chat): void {
+    if(!chat.messages[0].was_seen){
+      this.messageService.setAsSeen(this.currentUser.id, chat.user.id).subscribe(() => chat.messages[0].was_seen = true);
+    }
+    this.router.navigateByUrl('/message/' + id)
+  }
   
 }

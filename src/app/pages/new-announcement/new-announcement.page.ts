@@ -45,7 +45,6 @@ export class NewAnnouncementPage implements OnInit {
           this.toastService.presentToast('Announcement created', 3000, 'success')
           this.dismiss()
         },(err) => {
-          console.log(err)
           this.toastService.presentToast(err.error.error, 4500, 'danger')
         })
     }

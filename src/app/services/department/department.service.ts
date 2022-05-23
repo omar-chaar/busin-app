@@ -33,7 +33,6 @@ export class DepartmentService implements OnInit {
   setDepartaments(id: number): void {
     this.getDepartments(id).subscribe((data: any) => {
       this.departaments = data.data;
-      console.log(data);
     });
   }
 
@@ -61,7 +60,6 @@ export class DepartmentService implements OnInit {
     const headers = { authorization: `Bearer ${this.userService.currentUser.token}` };
     this.http.get<any>(url, { headers: headers }).subscribe((data: any) => {    
       this.currentUserDepartment = data.data;
-      console.log(this.currentUserDepartment);
     });
     
   }

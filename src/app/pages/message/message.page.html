@@ -6,32 +6,32 @@
         <img src="../../../assets/images/gw50h17a.bmp">
       </ion-avatar>
       <div class="contact-info">
-        <h1 (click)="goToProfile(contact.id)">{{contact.getFullName()}}</h1>
+        <h1 (click)="goToProfile(contact.id)">{{contact.name}} {{contact.surname}}</h1>
         <p>{{contact.position}} - Available</p>
       </div>
         </div>
   </ion-toolbar>
 </ion-header>
-<ion-content>
+  <ion-content>
 
   <ion-list>
-    <ion-infinite-scroll threshold="10%" (ionInfinite)="loadData($event)" [disabled]="fullyLoaded" position="top">
-      <ion-infinite-scroll-content loadingSpinner="bubbles">
-      </ion-infinite-scroll-content>
-    </ion-infinite-scroll>
     <ion-grid>
-      <ion-row *ngFor="let message of chat.messages" class="messagebox-container"
-        [ngClass]="{'user-message': message.sender.id === user.id}">
+      <ion-row *ngFor="let message of messages" class="messagebox-container"
+        [ngClass]="{'user-message': message.sender === user.id}">
         <div class="message-box">
           <p>{{message.message}}</p>
           <div class="meta-info">
-            <ion-icon *ngIf="message.sender === user" name="checkmark-done-sharp"></ion-icon>
+            <ion-icon *ngIf="message.sender_id === user.id" name="checkmark-done-sharp"></ion-icon>
             <p>{{formatTime(message.time)}}</p>
           </div>
         </div>
       </ion-row>
     </ion-grid>
   </ion-list>
+  <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)" position="top">
+    <ion-infinite-scroll-content loadingSpinner="bubbles">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
 </ion-content>
 <ion-item class="text-container">
   <form class="text-form" (ngSubmit)="onSubmit()">

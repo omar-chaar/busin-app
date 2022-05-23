@@ -49,7 +49,6 @@ export class AnnouncementsPage implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log(this.userService.currentUser)
   }
 
   loadAnnouncements():void{

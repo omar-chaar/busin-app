@@ -45,7 +45,7 @@ export class UserLoginPage implements OnInit {
           if(localStorage){
             localStorage.setItem('token', resp.token);
           }
-          this.redirectTo('/tabs/announcements');
+          this.redirectTo('/tabs/messages');
         }
       },
       (err) => {
