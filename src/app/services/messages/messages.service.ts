@@ -48,7 +48,7 @@ export class MessagesService {
     const headers = {authorization: `Bearer ${this.userService.currentUser.token}`, 'Content-Type': 'application/json'};
     const url = `${environment.apiUrl}/messages/was-seen/${user1}/${user2}`;
     return this.http.put(url, null, {headers});
-
+  }
 
 
   setAsUnseen(user1: number, user2: number): Observable<any> {
