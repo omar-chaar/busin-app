@@ -66,7 +66,12 @@ export class EditUsersPage implements OnInit {
     const { role } = await actionSheet.onDidDismiss();
 
     if (role === 'destructive') {
-
+      this.userService.deleteUser(user.id).subscribe(
+        (data) => {
+          this.toastService.presentToast('User deleted', 4000, 'success');
+          this.users = this.users.filter(u => u.id !== user.id);
+        },
+      )
     }
   }
 

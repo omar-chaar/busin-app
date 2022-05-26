@@ -68,7 +68,6 @@ export class MessagePage implements OnInit {
         this.messages.push(newmessage);
         this.messagesService.onInsert(newmessage);
         this.text = '';
-        this.messagesService.setAsUnseen(this.user.id, this.contact.user_id);
         setTimeout(() => {
           this.ScrollToBottomWithAnim();
           });
