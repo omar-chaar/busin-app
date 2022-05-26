@@ -77,4 +77,8 @@ export class ContactsPage implements OnInit {
       event.target.complete();
     }, 2000);
   }  
+
+  redirectToChat(contact: User): void {    
+    this.router.navigateByUrl('/message/' + contact.id);
+  }
 }
