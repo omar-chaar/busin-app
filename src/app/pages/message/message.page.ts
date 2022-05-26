@@ -3,7 +3,8 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { ChatService } from 'src/app/services/chat/chat.service';
 import { MessagesService } from 'src/app/services/messages/messages.service';
 import { UserService } from 'src/app/services/user/user.service';
-import { IonInfiniteScroll } from '@ionic/angular';
+import { IonInfiniteScroll} from '@ionic/angular';
+import { IonContent } from '@ionic/angular';
 import { Message } from 'src/model/classes/Message';
 import { User } from 'src/model/classes/User';
 import { Chat } from 'src/model/classes/Chat';
@@ -16,6 +17,7 @@ import { Observable, Subject } from 'rxjs';
 })
 export class MessagePage implements OnInit {
   @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
+  @ViewChild(IonContent, { static: false }) content: IonContent;
   contact: any = new User(0, '', '', '', '', null, 0, false, false);
   messages: Message[] = [];
   user: User;
@@ -31,18 +33,23 @@ export class MessagePage implements OnInit {
     this.user = this.userService.currentUser;
   }
 
-  ngOnInit() {
+  ngOnInit() {        
+   
     const id = +this.route.snapshot.params['id'];
     this.userService.getUserById(id).subscribe((user) => {
       this.contact = user.data;
       this.messagesService.getMessages(this.user.id, this.contact.user_id).subscribe((data) => {
         this.messages = data.messages.map(
           (message) => new Message(message.message_id, message.sender_id, message.receiver_id, message.time, message.message_body,
-            message.was_seen, message.parent_message_id)
+            message.was_seen, message.parent_message_id)            
         )
+        setTimeout(() => {
+            this.ScrollToBottom();
+        }, 2);
       }
-      );
-    });
+      ); 
+    }); 
+    
   }
 
   goBack(): void {
@@ -61,6 +68,7 @@ export class MessagePage implements OnInit {
         this.messagesService.onInsert(newmessage);
         this.text = '';
         this.messagesService.setAsUnseen(this.user.id, this.contact.user_id);
+        
       });
     }
   }
@@ -96,13 +104,18 @@ export class MessagePage implements OnInit {
     }
     );
   }
-
-
   
+
   loadData(event) {
     setTimeout(() => {
       console.log('Done');
       event.target.complete();
     }, 500);
   }
+
+
+  ScrollToBottom() {
+    this.content.scrollToBottom(0);
+  }
+
 }

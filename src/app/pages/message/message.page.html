@@ -12,8 +12,11 @@
         </div>
   </ion-toolbar>
 </ion-header>
-  <ion-content>
-
+  <ion-content [scrollEvents]="true" >
+    <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)" position="top">
+      <ion-infinite-scroll-content loadingSpinner="bubbles">
+      </ion-infinite-scroll-content>
+    </ion-infinite-scroll>
   <ion-list>
     <ion-grid>
       <ion-row *ngFor="let message of messages" class="messagebox-container"
@@ -28,10 +31,7 @@
       </ion-row>
     </ion-grid>
   </ion-list>
-  <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)" position="top">
-    <ion-infinite-scroll-content loadingSpinner="bubbles">
-    </ion-infinite-scroll-content>
-  </ion-infinite-scroll>
+ 
 </ion-content>
 <ion-item class="text-container">
   <form class="text-form" (ngSubmit)="onSubmit()">
