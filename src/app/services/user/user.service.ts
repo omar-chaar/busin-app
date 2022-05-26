@@ -98,6 +98,12 @@ export class UserService {
     return this.http.put(url, body, {headers: headers});
   }
 
+  deleteUser(id: number): Observable<any> {
+    const headers = {authorization: 'Bearer ' + this.currentUser.token};
+    const url = `${environment.apiUrl}/user/delete/${id}`;
+    return this.http.delete(url, {headers: headers});
+  }
+
   onLoad(): Observable<any> {
     return this.subject.asObservable();
   }
