@@ -19,7 +19,7 @@
     </ion-accordion-group>
   </ion-list>
 
-  <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)" [disabled]="numTimesLeft <= 0">
+  <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
     <ion-infinite-scroll-content loadingSpinner="bubbles">
     </ion-infinite-scroll-content>
   </ion-infinite-scroll>
