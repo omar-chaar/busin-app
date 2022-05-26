@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { User } from 'src/model/classes/User';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Department } from 'src/model/classes/Department';
 import { DepartmentService } from '../department/department.service';
@@ -17,94 +17,89 @@ export class UserService {
 
   currentUser: User;
 
-  fakeDb: User[];
+  subject = new Subject()
 
-  constructor(private departmentService: DepartmentService, private http: HttpClient) {
-    {
-      this.fakeDb = [
-        new User(0, 'Omar', 'Chaar', 'Fullstack Developer', 'omar@gmail.com', '...', this.departmentService.getdepartment(0), false),
-        new User(1, 'Gabriel', 'Nunes', 'Front-end Developer', 'gabriel@gmail.com', '...', this.departmentService.getdepartment(0), false),
-        new User(2, 'Ahmed', 'Hassan', 'Senior Developer', 'ahmed@gmail.com', '...', this.departmentService.getdepartment(0), false),
-        new User(3, 'Omar', 'El Khoury', 'Junior Developer', 'omark@gmail.com', '...', this.departmentService.getdepartment(0), false),
-        new User(4, 'Marcell', 'da Silva', 'Accountant', 'marcell@gmail.com', '...', this.departmentService.getdepartment(2), false),
-        new User(5, 'Cliff', 'Gilmore', 'Influencer', 'cliff@gmail.com', '...', this.departmentService.getdepartment(1), true),
-        new User(6, 'Ike', 'Mcmahon', 'Salesman', 'ike@gmail.com', '...', this.departmentService.getdepartment(3), false),
-        new User(7, 'Coley', 'Frey', 'Stockist', 'coley@gmail.com', '...', this.departmentService.getdepartment(5), false),
-        new User(8, 'Valentine', 'Lindsey', 'Driver', 'valetine@gmail.com', '...', this.departmentService.getdepartment(4), false),
-        new User(9, 'Omar', '2', 'Fullstack Developer', 'omar2@gmail.com', '...', this.departmentService.getdepartment(0), true),
+  constructor(private http: HttpClient) {
 
-      ]
-    }
   }
 
-    getUser(id: number): User{
-      return this.fakeDb.filter((user: User) => user.id === id)[0];
+  logout(): boolean {
+    this.currentUser = null;
+    if(localStorage){
+      localStorage.removeItem('token');
     }
-
-    getUsers(): User[]{
-      return this.fakeDb
-    }
-
-    getUsersPagination(page: number): User[]{
-      return this.fakeDb.slice((page - 1) * this.usersPerRequest, page * this.usersPerRequest);
-    }
-
-    getUsersBydepartment(department: Department): User[]{
-      return this.fakeDb.filter(user => user.department.id === department.id)
-    }
-
-  async login(email: string): Promise < boolean > {
-      let user: User;
-      const contains = this.fakeDb.reduce((previous, current): boolean => {
-        if (previous) return true
-        if (current.email === email) {
-          user = current;
-          return true
-        }
-        return false
-      }, false)
-
-    if(contains) {
-        this.currentUser = user;
-        return true
-      }
-    return false
-    }
-
-    logout():boolean{
-      this.currentUser = null;
-      return true
-    }
-
-    generateToken(name: string, surname: string, departamentId: number, position: string, admin: boolean): Observable < any > {
-      const body = { name, surname, departamentId, position, admin };
-      const url = `${environment.apiUrl}/user/generate-code`;
-      return this.http.post(url, body, { headers: this.headers });
-    }
-
-    validateToken(code: string): Observable < any > {
-      const url = `${environment.apiUrl}/user/validate-code?token=${code}`;
-      return this.http.get(url);
-    }
-
-    createAccount(email: string, password: string): Observable < any > {
-      const url = `${environment.apiUrl}/user/create`;
-      const body = { email, password, code: this.code };
-      return this.http.post(url, body, { headers: this.headers });
-    }
-
-  async deleteUser(user: User): Promise < boolean > {
-      const index = this.fakeDb.indexOf(user);
-      this.fakeDb.splice(index, 1);
-      return true;
-    }
-
-  async alterUser(editUser: User): Promise < boolean > {
-      this.fakeDb.forEach((user: User) => {
-        if (user.id === editUser.id) {
-          user = editUser
-        }
-      })
     return true
   }
+
+  isLoaded(user: User):void{
+    this.subject.next(this.currentUser);
+  }
+
+  generateToken(name: string, surname: string, departmentId: number, position: string, admin: boolean): Observable<any> {
+    const body = { name, surname, departmentId, position, admin };
+    const headers = { 'Content-Type': 'application/json', 'authorization': 'Bearer ' + this.currentUser.token };
+    const url = `${environment.apiUrl}/user/generate-code`;
+    return this.http.post(url, body, { headers: headers });
+  }
+
+  validateToken(code: string): Observable<any> {
+    const url = `${environment.apiUrl}/user/validate-code?token=${code}`;
+    return this.http.get(url);
+  }
+
+  createAccount(email: string, password: string): Observable<any> {
+    const url = `${environment.apiUrl}/user/create`;
+    const body = { email, password, code: this.code };
+    return this.http.post(url, body, { headers: this.headers });
+  }
+
+  login(email: string, password: string): Observable<any> {
+    const url = `${environment.apiUrl}/user/login`;
+    const body = { email, password };
+    return this.http.post(url, body, { headers: this.headers });
+  }
+
+  getUserByToken(token: string): Observable<any> {
+    const url = `${environment.apiUrl}/user/get-by-token`;
+    const headers = { 'Content-Type': 'application/json', 'authorization': 'Bearer ' + token };
+    return this.http.get(url, { headers: headers });
+  }
+
+  getUsersByDepartment(departmentId: number): Observable<any> {
+    const headers = {authorization: 'Bearer ' + this.currentUser.token};
+    const url = `${environment.apiUrl}/user/get-by-department/${departmentId}`;
+    return this.http.get(url, {headers: headers});
+  }
+
+  getUsersByCompany(companyId: number): Observable<User[]> {
+    const headers = {authorization: 'Bearer ' + this.currentUser.token};
+    const url = `${environment.apiUrl}/user/get-by-company/${companyId}`;
+    return this.http.get<User[]>(url, {headers: headers});
+  }
+
+
+  getUserById(id: number): Observable<any> {
+    const headers = {authorization: 'Bearer ' + this.currentUser.token};
+    const url = `${environment.apiUrl}/user/get-user-data/${id}`;
+    return this.http.get(url, {headers: headers});
+  }
+
+  setName(id: number, name: string, surname: string): Observable<any> {
+    const headers = {authorization: 'Bearer ' + this.currentUser.token};
+    const url = `${environment.apiUrl}/user/set-username/${id}`;
+    const body = {name, surname};
+    return this.http.put(url, body, {headers: headers});
+  }
+
+  editUser(user: User): Observable<any> {
+    const headers = {authorization: 'Bearer ' + this.currentUser.token};
+    const url = `${environment.apiUrl}/user/edit-user-data/${user.id}`;
+    const body = {name: user.name, surname: user.surname, departmentId: user.department_id, position: user.position};
+    return this.http.put(url, body, {headers: headers});
+  }
+
+  onLoad(): Observable<any> {
+    return this.subject.asObservable();
+  }
+
 }

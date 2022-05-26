@@ -23,6 +23,7 @@ export class ContactsPage implements OnInit {
   departments: Department[] = []
   user: User;
   subscription: Subscription;
+  alreadyLoaded: number[] = [];
 
   page: number = 1
   fullyLoaded = false
@@ -30,60 +31,50 @@ export class ContactsPage implements OnInit {
   constructor(private departmentService: DepartmentService, private userService: UserService,
     private router: Router, private chatService:ChatService) {
       this.user = this.userService.currentUser
-
-      this.subscription = this.departmentService.onChange().subscribe(value => {
-        const index = this.departments.indexOf(value);
-        this.fullyLoaded = false;
-        if(index){
-          this.departments.splice(index, 1);
-        }else{
-          this.departments.push(value);
-        }
-      })
+      const deptos = this.departmentService.departments
+      this.departments = deptos;
   }
 
   ngOnInit(): void {
-    this.loadMoredepartments()
+
   }
 
-  loadData(event):void {
-    setTimeout(() => {
-      this.loadMoredepartments();
-      event.target.complete();
-    }, 2000);
-  }
-
-  loadMoredepartments(): void {
-    if (!this.fullyLoaded) {
-      const arr = this.departmentService.getdepartments(this.page)
-      if (arr.length > 0) {
-        this.departments.push(...arr)
-        this.page++
-      } else {
-        this.fullyLoaded = true
+  loadUsers(department: Department):void{
+    if(!this.alreadyLoaded.includes(department.department_id)){
+    this.userService.getUsersByDepartment(department.department_id).subscribe(
+      (resp) => {
+        if(resp == undefined){
+          return this.alreadyLoaded.push(department.department_id);
+        }
+        department.users = resp.data.map(user => {
+          return new User(user.user_id, user.name, user.surname, user.position, user.email,
+             null, user.department_id, user.is_adm, user.is_owner);
+        })
+      } , (err) => {
+        if(err.status == 400){ //No user found
+          department.users = undefined;
+        }
       }
-    }
+      
+    )    
+    this.alreadyLoaded.push(department.department_id);
   }
-
-  getUsers(department: Department):User[]{
-    return this.userService.getUsersBydepartment(department)
-  }
+}
 
   redirectTo(url:string):void{
     this.router.navigateByUrl(url)
   }
 
-  redirectToChat(contact:User){
-    const chatId = this.chatService.verifyChat(contact, this.user)
-    this.router.navigateByUrl('/message/' + chatId)
-  }
+  doRefresh(event) {
+    console.log('Begin async operation');
 
-  logAccordionValue() {
-    console.log(this.accordionGroup.value);
-  }
-
-  closeAccordion() {
-    this.accordionGroup.value = undefined;
-  }
-
+    setTimeout(() => {
+      this.departments = [];
+      this.alreadyLoaded = [];
+      const deptos = this.departmentService.departments
+      this.departments = deptos;
+      console.log('Async operation has ended');
+      event.target.complete();
+    }, 2000);
+  }  
 }

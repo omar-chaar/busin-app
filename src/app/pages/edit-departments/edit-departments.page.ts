@@ -29,21 +29,18 @@ export class EditDepartmentsPage implements OnInit {
     private departmentService: DepartmentService, private toastService: ToastService,
     private actionSheetCtrl: ActionSheetController, private chatGroupService: ChatGroupService,
     private modalController: ModalController) {
-    this.user = this.userService.currentUser;
-    this.departmentService.getAllDepartmentsDb().subscribe(resp => {
-      const deptos = resp.data.map((department: any): EditDepartment => {
-        console.log(department)
-        department = new Department(department.department_id, department.name, this.departmentService.company);
-        return {
-          department: department,
-          edit: false
-        }
-      })
-      this.departments.push(...deptos);
-    }, err => {
-      console.log(err)
-      this.toastService.presentToast(err.error.error, 3000, 'danger');
-    });
+
+
+    let deptos: Department[] | EditDepartment[] = this.departmentService.departments;
+    deptos = deptos.map(department => {
+      return {
+        department: department,
+        edit: false
+      }
+    })
+
+    this.departments = deptos;
+
   }
 
   ngOnInit() {
@@ -75,19 +72,22 @@ export class EditDepartmentsPage implements OnInit {
       const { role } = await actionSheet.onDidDismiss();
 
       if (role === 'destructive') {
-        console.log(department.department.id)
-        this.departmentService.updateDepartment(department.department.id, this.text).subscribe(resp => {
-          department.department.name = this.text;
-          this.text = '';
-          this.toastService.presentToast('Department altered!', 3000, 'success')
-          department.edit = false;
-        }, err => {
-          this.toastService.presentToast(err.error.error, 3000, 'danger')
-        })
+
+        this.departmentService.updateDepartment(this.text, department.department.department_id).subscribe(
+          (data: any) => {
+            department.department.name = this.text;
+            this.toastService.presentToast('Department renamed successfully', 3000, 'success');
+            department.department.name = this.text;
+            this.text = ''
+            department.edit = false
+          },
+          (error: any) => {
+            this.toastService.presentToast(error.error.error, 3000, 'danger');
+          }
+        )
+
       }
     }
-    this.text = ''
-    department.edit = false
   }
 
   async confirmDelete(department: EditDepartment): Promise<void> {
@@ -110,16 +110,7 @@ export class EditDepartmentsPage implements OnInit {
     const { role } = await actionSheet.onDidDismiss();
 
     if (role === 'destructive') {
-      const users = this.userService.getUsersBydepartment(department.department);
-      //const resp = await this.departmentService.deleteDepartment(department.department, users)
-      const resp = this.departmentService.deleteDepartmentDb(department.department.id).subscribe(
-        resp => {
-          this.toastService.presentToast('Department deleted!', 3000, 'success');
-          this.departments = this.departments.filter(dept => dept.department.id !== department.department.id);
-        },
-        err => {
-          this.toastService.presentToast(err.error.error, 3000, 'danger')
-      });
+
     }
   }
 

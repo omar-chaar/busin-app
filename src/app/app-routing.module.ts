@@ -74,6 +74,10 @@ const routes: Routes = [
   {
     path: 'join-two',
     loadChildren: () => import('./pages/join-two/join-two.module').then( m => m.JoinTwoPageModule)
+  },
+  {
+    path: 'create-owner',
+    loadChildren: () => import('./pages/create-owner/create-owner.module').then( m => m.CreateOwnerPageModule)
   }
 
 

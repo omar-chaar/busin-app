@@ -1,7 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { CompanyService } from 'src/app/services/company/company.service';
 import { UserService } from 'src/app/services/user/user.service';
 import { User } from 'src/model/classes/User';
+import { PopoverController } from '@ionic/angular';
+// import { PopoverComponent } from '../../component/popover/popover.component';
+
 
 @Component({
   selector: 'app-tabs',
@@ -12,14 +16,11 @@ export class TabsPage implements OnInit {
 
   user: User;
 
-  constructor(private userService: UserService, private router: Router) {
-    this.user = this.userService.currentUser;
-  }
+  constructor(private userService: UserService, private router: Router, public popoverController: PopoverController) {
+      this.user = this.userService.currentUser;
+    }
 
   ngOnInit(): void {
-    // if(!this.user){
-    //   this.router.navigateByUrl('/user-login')
-    // }
   }
 
   redirectTo(url: string){
@@ -32,4 +33,17 @@ export class TabsPage implements OnInit {
     }
   }
 
+  
+  /* async presentPopover(ev: any) {
+    const popover = await this.popoverController.create({
+      component: PopoverComponent,
+      cssClass: 'my-custom-class',
+      event: ev,
+      translucent: true
+    });
+    await popover.present();
+  
+    const { role } = await popover.onDidDismiss();
+    console.log('onDidDismiss resolved with role', role);
+  } */
 }

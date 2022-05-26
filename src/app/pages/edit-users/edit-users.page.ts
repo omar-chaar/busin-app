@@ -9,6 +9,7 @@ import { UserService } from 'src/app/services/user/user.service';
 import { AddUserPage } from '../add-user/add-user.page';
 import { EditUserPage } from '../edit-user/edit-user.page';
 import { User } from 'src/model/classes/User';
+import { CompanyService } from 'src/app/services/company/company.service';
 
 @Component({
   selector: 'app-edit-users',
@@ -26,14 +27,23 @@ export class EditUsersPage implements OnInit {
   constructor(private userService: UserService, private actionSheetCtrl: ActionSheetController,
     private messageService: MessagesService, private chatMessageService: ChatMessageService,
     private chatService: ChatService, private toastService: ToastService, private router: Router,
-    private modalController: ModalController) { 
+    private modalController: ModalController, private companyService: CompanyService) { 
 
-
-    }
+    this.user = this.userService.currentUser;
+    const id = this.companyService.company.company_id;
+    this.userService.getUsersByCompany(id).subscribe(
+      (data: User[]) => {
+        this.users = data;
+        this.fullyLoaded = true;
+      },
+      (error) => {
+        this.toastService.presentToast(error.error.error, 4000, 'danger');
+      }
+    )
+  }
 
   ngOnInit() {
-    const users = this.userService.getUsersPagination(this.page);
-    this.users.push(...users);
+
   }
   
   async confirmDelete(user: User): Promise<void> {
@@ -56,14 +66,7 @@ export class EditUsersPage implements OnInit {
     const { role } = await actionSheet.onDidDismiss();
 
     if (role === 'destructive') {
-      await this.chatService.deleteChat(user);
-      await this.messageService.deleteMessagesByUser(user);
-      await this.chatMessageService.deleteMessagesByUser(user);
-      await this.userService.deleteUser(user);
-      const index = this.users.indexOf(user);
-      this.users.splice(index, 1);
-      
-      this.toastService.presentToast('User account deleted!', 3000, 'success')
+
     }
   }
 
@@ -93,9 +96,6 @@ export class EditUsersPage implements OnInit {
   }
 
   addMoreItems(): boolean {
-    const users = this.userService.getUsersPagination(this.page)
-    if (users.length === 0) return false
-    this.users.push(...users)
     return true
   }
 

@@ -24,21 +24,7 @@ export class ChatGroupPage implements OnInit {
     private chatMessageService: ChatMessageService) { }
 
   ngOnInit() {
-    this.user = this.userService.currentUser;
     const id = +this.route.snapshot.params['id'];
-    const chat = this.chatGroupService.getChatById(id);
-    if(typeof chat === 'boolean'){
-      this._router.navigateByUrl('/tabs/messages')
-    }else{
-      this.chat = chat;
-      this.messages = this.chatMessageService.getMessagesByGroup(chat)
-    }
-  }
-
-  formatTime(date: Date):string{
-    const hour:string = date.getHours().toString().length === 1 ? `0${date.getHours().toString()}` : date.getHours().toString();
-    const minutes:string = date.getMinutes().toString().length === 1 ? `0${date.getMinutes().toString()}` : date.getMinutes().toString();
-    return `${hour}:${minutes}`
   }
 
   goBack(): void {
@@ -46,11 +32,7 @@ export class ChatGroupPage implements OnInit {
   }
 
   onSubmit(): void {
-    if (this.text.length > 0) {
-      const msg = this.chatMessageService.insertMessage(this.text, this.user, this.chat)
-      this.text = ''
-      this.messages.push(msg)
-    }
+
   }
 
 

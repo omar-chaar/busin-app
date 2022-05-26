@@ -25,13 +25,6 @@ export class VoiceCallPage implements OnInit {
 
   ngOnInit() {
     const id = +this.route.snapshot.params['id'];
-    const profileUser = this.userService.getUser(id);
-    if(typeof profileUser === 'boolean'){
-      this._router.navigateByUrl('/tabs/messages')
-    }else{
-      this.profileUser = profileUser;
-      this.department = profileUser.department;
-    }
   }
 
   goBack(): void {

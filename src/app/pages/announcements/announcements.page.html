@@ -4,22 +4,30 @@
     </ion-button>
   </div>
   <ion-list lines="full">
-    <ion-accordion-group value="numbers" *ngFor="let announcement of announcements">
-      <ion-accordion value="colors" class="annoucement-item" (click)="confirmRead(announcement)">
+    <ion-accordion-group value="numbers" *ngFor="let announcement of announcements.reverse()">
+      <ion-accordion value="colors" class="annoucement-item">
         <ion-item slot="header" [attr.disabled]="announcement.read ? true : null" class="announcement-title">
           <div>
             <ion-label>{{announcement.title}}</ion-label>
             <ion-label class="date">{{formatDate(announcement.date)}}</ion-label>
           </div>
         </ion-item>
-        <ion-item slot="content" class="content">
-          <p>{{announcement.text}}</p>
-        </ion-item>
+        <!-- fsd-->
+        <ion-item-sliding slot="content" class="content">
+          <ion-item slot="content" class="content">
+            <ion-label>
+              <p class="ion-text-wrap announcement-body">{{announcement.body}}</p>
+            </ion-label>
+          </ion-item>
+          <ion-item-options *ngIf="user.admin" side="end">
+            <ion-item-option (click)="canDelete(announcement)" color="danger">Delete</ion-item-option>
+          </ion-item-options>
+        </ion-item-sliding>
       </ion-accordion>
     </ion-accordion-group>
   </ion-list>
 
-  <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)" [disabled]="numTimesLeft <= 0">
+  <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
     <ion-infinite-scroll-content loadingSpinner="bubbles">
     </ion-infinite-scroll-content>
   </ion-infinite-scroll>

@@ -1,12 +1,14 @@
-import { Component, OnInit, ViewChild} from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ChatService } from 'src/app/services/chat/chat.service';
 import { MessagesService } from 'src/app/services/messages/messages.service';
 import { UserService } from 'src/app/services/user/user.service';
 import { IonInfiniteScroll} from '@ionic/angular';
-
+import { IonContent } from '@ionic/angular';
+import { Message } from 'src/model/classes/Message';
 import { User } from 'src/model/classes/User';
 import { Chat } from 'src/model/classes/Chat';
+import { Observable, Subject } from 'rxjs';
 
 @Component({
   selector: 'app-message',
@@ -15,67 +17,111 @@ import { Chat } from 'src/model/classes/Chat';
 })
 export class MessagePage implements OnInit {
   @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
-  contact: User;
-  chat: Chat;
+  @ViewChild(IonContent, { static: false }) content: IonContent;
+  contact: any = new User(0, '', '', '', '', null, 0, false, false);
+  messages: Message[] = [];
   user: User;
   text: string;
 
-  constructor(private _router: Router, private route: ActivatedRoute, private chatService: ChatService,
-    private userService: UserService, private messagesService: MessagesService) {
-    this.user = this.userService.currentUser
+  constructor(
+    private _router: Router,
+    private route: ActivatedRoute,
+    private chatService: ChatService,
+    private userService: UserService,
+    private messagesService: MessagesService,
+  ) {
+    this.user = this.userService.currentUser;
   }
 
-  ngOnInit() {
+  ngOnInit() {        
+   
     const id = +this.route.snapshot.params['id'];
-    const chat = this.chatService.getChat(id, this.user);
-    if(typeof chat === 'boolean'){
-      this._router.navigateByUrl('/tabs/messages')
-    }else{
-      chat.unreads = 0;
-      this.chat = chat;
-      this.contact = chat.participants.filter(participant => participant.id !== this.user.id)[0];
-    }
+    this.userService.getUserById(id).subscribe((user) => {
+      this.contact = user.data;
+      this.messagesService.getMessages(this.user.id, this.contact.user_id).subscribe((data) => {
+        this.messages = data.messages.map(
+          (message) => new Message(message.message_id, message.sender_id, message.receiver_id, message.time, message.message_body,
+            message.was_seen, message.parent_message_id)            
+        )
+        setTimeout(() => {
+            this.ScrollToBottom();
+        });
+      }
+      ); 
+    }); 
+    
   }
 
   goBack(): void {
-    this._router.navigateByUrl('/tabs/messages')
+    this._router.navigateByUrl('/tabs/messages');
   }
 
-  goToProfile(id: number):void{
-    this._router.navigateByUrl('/profile/' + id)
+  goToProfile(id: number): void {
+    this._router.navigateByUrl('/profile/' + id);
   }
 
   onSubmit(): void {
-    if (this.text.length > 0) {
-      const msg = this.messagesService.insertMessage(this.text, this.user, this.contact, this.chat)
-      this.text = ''
+    if(this.text){
+      this.messagesService.sendMessage(this.user.id, this.contact.user_id, this.text, this.messages[this.messages.length - 1].id).subscribe((data) => {
+        const newmessage = new Message(data.response.insertId, this.user.id, this.contact.user_id, new Date(), this.text, false, null)
+        this.messages.push(newmessage);
+        this.messagesService.onInsert(newmessage);
+        this.text = '';
+        this.messagesService.setAsUnseen(this.user.id, this.contact.user_id);
+        setTimeout(() => {
+          this.ScrollToBottomWithAnim();
+          });
+      });
+      
     }
+    
   }
 
-  formatTime(date: Date):string{
-    const hour:string = date.getHours().toString().length === 1 ? `0${date.getHours().toString()}` : date.getHours().toString();
-    const minutes:string = date.getMinutes().toString().length === 1 ? `0${date.getMinutes().toString()}` : date.getMinutes().toString();
-    return `${hour}:${minutes}`
+  orderByDate(messages: Message[]): Message[] {
+    return messages.sort((a, b) => {
+      return +a.time - +b.time;
+    });
   }
 
-  startCall(id: number): void {
-    this._router.navigateByUrl('/voice-call/' + id)
+  formatTime(date: Date): string {
+    const hour: string =
+      date.getHours().toString().length === 1
+        ? `0${date.getHours().toString()}`
+        : date.getHours().toString();
+    const minutes: string =
+      date.getMinutes().toString().length === 1
+        ? `0${date.getMinutes().toString()}`
+        : date.getMinutes().toString();
+    return `${hour}:${minutes}`;
+  }
+
+  loadMoreMessages():void{
+    const id = this.messages[0].id;
+    this.messagesService.updateMessages(this.user.id, this.contact.user_id, id).subscribe((data) => {
+      const newmessages = data.messages.map(
+        (message) => new Message(message.message_id, message.sender_id, message.receiver_id, message.time, message.message_body,
+          message.was_seen, message.parent_message_id)
+      )
+      this.messages = [...this.messages, ...newmessages];
+      this.orderByDate(this.messages);
+    }
+    );
   }
   
-  loadMessages(event) {
+
+  loadData(event) {
     setTimeout(() => {
-      this.chat.messages = this.chat.messages.concat(this.chat.messages);
+      console.log('Done');
       event.target.complete();
-      if(this.chat.messages.length === 0){
-        this.toggleInfiniteScroll()
-      }
     }, 500);
   }
 
-  toggleInfiniteScroll() {
-    this.infiniteScroll.disabled = !this.infiniteScroll.disabled;
+
+  ScrollToBottom() {
+    this.content.scrollToBottom(0);
   }
 
-
-  
+  ScrollToBottomWithAnim() {
+    this.content.scrollToBottom(500);
+  }
 }

@@ -1,18 +1,49 @@
 <ion-content>
-
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
   <ion-list lines="full">
     <ion-accordion-group value="numbers" *ngFor="let department of departments">
-      <ion-accordion value="colors" class="department-item">
+      <ion-accordion value="colors" class="department-item" (click)="loadUsers(department)">
         <ion-item slot="header">
           <ion-label>
             <h2 class="department-name">{{department.name}}</h2>
           </ion-label>
         </ion-item>
         <ion-list slot="content">
+          <div *ngIf="department.users">
           <ion-item>
-            <ion-button (click)="redirectTo('/chat-group/' + department.id)" color="tertiary" class="group-btn">{{department.name}} Group</ion-button>
+            <ion-button (click)="redirectTo('/chat-group/' + department.id)" color="tertiary" class="group-btn">
+              {{department.name}} Group</ion-button>
           </ion-item>
-          <ion-item *ngFor="let contact of getUsers(department)" class="border-none">
+          
+            <ion-item *ngFor="let contact of department.users" class="border-none">
+              <ion-avatar slot="start" (click)="redirectTo('/profile/' + contact.id)">
+                <img src="../../../assets/images/gw50h17a.bmp">
+              </ion-avatar>
+              <ion-label class="username" (click)="redirectTo('/profile/' + contact.id)">
+                <p class="username">{{contact.getFullName()}}</p>
+                <p class="position">{{contact.position}}</p>
+              </ion-label>
+              <ion-buttons class="chat-icon" *ngIf="user !== contact" (click)="redirectToChat(contact)">
+                <ion-icon name="chatbubble-ellipses-sharp"></ion-icon>
+              </ion-buttons>
+            </ion-item>
+          </div>          
+            <ion-item *ngIf="!department.users" class="border-none">
+              <ion-label>
+                <h2 class="no-users">No users in this department</h2>
+              </ion-label>
+            </ion-item>          
+        </ion-list>
+      </ion-accordion>
+    </ion-accordion-group>
+  </ion-list>
+
+
+<!--
+
+  <ion-item *ngFor="let contact of getUsers(department)" class="border-none">
             <ion-avatar slot="start" (click)="redirectTo('/profile/' + contact.id)">
               <img src="../../../assets/images/gw50h17a.bmp">
             </ion-avatar>
@@ -23,14 +54,5 @@
             <ion-buttons class="chat-icon" *ngIf="user !== contact" (click)="redirectToChat(contact)">
               <ion-icon name="chatbubble-ellipses-sharp"></ion-icon>
             </ion-buttons>
-          </ion-item>
-        </ion-list>
-      </ion-accordion>
-    </ion-accordion-group>
-  </ion-list>
-
-  <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)" [disabled]="fullyLoaded">
-    <ion-infinite-scroll-content loadingSpinner="bubbles">
-    </ion-infinite-scroll-content>
-  </ion-infinite-scroll>
-</ion-content>
+    </ion-item>
+-->

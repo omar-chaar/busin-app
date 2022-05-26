@@ -18,11 +18,11 @@ import { Message } from 'src/model/classes/Message';
 export class MessagesPage implements OnInit {
   @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
   //users: {name: string, unread: number}[]  = []
-  chats: Chat[] = []
+  chats: Chat[] = [];
+  users: User[] = [];
+  currentUser: User;
   page: number = 1;
-  fullyLoaded = false
-  subscription: Subscription;
-  subscriptionB: Subscription;
+  fullyLoaded = false;
 
   //user for test
   user: User = this.userService.currentUser
@@ -30,28 +30,33 @@ export class MessagesPage implements OnInit {
   constructor(private router: Router, private chatService: ChatService, private userService: UserService,
     private messageService: MessagesService) {
 
-    this.subscription = messageService.onChange().subscribe(value => {
-      const chat = this.chatService.getChatByMessage(value)
-      if (!this.chats.includes(chat)) {
-        this.chats.unshift(chat)
-      }
+      this.chatService.onLoad().subscribe 
+    (
+      (chats: Chat[]) => {
+        this.currentUser = this.userService.currentUser;
+        this.chats = chats
 
-    })
-    this.subscriptionB = this.chatService.onDelete().subscribe(value => {
-      const index = this.chats.indexOf(value);
-      if(index){
-        this.chats.splice(index, 1);
       }
-    })
-  }
+    )
+
+    messageService.onInsertObservable().subscribe(
+      (message: Message) => {
+        this.chats.forEach(
+          (chat: Chat, index) => {
+            if (chat.user.id === message.receiver) {
+              message.was_seen = true;
+              const topchat = this.chats.splice(index, 1)[0];
+              topchat.messages[0] = message;
+              this.chats.unshift(topchat);
+            }
+          }
+        )
+      })
+
+    }
 
   ngOnInit(): void {
-    this.chatService.onLoad().subscribe(value => {
-      const chats = this.chatService.getChats(this.user, this.page);
-      console.log(chats)
-      return
-      this.chats = chats;
-    })
+
   }
 
   loadData(event): void {
@@ -67,36 +72,24 @@ export class MessagesPage implements OnInit {
     }
   }
 
-  addMoreItems(): boolean {
-    const chats = this.chatService.getChats(this.user, this.page)
-    if (chats.length === 0) return false
-    this.chats.push(...chats)
-    return true
-  }
-
-  redirectToMessage(chatId: number) {
-    this.router.navigateByUrl('/message/' + chatId);
-  }
-
-  sortChatsByDate(chats: Chat[]): void {
-    const sortedArr = chats.sort(function (a, b) {
-      const msgA = a.messages[a.messages.length - 1]
-      const msgB = b.messages[b.messages.length - 1]
-      return msgB.time.getTime() - msgA.time.getTime();
-    });
-    this.chats = sortedArr
-  }
-
   formatTime(date: Date): string {
     const hour: string = date.getHours().toString().length === 1 ? `0${date.getHours().toString()}` : date.getHours().toString();
     const minutes: string = date.getMinutes().toString().length === 1 ? `0${date.getMinutes().toString()}` : date.getMinutes().toString();
     return `${hour}:${minutes}`
   }
 
+  addMoreItems(): boolean {
+    return false;
+  }
   goToProfile(id: number): void {
     this.router.navigateByUrl('/profile/' + id)
   }
 
-  
+  redirectToChat(id: number, chat: Chat): void {
+    if(!chat.messages[0].was_seen){
+      this.messageService.setAsSeen(this.currentUser.id, chat.user.id).subscribe(() => chat.messages[0].was_seen = true);
+    }
+    this.router.navigateByUrl('/message/' + id)
+  }
   
 }

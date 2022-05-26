@@ -9,7 +9,7 @@ import { ChatGroup } from "../classes/ChatGroup";
 export interface IAnnouncement {
     id: number,
     title: string,
-    text: string,
+    body: string,
     date: Date,
     read: boolean,
     sender: User,
@@ -22,19 +22,19 @@ export interface IUser {
     position: string,
     email: string,
     profilePicture: string,
-    department: Department,
+    department_id: number,
     admin: boolean,
     getFullName(): string,
 }
 
 export interface IDepartment {
-    id: number,
+    department_id: number,
     name: string,
-    company: Company
+    company_id: number
 }
 
 export interface ICompany {
-    id: number,
+    company_id: number,
     name: string,
 }
 
@@ -44,7 +44,7 @@ export interface IMessage {
     receiver: User,
     time: Date,
     message: string,
-    read: boolean,
+    was_seen: boolean,
     parentMessage?: Message,
     chat?: Chat,
 }
@@ -60,9 +60,7 @@ export interface IChatMessage {
 
 export interface IChat {
     id: number,
-    participants: User[],
     messages?: Message[],
-    unreads?: number,
     lastMessage?: Date,
 }
 

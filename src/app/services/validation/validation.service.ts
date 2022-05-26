@@ -7,9 +7,7 @@ export class ValidationService {
 
   emailRegex: RegExp = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
 
-  constructor(private toastService: ToastService) { }
-
- 
+  constructor(private toastService: ToastService) { } 
 
   validateEmail(email: string): boolean {
     if (!email) {

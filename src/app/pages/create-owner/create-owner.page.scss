@@ -1,31 +1,20 @@
-
-ion-toolbar{
-    --padding-top: 10px;
-    --padding-bottom: 10px;
-}
-
-.page-title{
-    background-color: #5B3FFF;
-    color: white;
-    display: flex;
-    align-items: center;
-    padding: 15px;
-}
-
-.page-title h1{
-    margin: 0;
-}
-
-.checkbox-container{
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
+.page{
+    --background: #5B3FFF;
+    position: relative;
 }
 
 .container{
     background-color: #EEF1F2;
-    padding: 0px ;
+    border-top-left-radius: 40px;
+    border-top-right-radius: 40px;
+    padding: 50px 25px 25px 25px;
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -60,25 +49,15 @@ ion-item{
     cursor: pointer;
 }
 
+.info{
+    color: #808080;
+}
+
 .return-icon{
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    color: #fff;
     font-size: 2rem;
     cursor: pointer;
-}
-
-.title{
-    text-align: center;
-    color: #414141;
-    font-size: 20px;
-}
-
-.first-row{
-    padding: 10px;
-}
-
-.second-row{
-    margin: 10px;
-}
-
-.time-display{
-   --background: #eef1f2;
 }

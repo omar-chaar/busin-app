@@ -37,14 +37,16 @@ export class NewAnnouncementPage implements OnInit {
   }
 
   handleSubmit():void {
-    if(this.validationService.validateLength('Title', this.title, 50, 3)){
-      if(this.validationService.validateLength('Content', this.content, 300, 25)){
-        const announcement = this.announcementService.insertAnnouncement(this.title, this.content, this.user)
-        this.toastService.presentToast('Announcement published!', 3000, 'success')
-        this.announcements.push(announcement)
-        this.sortByDate(this.announcements)
-        this.dismiss()
-      }
+    if (this.validationService.validateLength('Title', this.title, 50) && this.validationService.validateLength('Text', this.content, 500)) {
+      this.announcementService.createAnnouncement(this.content, this.title).subscribe(
+        (resp) => {
+          const announcement = new Announcement(resp.data.id, resp.data.title, resp.data.body, new Date(), resp.data.sender)
+          this.announcements.push(announcement)
+          this.toastService.presentToast('Announcement created', 3000, 'success')
+          this.dismiss()
+        },(err) => {
+          this.toastService.presentToast(err.error.error, 4500, 'danger')
+        })
     }
   }
 
