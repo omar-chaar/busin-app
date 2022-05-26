@@ -22,6 +22,7 @@ export class MessagePage implements OnInit {
   messages: Message[] = [];
   user: User;
   text: string;
+  fullyLoaded = false;
 
   constructor(
     private _router: Router,
@@ -111,10 +112,12 @@ export class MessagePage implements OnInit {
   
 
   loadData(event) {
+    if(!this.fullyLoaded){
     setTimeout(() => {
       console.log('Done');
       event.target.complete();
     }, 500);
+  }
   }
 
 
