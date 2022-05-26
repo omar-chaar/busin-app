@@ -62,13 +62,15 @@ export class MessagePage implements OnInit {
   }
 
   onSubmit(): void {
-    if(this.text){
-      
-      this.messagesService.sendMessage(this.user.id, this.contact.user_id, this.text, this.messages.length != 0 ? this.messages[this.messages.length - 1].id : null).subscribe((data) => {
-        const newmessage = new Message(data.response.insertId, this.user.id, this.contact.user_id, new Date(), this.text, false, null)
+    if(this.text){     
+      let parentMessageId = this.messages.length != 0 ? this.messages[this.messages.length-1].id : null;
+      console.log(parentMessageId + " pai") 
+      this.messagesService.sendMessage(this.user.id, this.contact.user_id, this.text, parentMessageId).subscribe((data) => {        
+        const newmessage = new Message(data.response, this.user.id, this.contact.user_id, new Date(), this.text, false, parentMessageId)
         this.messages.push(newmessage);
         this.messagesService.onInsert(newmessage);
         this.text = '';
+        
         setTimeout(() => {
           this.ScrollToBottomWithAnim();
           });

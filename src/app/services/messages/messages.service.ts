@@ -31,7 +31,7 @@ export class MessagesService {
     return this.http.get(url, {headers});
   }
 
-  sendMessage(sender: number, receiver: number, message: string, parent: number | undefined): Observable<any> {
+  sendMessage(sender: number, receiver: number, message: string, parent: number | null): Observable<any> {
     const headers = {authorization: `Bearer ${this.userService.currentUser.token}`, 'Content-Type': 'application/json'};
     const url = `${environment.apiUrl}/messages/insert-message`;
     const body = {senderId: sender, receiverId: receiver, message: message, parentId: parent};
@@ -53,12 +53,12 @@ export class MessagesService {
   onInsertObservable(): Observable<any>{
     return this.subject.asObservable();
   }
-  
+  /*
   onLoad():Observable<any>{
     return this.subject.asObservable();
   }
 
   onChange(): Observable<any> {
     return this.subject.asObservable()
-  }
+  } */
 }

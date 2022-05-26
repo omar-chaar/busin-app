@@ -36,6 +36,7 @@ export class ChatService {
           const messages: Message[] = [message];
           return new Chat(data.chatId, messages, null, user);
         })
+        console.log(this.chats);
         this.subject.next(this.chats);
       },
       (error) => {
