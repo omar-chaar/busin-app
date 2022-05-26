@@ -38,15 +38,18 @@ export class MessagesService {
     return this.http.post(url, body, {headers});
   }
 
+
   onInsert(message: Message): void{
     this.subject.next(message);
   }
+
 
   setAsSeen(user1: number, user2: number): Observable<any> {
     const headers = {authorization: `Bearer ${this.userService.currentUser.token}`, 'Content-Type': 'application/json'};
     const url = `${environment.apiUrl}/messages/was-seen/${user1}/${user2}`;
     return this.http.put(url, null, {headers});
-  }
+
+
 
   setAsUnseen(user1: number, user2: number): Observable<any> {
     const headers = {authorization: `Bearer ${this.userService.currentUser.token}`, 'Content-Type': 'application/json'};
@@ -57,5 +60,12 @@ export class MessagesService {
   onInsertObservable(): Observable<any>{
     return this.subject.asObservable();
   }
+  
+  onLoad():Observable<any>{
+    return this.subject.asObservable();
+  }
 
+  onChange(): Observable<any> {
+    return this.subject.asObservable()
+  }
 }

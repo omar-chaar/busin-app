@@ -29,11 +29,13 @@ export class MessagesPage implements OnInit {
 
   constructor(private router: Router, private chatService: ChatService, private userService: UserService,
     private messageService: MessagesService) {
+
       this.chatService.onLoad().subscribe 
     (
       (chats: Chat[]) => {
         this.currentUser = this.userService.currentUser;
         this.chats = chats
+
       }
     )
 
@@ -54,7 +56,7 @@ export class MessagesPage implements OnInit {
     }
 
   ngOnInit(): void {
-    
+
   }
 
   loadData(event): void {

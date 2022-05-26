@@ -47,6 +47,24 @@ export class AddDepartmentPage implements OnInit {
         }
       );
     }  
+
+  }
+
+  handleSubmit():void{
+    this.departmentService.postCreateDepartment(this.name).subscribe(
+      (response: any) => {
+        this.toastService.presentToast(response.response, 5000, 'success');
+        this.departments.push({
+          department: new Department(response.data.id, response.data.name, this.departmentService.company),
+          edit: false
+        });
+        this.dismiss();
+      },
+      (error) => {
+        this.toastService.presentToast(error.error.error, 2500, 'danger');
+      }
+    );
+    this.dismiss();
   }
 
   async confirmCreate(): Promise<void> {

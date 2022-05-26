@@ -16,6 +16,7 @@ import { environment } from 'src/environments/environment';
 })
 export class ChatService {
 
+
   chats: Chat[];
   subject = new Subject();
 
@@ -39,12 +40,17 @@ export class ChatService {
       },
       (error) => {
         console.log(error);
+
       }
       );
   }
 
   onLoad(): Observable<any> {
     return this.subject.asObservable();
+  }
+  onDelete(): Observable<any> {
+    return this.subject.asObservable()
+
   }
 
 }

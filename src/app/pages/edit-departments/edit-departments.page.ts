@@ -30,6 +30,7 @@ export class EditDepartmentsPage implements OnInit {
     private actionSheetCtrl: ActionSheetController, private chatGroupService: ChatGroupService,
     private modalController: ModalController) {
 
+
     let deptos: Department[] | EditDepartment[] = this.departmentService.departments;
     deptos = deptos.map(department => {
       return {
@@ -39,6 +40,7 @@ export class EditDepartmentsPage implements OnInit {
     })
 
     this.departments = deptos;
+
   }
 
   ngOnInit() {
@@ -70,6 +72,7 @@ export class EditDepartmentsPage implements OnInit {
       const { role } = await actionSheet.onDidDismiss();
 
       if (role === 'destructive') {
+
         this.departmentService.updateDepartment(this.text, department.department.department_id).subscribe(
           (data: any) => {
             department.department.name = this.text;
@@ -82,6 +85,7 @@ export class EditDepartmentsPage implements OnInit {
             this.toastService.presentToast(error.error.error, 3000, 'danger');
           }
         )
+
       }
     }
   }
@@ -106,7 +110,7 @@ export class EditDepartmentsPage implements OnInit {
     const { role } = await actionSheet.onDidDismiss();
 
     if (role === 'destructive') {
-     
+
     }
   }
 

@@ -6,6 +6,7 @@ import { Company } from 'src/model/classes/Company';
 import { Department } from 'src/model/classes/Department';
 import { CompanyService } from '../company/company.service';
 import { UserService } from '../user/user.service';
+import { environment } from 'src/environments/environment';
 
 
 
@@ -14,12 +15,14 @@ import { UserService } from '../user/user.service';
 })
 export class DepartmentService implements OnInit {
 
+
   departments: Department[];
   currentUserDepartment: Department;
   
   constructor(private http: HttpClient, private userService: UserService) {
     
   }
+
 
   ngOnInit(): void {
   }
@@ -61,7 +64,17 @@ export class DepartmentService implements OnInit {
     this.http.get<any>(url, { headers: headers }).subscribe((data: any) => {    
       this.currentUserDepartment = data.data;
     });
-    
+    }
+
+ //TODO: FIX THIS
+  deleteDepartmentDb(id: number):Observable<any>{
+    const url = `${environment.apiUrl}/department/delete/${id}`;
+    return this.httpClient.delete(url, {headers: this.headers});
+  }
+  //TODO: check this
+  onChange(): Observable<any> {
+    return this.subject.asObservable()
+
   }
 
 

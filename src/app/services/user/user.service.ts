@@ -77,6 +77,7 @@ export class UserService {
     return this.http.get<User[]>(url, {headers: headers});
   }
 
+
   getUserById(id: number): Observable<any> {
     const headers = {authorization: 'Bearer ' + this.currentUser.token};
     const url = `${environment.apiUrl}/user/get-user-data/${id}`;
