@@ -29,28 +29,35 @@ export class MessagePage implements OnInit {
     private route: ActivatedRoute,
     private chatService: ChatService,
     private userService: UserService,
-    private messagesService: MessagesService,
+    private messagesService: MessagesService
   ) {
     this.user = this.userService.currentUser;
   }
 
-  ngOnInit() {        
-   
+  ngOnInit() {
     const id = +this.route.snapshot.params['id'];
     this.userService.getUserById(id).subscribe((user) => {
       this.contact = user.data;
-      this.messagesService.getMessages(this.user.id, this.contact.user_id).subscribe((data) => {
-        this.messages = data.messages.map(
-          (message) => new Message(message.message_id, message.sender_id, message.receiver_id, message.time, message.message_body,
-            message.was_seen, message.parent_message_id)            
-        )
-        setTimeout(() => {
+      this.messagesService
+        .getMessages(this.user.id, this.contact.user_id)
+        .subscribe((data) => {
+          this.messages = data.messages.map(
+            (message) =>
+              new Message(
+                message.message_id,
+                message.sender_id,
+                message.receiver_id,
+                message.time,
+                message.message_body,
+                message.was_seen,
+                message.parent_message_id
+              )
+          );
+          setTimeout(() => {
             this.ScrollToBottom();
+          });
         });
-      }
-      ); 
-    }); 
-    
+    });
   }
 
   goBack(): void {
@@ -62,22 +69,38 @@ export class MessagePage implements OnInit {
   }
 
   onSubmit(): void {
-    if(this.text){     
-      let parentMessageId = this.messages.length != 0 ? this.messages[this.messages.length-1].id : null;
-      console.log(parentMessageId + " pai") 
-      this.messagesService.sendMessage(this.user.id, this.contact.user_id, this.text, parentMessageId).subscribe((data) => {        
-        const newmessage = new Message(data.response, this.user.id, this.contact.user_id, new Date(), this.text, false, parentMessageId)
-        this.messages.push(newmessage);
-        this.messagesService.onInsert(newmessage);
-        this.text = '';
-        
-        setTimeout(() => {
-          this.ScrollToBottomWithAnim();
+    if (this.text) {
+      let parentMessageId =
+        this.messages.length != 0
+          ? this.messages[this.messages.length - 1].id
+          : null;
+      console.log(parentMessageId + ' pai');
+      this.messagesService
+        .sendMessage(
+          this.user.id,
+          this.contact.user_id,
+          this.text,
+          parentMessageId
+        )
+        .subscribe((data) => {
+          const newmessage = new Message(
+            data.response,
+            this.user.id,
+            this.contact.user_id,
+            new Date(),
+            this.text,
+            false,
+            parentMessageId
+          );
+          this.messages.push(newmessage);
+          this.messagesService.onInsert(newmessage);
+          this.text = '';
+
+          setTimeout(() => {
+            this.ScrollToBottomWithAnim();
           });
-      });
-      
+        });
     }
-    
   }
 
   orderByDate(messages: Message[]): Message[] {
@@ -98,29 +121,43 @@ export class MessagePage implements OnInit {
     return `${hour}:${minutes}`;
   }
 
-  loadMoreMessages():void{
+  loadMoreMessages(): void {
     const id = this.messages[0].id;
-    this.messagesService.updateMessages(this.user.id, this.contact.user_id, id).subscribe((data) => {
-      const newmessages = data.messages.map(
-        (message) => new Message(message.message_id, message.sender_id, message.receiver_id, message.time, message.message_body,
-          message.was_seen, message.parent_message_id)
-      )
-      this.messages = [...this.messages, ...newmessages];
-      this.orderByDate(this.messages);
-    }
-    );
+    this.messagesService
+      .updateMessages(this.user.id, this.contact.user_id, id)
+      .subscribe((data) => {
+        const newmessages = data.messages.map(
+          (message) =>
+            new Message(
+              message.message_id,
+              message.sender_id,
+              message.receiver_id,
+              message.time,
+              message.message_body,
+              message.was_seen,
+              message.parent_message_id
+            )
+        );
+        if (newmessages.length == 0) {
+          return (this.fullyLoaded = true);
+        }
+        this.messages = [...this.messages, ...newmessages];
+        this.orderByDate(this.messages);
+      });
   }
-  
 
   loadData(event) {
-    if(!this.fullyLoaded){
-    setTimeout(() => {
-      console.log('Done');
-      event.target.complete();
-    }, 500);
+    if (!this.fullyLoaded) {
+      console.log('Loading');
+      setTimeout(() => {
+        this.loadMoreMessages();
+        event.target.complete();
+        console.log('Done');
+      }, 500);
+    } else {
+      event.target.disabled = true;
+    }
   }
-  }
-
 
   ScrollToBottom() {
     this.content.scrollToBottom(0);
