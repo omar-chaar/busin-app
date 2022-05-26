@@ -24,7 +24,7 @@ export class CompanyService {
 
   setCompany(user: User):void{
     this.getCompany(user.department_id).subscribe((data:any) => {  this.company = data.response[0];
-      this.departmentService.setDepartaments(data.response[0].company_id);
+      this.departmentService.setDepartments(data.response[0].company_id);
       });
   }
 

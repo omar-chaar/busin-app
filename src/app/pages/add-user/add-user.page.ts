@@ -28,7 +28,7 @@ export class AddUserPage implements OnInit {
   constructor(private modalController: ModalController, private departmentService: DepartmentService,
     private validationService: ValidationService, private toastService: ToastService,
     private userService: UserService) {
-      const deptos = departmentService.departaments;
+      const deptos = departmentService.departments;
       this.departments = deptos.filter(department => department.name !== 'Owner');
     
   }

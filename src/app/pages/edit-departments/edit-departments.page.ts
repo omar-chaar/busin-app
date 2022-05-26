@@ -30,7 +30,7 @@ export class EditDepartmentsPage implements OnInit {
     private actionSheetCtrl: ActionSheetController, private chatGroupService: ChatGroupService,
     private modalController: ModalController) {
 
-    let deptos: Department[] | EditDepartment[] = this.departmentService.departaments;
+    let deptos: Department[] | EditDepartment[] = this.departmentService.departments;
     deptos = deptos.map(department => {
       return {
         department: department,

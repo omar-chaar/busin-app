@@ -14,7 +14,7 @@ import { UserService } from '../user/user.service';
 })
 export class DepartmentService implements OnInit {
 
-  departaments: Department[];
+  departments: Department[];
   currentUserDepartment: Department;
   
   constructor(private http: HttpClient, private userService: UserService) {
@@ -30,9 +30,9 @@ export class DepartmentService implements OnInit {
     return this.http.post<any>(url, { name, companyId }, { headers: headers });
   }
 
-  setDepartaments(id: number): void {
+  setDepartments(id: number): void {
     this.getDepartments(id).subscribe((data: any) => {
-      this.departaments = data.data;
+      this.departments = data.data;
     });
   }
 
