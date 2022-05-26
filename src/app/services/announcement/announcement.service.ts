@@ -40,5 +40,11 @@ export class AnnouncementService {
     return this.http.post(url, body, { headers: headers });
   }
 
+  deleteAnnouncement(announcementId: number):Observable<any>{
+    const url = `${environment.apiUrl}/announcement/delete/${announcementId}`;
+    const headers = {'Content-Type': 'application/json', 'authorization': 'Bearer ' + this.userService.currentUser.token};
+    return this.http.delete(url, { headers: headers });
+  }
+
  
 }

@@ -11,6 +11,7 @@ import { User } from 'src/model/classes/User';
 import { UserService } from 'src/app/services/user/user.service';
 import { TouchSequence } from 'selenium-webdriver';
 import { Router } from '@angular/router';
+import { ActionSheetController } from '@ionic/angular';
 
 import { Pipe, PipeTransform } from '@angular/core';
 
@@ -46,7 +47,8 @@ export class AnnouncementsPage implements OnInit {
     private announcementService: AnnouncementService,
     private userService: UserService,
     private toastService: ToastService,
-    private router: Router
+    private router: Router,
+    private actionSheetCtrl: ActionSheetController
   ) {
     this.user = this.userService.currentUser;
     this.loadTenFirstAnnouncements();
@@ -74,6 +76,40 @@ export class AnnouncementsPage implements OnInit {
         this.toastService.presentToast(err.error.error, 4500, 'danger');
       }
     );
+  }
+
+  async canDelete(announcement: Announcement):Promise<void> {
+    const actionSheet = await this.actionSheetCtrl.create({
+      header: `Delete "${announcement.title}"?`,
+      buttons: [
+        {
+          text: 'Delete',
+          role: 'destructive'
+        },
+        {
+          text: 'Cancel',
+          role: 'cancel'
+        }
+      ]
+    });
+
+    await actionSheet.present();
+
+    const { role } = await actionSheet.onDidDismiss();
+
+    if (role === 'destructive') {    
+      this.announcementService.deleteAnnouncement(announcement.id).subscribe(
+        (resp: any) => {
+          this.toastService.presentToast('Announcement deleted.', 2500, 'success');
+          this.announcements = this.announcements.filter((announcementItem) => announcementItem.id !== announcement.id);
+        },
+        (err) => {
+          this.toastService.presentToast(err.error.error, 4500, 'danger');
+        }
+      )
+
+
+    }
   }
 
   loadTenFirstAnnouncements(): void {

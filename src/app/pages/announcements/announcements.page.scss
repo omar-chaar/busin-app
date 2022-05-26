@@ -2,6 +2,12 @@
     --border-color: transparent;
 }
 
+.announcement-body{
+    word-break: break-all;
+    color: #414141;
+    font-size: 1rem;
+}
+
 .button-container{
     display: flex;
     justify-content: center;
