@@ -13,7 +13,7 @@
   </ion-toolbar>
 </ion-header>
   <ion-content [scrollEvents]="true" >
-    <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)" position="top">
+    <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)" position="top" *ngIf="messages.length >= 10">
       <ion-infinite-scroll-content loadingSpinner="bubbles">
       </ion-infinite-scroll-content>
     </ion-infinite-scroll>

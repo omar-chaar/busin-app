@@ -31,7 +31,7 @@ export class MessagesService {
     return this.http.get(url, {headers});
   }
 
-  sendMessage(sender: number, receiver: number, message: string, parent: number): Observable<any> {
+  sendMessage(sender: number, receiver: number, message: string, parent: number | undefined): Observable<any> {
     const headers = {authorization: `Bearer ${this.userService.currentUser.token}`, 'Content-Type': 'application/json'};
     const url = `${environment.apiUrl}/messages/insert-message`;
     const body = {senderId: sender, receiverId: receiver, message: message, parentId: parent};
@@ -47,13 +47,6 @@ export class MessagesService {
   setAsSeen(user1: number, user2: number): Observable<any> {
     const headers = {authorization: `Bearer ${this.userService.currentUser.token}`, 'Content-Type': 'application/json'};
     const url = `${environment.apiUrl}/messages/was-seen/${user1}/${user2}`;
-    return this.http.put(url, null, {headers});
-
-
-
-  setAsUnseen(user1: number, user2: number): Observable<any> {
-    const headers = {authorization: `Bearer ${this.userService.currentUser.token}`, 'Content-Type': 'application/json'};
-    const url = `${environment.apiUrl}/messages/unseen/${user1}/${user2}`;
     return this.http.put(url, null, {headers});
   }
 

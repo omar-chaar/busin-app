@@ -191,12 +191,12 @@ export class AnnouncementsPage implements OnInit {
     console.log(this.announcements);
     if (!this.fullyLoaded) {
        console.log('Loading data...');  
-        setTimeout(() => {
-        event.target.complete();
+        setTimeout(() => {        
         this.loadMore10Announcements();
+        event.target.complete();
         console.log('Done');
         console.log(this.announcements);
-      }, 2000);
+      }, 500);
       
     } else {
       event.target.disabled = true;

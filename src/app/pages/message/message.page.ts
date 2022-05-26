@@ -22,6 +22,7 @@ export class MessagePage implements OnInit {
   messages: Message[] = [];
   user: User;
   text: string;
+  fullyLoaded = false;
 
   constructor(
     private _router: Router,
@@ -62,12 +63,12 @@ export class MessagePage implements OnInit {
 
   onSubmit(): void {
     if(this.text){
-      this.messagesService.sendMessage(this.user.id, this.contact.user_id, this.text, this.messages[this.messages.length - 1].id).subscribe((data) => {
+      
+      this.messagesService.sendMessage(this.user.id, this.contact.user_id, this.text, this.messages.length != 0 ? this.messages[this.messages.length - 1].id : null).subscribe((data) => {
         const newmessage = new Message(data.response.insertId, this.user.id, this.contact.user_id, new Date(), this.text, false, null)
         this.messages.push(newmessage);
         this.messagesService.onInsert(newmessage);
         this.text = '';
-        this.messagesService.setAsUnseen(this.user.id, this.contact.user_id);
         setTimeout(() => {
           this.ScrollToBottomWithAnim();
           });
@@ -110,10 +111,12 @@ export class MessagePage implements OnInit {
   
 
   loadData(event) {
+    if(!this.fullyLoaded){
     setTimeout(() => {
       console.log('Done');
       event.target.complete();
     }, 500);
+  }
   }
 
 

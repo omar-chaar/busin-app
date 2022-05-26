@@ -33,7 +33,7 @@ export class UserLoginPage implements OnInit {
     this.userService.login(this.email, this.password).subscribe(
       (resp) => {
         if(resp){
-          this.toastService.presentToast('Login successful', 4000, 'success');
+          this.toastService.presentToast('Login successful', 1500, 'success');
           const user = new User(resp.data.user_id, resp.data.name, resp.data.surname,
             resp.data.position, resp.data.email, resp.data.profilePicture, resp.data.department_id,
             resp.data.is_adm, resp.data.is_owner, resp.token);

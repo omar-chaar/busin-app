@@ -49,7 +49,7 @@ export class AddDepartmentPage implements OnInit {
     }  
 
   }
-
+/*
   handleSubmit():void{
     this.departmentService.postCreateDepartment(this.name).subscribe(
       (response: any) => {
@@ -65,7 +65,7 @@ export class AddDepartmentPage implements OnInit {
       }
     );
     this.dismiss();
-  }
+  } */
 
   async confirmCreate(): Promise<void> {
     if (this.validationService.validateLength('Department', this.name, 50, 2)) {

@@ -6,7 +6,6 @@ import { Company } from 'src/model/classes/Company';
 import { Department } from 'src/model/classes/Department';
 import { CompanyService } from '../company/company.service';
 import { UserService } from '../user/user.service';
-import { environment } from 'src/environments/environment';
 
 
 
@@ -65,7 +64,7 @@ export class DepartmentService implements OnInit {
       this.currentUserDepartment = data.data;
     });
     }
-
+    /*
  //TODO: FIX THIS
   deleteDepartmentDb(id: number):Observable<any>{
     const url = `${environment.apiUrl}/department/delete/${id}`;
@@ -75,7 +74,7 @@ export class DepartmentService implements OnInit {
   onChange(): Observable<any> {
     return this.subject.asObservable()
 
-  }
+  } */
 
 
 }
