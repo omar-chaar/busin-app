@@ -23,6 +23,7 @@ export class ContactsPage implements OnInit {
   departments: Department[] = []
   user: User;
   subscription: Subscription;
+  alreadyLoaded: number[] = [];
 
   page: number = 1
   fullyLoaded = false
@@ -30,7 +31,7 @@ export class ContactsPage implements OnInit {
   constructor(private departmentService: DepartmentService, private userService: UserService,
     private router: Router, private chatService:ChatService) {
       this.user = this.userService.currentUser
-      const deptos = this.departmentService.departaments
+      const deptos = this.departmentService.departments
       this.departments = deptos;
   }
 
@@ -39,6 +40,7 @@ export class ContactsPage implements OnInit {
   }
 
   loadUsers(department: Department):void{
+    if(!this.alreadyLoaded.includes(department.department_id)){
     this.userService.getUsersByDepartment(department.department_id).subscribe(
       (resp) => {
         department.users = resp.data.map(user => {
@@ -47,22 +49,16 @@ export class ContactsPage implements OnInit {
         })
       } , (err) => {
         if(err.status == 400){ //No user found
-          department.users = null;
+          department.users = undefined;
         }
       }
-    )
-  }
-
-  loadData(event):void {
-    setTimeout(() => {
       
-      event.target.complete();
-    }, 2000);
+    )    
+    this.alreadyLoaded.push(department.department_id);
   }
+}
 
   redirectTo(url:string):void{
     this.router.navigateByUrl(url)
   }
-
-
 }
