@@ -43,6 +43,9 @@ export class ContactsPage implements OnInit {
     if(!this.alreadyLoaded.includes(department.department_id)){
     this.userService.getUsersByDepartment(department.department_id).subscribe(
       (resp) => {
+        if(resp == undefined){
+          return this.alreadyLoaded.push(department.department_id);
+        }
         department.users = resp.data.map(user => {
           return new User(user.user_id, user.name, user.surname, user.position, user.email,
              null, user.department_id, user.is_adm, user.is_owner);
@@ -61,4 +64,17 @@ export class ContactsPage implements OnInit {
   redirectTo(url:string):void{
     this.router.navigateByUrl(url)
   }
+
+  doRefresh(event) {
+    console.log('Begin async operation');
+
+    setTimeout(() => {
+      this.departments = [];
+      this.alreadyLoaded = [];
+      const deptos = this.departmentService.departments
+      this.departments = deptos;
+      console.log('Async operation has ended');
+      event.target.complete();
+    }, 2000);
+  }  
 }

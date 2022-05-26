@@ -1,5 +1,7 @@
 <ion-content>
-
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
   <ion-list lines="full">
     <ion-accordion-group value="numbers" *ngFor="let department of departments">
       <ion-accordion value="colors" class="department-item" (click)="loadUsers(department)">
