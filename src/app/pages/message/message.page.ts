@@ -45,7 +45,7 @@ export class MessagePage implements OnInit {
         )
         setTimeout(() => {
             this.ScrollToBottom();
-        }, 2);
+        });
       }
       ); 
     }); 
@@ -68,9 +68,13 @@ export class MessagePage implements OnInit {
         this.messagesService.onInsert(newmessage);
         this.text = '';
         this.messagesService.setAsUnseen(this.user.id, this.contact.user_id);
-        
+        setTimeout(() => {
+          this.ScrollToBottomWithAnim();
+          });
       });
+      
     }
+    
   }
 
   orderByDate(messages: Message[]): Message[] {
@@ -98,7 +102,6 @@ export class MessagePage implements OnInit {
         (message) => new Message(message.message_id, message.sender_id, message.receiver_id, message.time, message.message_body,
           message.was_seen, message.parent_message_id)
       )
-
       this.messages = [...this.messages, ...newmessages];
       this.orderByDate(this.messages);
     }
@@ -118,4 +121,7 @@ export class MessagePage implements OnInit {
     this.content.scrollToBottom(0);
   }
 
+  ScrollToBottomWithAnim() {
+    this.content.scrollToBottom(500);
+  }
 }
