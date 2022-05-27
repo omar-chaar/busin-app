@@ -52,8 +52,10 @@ export class MessagesPage implements OnInit {
         if (!resp) {
           this.departmentMessage.message = 'No messages in your group.';
         } else {
+          console.log(resp)
           this.userService.getUserById(resp.data.sender_id).subscribe((user) => {
-            this.departmentMessage.message = `${user.name} ${user.surname}: ${resp.data.message_body}`,
+            console.log(user)
+            this.departmentMessage.message = `${user.data.name} ${user.data.surname}: ${resp.data.message_body}`,
             this.departmentMessage.time = this.formatTime(new Date(resp.data.time))
             this.departmentMessage.sender = `${user.name} ${user.surname}`
           });

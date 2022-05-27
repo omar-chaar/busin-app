@@ -15,6 +15,13 @@ ion-toolbar{
     --background: #fff;
 }
 
+.empty-message{
+    font-size: .9rem;
+    color: grey;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
 .contact-info{
     display: inline-block;
     flex-direction: column;

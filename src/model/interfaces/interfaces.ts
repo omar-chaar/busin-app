@@ -51,11 +51,11 @@ export interface IMessage {
 
 export interface IChatMessage {
     id: number,
-    sender: User,
-    group: ChatGroup,
+    sender: number,
+    department_id: number,
     time: Date,
-    message: string,
-    parentMessage?: ChatMessage;
+    body: string,
+    sender_name: string
 }
 
 export interface IChat {
