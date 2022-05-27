@@ -74,9 +74,11 @@
       -->
     <ion-item>
       <ion-label>Admin</ion-label>
-      <ion-checkbox color="tertiary" name="admin" [(ngModel)]="userEditing.admin" [checked]="userEditing.admin"></ion-checkbox>
+      <ion-checkbox color="tertiary" [disabled]="userEditing.owner" name="admin" [(ngModel)]="userEditing.admin" [checked]="userEditing.admin"></ion-checkbox>
     </ion-item>
-    <ion-button expand="block" color="tertiary" type="submit">Edit</ion-button>
-    <span class="text non-primary-button" (click)="redirectTo('/edit-users')">Cancel</span>
+    <span class="buttons">
+      <ion-button expand="block" color="tertiary" type="submit">Edit</ion-button>
+      <span class="text non-primary-button" (click)="redirectTo('/edit-users')">Cancel</span>
+    </span>
   </form>
 </ion-content>

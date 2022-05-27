@@ -63,6 +63,7 @@ export class EditUserPage implements OnInit {
   }
 
   handleSubmit(): void {
+    if(this.userEditing.owner) this.userEditing.admin = true;
     this.userService.editUser(this.userEditing).subscribe(
       (resp) => {
         this.toastService.presentToast('User edited successfully', 3000, 'success');
