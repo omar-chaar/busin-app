@@ -25,7 +25,6 @@ export class MessagesPage implements OnInit {
   users: User[] = [];
   departmentMessage: any = {};
   currentUser: User;
-  page: number = 1;
   fullyLoaded = false;
 
   //user for test
@@ -76,12 +75,8 @@ export class MessagesPage implements OnInit {
   //TODO: IS THIS WORKING?
   loadData(event): void {
     if (!this.fullyLoaded) {
-      this.page += 1;
       setTimeout(() => {
-        const res = this.addMoreItems();
-        if (!res) {
-          this.fullyLoaded = true;
-        }
+      
         event.target.complete();
       }, 2000);
     }
@@ -118,4 +113,6 @@ export class MessagesPage implements OnInit {
   redirectToGroup(id: number): void {
     this.router.navigateByUrl('/chat-group/' + id);
   }
+
+
 }

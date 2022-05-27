@@ -1,4 +1,7 @@
 <ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
   <div *ngIf="user.admin" style="display: flex; justify-content: center;" class="button-div">
     <ion-button color="tertiary" shape="round" class="announcement-button" (click)="openModal()">New Announcement
     </ion-button>

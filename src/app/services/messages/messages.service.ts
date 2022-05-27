@@ -49,6 +49,13 @@ export class MessagesService {
     const url = `${environment.apiUrl}/messages/was-seen/${user1}/${user2}`;
     return this.http.put(url, null, {headers});
   }
+  
+  getNumberOfUnreadMessages(sender_id: number, receiver_id: number): Observable<any> {
+    const headers = {authorization: `Bearer ${this.userService.currentUser.token}`, 'Content-Type': 'application/json'};
+    const url = `${environment.apiUrl}/messages/get-unread/`;
+    const body = {sender_id: sender_id, receiver_id: receiver_id};
+    return this.http.post(url, body, {headers});
+  }
 
   onInsertObservable(): Observable<any>{
     return this.subject.asObservable();

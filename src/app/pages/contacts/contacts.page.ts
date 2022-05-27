@@ -67,15 +67,11 @@ export class ContactsPage implements OnInit {
   }
 
   doRefresh(event) {
-    console.log('Begin async operation');
-
     setTimeout(() => {
       this.departments = [];
       this.alreadyLoaded = [];
       this.noUsersDepartments = [];
-      this.user = new User(-1, '', '', '', '', null, -1, false, false);
       this.ngOnInit();
-      console.log('Async operation has ended');
       event.target.complete();
     }, 2000);
   }  

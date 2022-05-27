@@ -187,15 +187,10 @@ export class AnnouncementsPage implements OnInit {
   }
 
   loadData(event): void {
-    console.log('Before loading');
-    console.log(this.announcements);
     if (!this.fullyLoaded) {
-       console.log('Loading data...');  
         setTimeout(() => {        
         this.loadMore10Announcements();
         event.target.complete();
-        console.log('Done');
-        console.log(this.announcements);
       }, 500);
       
     } else {
@@ -270,6 +265,15 @@ export class AnnouncementsPage implements OnInit {
 
   openModal(): void {
     if (this.user.admin) this.presentModal();
+  }
+  
+  doRefresh(event) {
+    this.announcements = [];
+    this.fullyLoaded = false;
+    this.loadTenFirstAnnouncements();
+    setTimeout(() => {
+      event.target.complete();
+    }, 2000);
   }
 }
 
