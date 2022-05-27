@@ -20,6 +20,7 @@ export class MessagePage implements OnInit {
   @ViewChild(IonContent, { static: false }) content: IonContent;
   contact: any = new User(0, '', '', '', '', null, 0, false, false);
   messages: Message[] = [];
+  messageToSend: Message;
   user: User;
   text: string;
   fullyLoaded = false;
@@ -74,6 +75,14 @@ export class MessagePage implements OnInit {
         this.messages.length != 0
           ? this.messages[this.messages.length - 1].id
           : null;
+      this.messageToSend = new Message(-1,
+      this.user.id,
+      this.contact.user_id,
+      new Date(),
+      this.text,
+      false,
+      parentMessageId)
+      this.messages.push(this.messageToSend);
       this.messagesService
         .sendMessage(
           this.user.id,
@@ -82,19 +91,10 @@ export class MessagePage implements OnInit {
           parentMessageId
         )
         .subscribe((data) => {
-          const newmessage = new Message(
-            data.response,
-            this.user.id,
-            this.contact.user_id,
-            new Date(),
-            this.text,
-            false,
-            parentMessageId
-          );
-          this.messages.push(newmessage);
-          this.messagesService.onInsert(newmessage);
+          this.messageToSend.id = data.response;
+          this.messages[this.messages.length - 1] = this.messageToSend;         
+          this.messagesService.onInsert(this.messageToSend);
           this.text = '';
-
           setTimeout(() => {
             this.ScrollToBottomWithAnim();
           });
