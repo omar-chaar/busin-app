@@ -10,11 +10,35 @@ import { UserService } from '../user/user.service';
   providedIn: 'root'
 })
 export class SocketioService {
+
+  
+message$: BehaviorSubject<Message> = new BehaviorSubject(null);
   socket = io(environment.apiUrl);
+  
   
   constructor(private userService: UserService) { }
 
-  sendMessage(message: Message, token: string = this.userService.currentUser.token) {
-    this.socket.emit('message', message);
+  connect() {
+    this.socket.connect();
+    this.sendToken(this.userService.currentUser.token);
+  }
+  
+  sendToken(token:string) {
+    this.socket.emit('token', token);
+  }
+
+  sendMessage(message:Message) {
+    this.socket.emit('message', message);    
+  }
+
+  disconnect() {
+    this.socket.disconnect();
+  }
+ getNewMessage = () => {
+    this.socket.on('message', (message: Message) =>{
+      this.message$.next(message);
+    });
+    
+    return this.message$.asObservable()
   }
 }

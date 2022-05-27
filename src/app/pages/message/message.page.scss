@@ -11,6 +11,7 @@
     cursor: pointer;
 }
 
+
 ion-toolbar{
     --background: #fff;
 }
@@ -45,7 +46,7 @@ ion-toolbar{
 
 .messagebox-container{
     margin: 10px 7px;
-    overflow-y: scroll;
+    
 }
 
 .message-box{
@@ -119,3 +120,4 @@ ion-toolbar{
 .clickable-icon{
     cursor: pointer;
 }
+
