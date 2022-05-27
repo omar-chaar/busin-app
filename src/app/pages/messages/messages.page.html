@@ -2,8 +2,8 @@
 
   <ion-list lines="full">
     <ion-item ion-button class="department-group" *ngIf="departmentMessage.departmentName && 
-    departmentMessage.departmentName !== 'Owner'">
-      <ion-label (click)="redirectToChat(chat.user.id, chat)">
+    departmentMessage.departmentName !== 'Owner'" (click)="redirectToGroup(user.department_id)">
+      <ion-label>
         <h2>{{departmentMessage.departmentName}}</h2>
         <ion-label class="message-info">
           <p class="text-info">{{departmentMessage.message}}</p>

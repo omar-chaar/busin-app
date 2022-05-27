@@ -2,16 +2,13 @@
   <ion-toolbar>
     <div class="header">
       <ion-icon name="chevron-back-outline" class="previous" (click)="goBack()"></ion-icon>
-      <ion-avatar id="main-avatar" slot="start" (click)="goToProfile(contact.id)">
+      <ion-avatar id="main-avatar" slot="start" >
         <img src="../../../assets/images/gw50h17a.bmp">
       </ion-avatar>
+     
       <div class="contact-info">
-        <h1>{{chat.department.name}}</h1>
-      </div>
-      <div class="icons">
-        <ion-icon name="videocam"></ion-icon>
-        <ion-icon name="call"></ion-icon>
-      </div>
+        <h1>{{department.name}}</h1>
+      </div>      
     </div>
   </ion-toolbar>
 </ion-header>
@@ -43,6 +40,7 @@
     </ion-button>
 
   </form>
-</ion-item>
+</ion-item> -->
+ 
 
 <!-- [ngClass]="{ reminder: task.reminder }"-->

@@ -48,7 +48,6 @@ export class MessagesPage implements OnInit {
 
     this.chatGroupService.getLastMessage().subscribe((resp) => {
       this.departmentService.getDepartment(this.user.department_id).subscribe((department) => {
-        console.log(department)
         this.departmentMessage.departmentName = department.data.name;
         if (!resp) {
           this.departmentMessage.message = 'No messages in your group.';
@@ -114,5 +113,9 @@ export class MessagesPage implements OnInit {
         .subscribe(() => (chat.messages[0].was_seen = true));
     }
     this.router.navigateByUrl('/message/' + id);
+  }
+  
+  redirectToGroup(id: number): void {
+    this.router.navigateByUrl('/chat-group/' + id);
   }
 }
