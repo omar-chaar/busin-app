@@ -8,7 +8,6 @@ import { UserService } from 'src/app/services/user/user.service';
 
 import { User } from 'src/model/classes/User';
 import { Department } from 'src/model/classes/Department';
-import { Subscription } from 'rxjs';
 
 
 @Component({
@@ -22,12 +21,9 @@ export class ContactsPage implements OnInit {
 
   departments: Department[] = []
   user: User;
-  subscription: Subscription;
   alreadyLoaded: number[] = [];
   noUsersDepartments: number[] = [];
 
-  page: number = 1
-  fullyLoaded = false
 
   constructor(private departmentService: DepartmentService, private userService: UserService,
     private router: Router, private chatService:ChatService) {
@@ -47,11 +43,8 @@ export class ContactsPage implements OnInit {
     if(!this.alreadyLoaded.includes(department.department_id)){
     this.userService.getUsersByDepartment(department.department_id).subscribe(
       (resp) => {
-        if(resp == undefined){
-          
+        if(resp == undefined){          
           this.noUsersDepartments.push(department.department_id);
-          console.log(this.noUsersDepartments)
-          console.log(this.noUsersDepartments.includes(department.department_id));
           return this.alreadyLoaded.push(department.department_id);          
         }
         department.users = resp.data.map(user => {
@@ -59,7 +52,7 @@ export class ContactsPage implements OnInit {
              null, user.department_id, user.is_adm, user.is_owner);
         })
       } , (err) => {
-        if(err.status == 204){ //No user found
+        if(err.status == 204){ 
           department.users = undefined;
         }
       }
@@ -79,8 +72,9 @@ export class ContactsPage implements OnInit {
     setTimeout(() => {
       this.departments = [];
       this.alreadyLoaded = [];
-      const deptos = this.departmentService.departments
-      this.departments = deptos;
+      this.noUsersDepartments = [];
+      this.user = new User(-1, '', '', '', '', null, -1, false, false);
+      this.ngOnInit();
       console.log('Async operation has ended');
       event.target.complete();
     }, 2000);
