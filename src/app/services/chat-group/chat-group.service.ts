@@ -21,8 +21,21 @@ export class ChatGroupService {
 
   getLastMessage(): Observable<any>{
     const url = `${environment.apiUrl}/group/last_message/${this.userService.currentUser.id}`;
-    const headers = {'Authorization': `Bearer ${this.userService.currentUser.token}`};
+    const headers = {'authorization': `Bearer ${this.userService.currentUser.token}`};
     return this.http.get(url, {headers});
+  }
+
+  getFirstMessages(department_id: number):Observable<any>{
+    const url = `${environment.apiUrl}/group/first_ten_messages/${department_id}`;
+    const headers = {'authorization': `Bearer ${this.userService.currentUser.token}`};
+    return this.http.get(url, {headers});
+  }
+
+  sendGroupMessage(department_id: number, sender: number, message: string):Observable<any>{
+    const url = `${environment.apiUrl}/group/send_message`;
+    const headers = {'authorization': `Bearer ${this.userService.currentUser.token}`};
+    const body = {message, departmentId: department_id, senderId: sender};
+    return this.http.post(url, body, {headers});
   }
 
 }
