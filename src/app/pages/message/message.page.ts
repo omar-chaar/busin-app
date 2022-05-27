@@ -74,7 +74,6 @@ export class MessagePage implements OnInit {
         this.messages.length != 0
           ? this.messages[this.messages.length - 1].id
           : null;
-      console.log(parentMessageId + ' pai');
       this.messagesService
         .sendMessage(
           this.user.id,
