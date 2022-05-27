@@ -24,19 +24,23 @@ export class ContactsPage implements OnInit {
   user: User;
   subscription: Subscription;
   alreadyLoaded: number[] = [];
+  noUsersDepartments: number[] = [];
 
   page: number = 1
   fullyLoaded = false
 
   constructor(private departmentService: DepartmentService, private userService: UserService,
     private router: Router, private chatService:ChatService) {
-      this.user = this.userService.currentUser
-      const deptos = this.departmentService.departments
-      this.departments = deptos;
+      
   }
 
   ngOnInit(): void {
-
+    this.user = this.userService.currentUser
+    const deptos = this.departmentService.departments
+    this.departments = deptos;
+    for(let department of this.departments){
+      this.loadUsers(department);
+    }
   }
 
   loadUsers(department: Department):void{
@@ -44,14 +48,18 @@ export class ContactsPage implements OnInit {
     this.userService.getUsersByDepartment(department.department_id).subscribe(
       (resp) => {
         if(resp == undefined){
-          return this.alreadyLoaded.push(department.department_id);
+          
+          this.noUsersDepartments.push(department.department_id);
+          console.log(this.noUsersDepartments)
+          console.log(this.noUsersDepartments.includes(department.department_id));
+          return this.alreadyLoaded.push(department.department_id);          
         }
         department.users = resp.data.map(user => {
           return new User(user.user_id, user.name, user.surname, user.position, user.email,
              null, user.department_id, user.is_adm, user.is_owner);
         })
       } , (err) => {
-        if(err.status == 400){ //No user found
+        if(err.status == 204){ //No user found
           department.users = undefined;
         }
       }
