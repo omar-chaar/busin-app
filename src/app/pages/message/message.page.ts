@@ -163,7 +163,7 @@ export class MessagePage implements OnInit, OnDestroy {
           return (this.fullyLoaded = true);
         }
         this.messages = [...this.messages, ...newmessages];
-        // this.orderByDate(this.messages);
+        this.orderByDate(this.messages);
       });
   }
 

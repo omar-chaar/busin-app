@@ -9,6 +9,9 @@ import { MessagesService } from 'src/app/services/messages/messages.service';
 import { User } from 'src/model/classes/User';
 import { Chat } from 'src/model/classes/Chat';
 import { Message } from 'src/model/classes/Message';
+import { ChatGroupService } from 'src/app/services/chat-group/chat-group.service';
+import { Department } from 'src/model/classes/Department';
+import { DepartmentService } from 'src/app/services/department/department.service';
 
 @Component({
   selector: 'app-messages',
@@ -20,6 +23,7 @@ export class MessagesPage implements OnInit {
   //users: {name: string, unread: number}[]  = []
   chats: Chat[] = [];
   users: User[] = [];
+  departmentMessage: any = {};
   currentUser: User;
   page: number = 1;
   fullyLoaded = false;
@@ -31,15 +35,31 @@ export class MessagesPage implements OnInit {
     private router: Router,
     private chatService: ChatService,
     private userService: UserService,
-    private messageService: MessagesService
-  ) {}
+    private messageService: MessagesService,
+    private chatGroupService: ChatGroupService,
+    private departmentService: DepartmentService
+  ) { }
 
   ngOnInit(): void {
     this.chatService.onLoad().subscribe((chats: Chat[]) => {
       this.currentUser = this.userService.currentUser;
       this.chats = chats;
+    });
 
-      console.log(this.chats);
+    this.chatGroupService.getLastMessage().subscribe((resp) => {
+      this.departmentService.getDepartment(this.user.department_id).subscribe((department) => {
+        console.log(department)
+        this.departmentMessage.departmentName = department.data.name;
+        if (!resp) {
+          this.departmentMessage.message = 'No messages in your group.';
+        } else {
+          this.userService.getUserById(resp.data.sender_id).subscribe((user) => {
+            this.departmentMessage.message = `${user.name} ${user.surname}: ${resp.data.message_body}`,
+            this.departmentMessage.time = this.formatTime(new Date(resp.data.time))
+            this.departmentMessage.sender = `${user.name} ${user.surname}`
+          });
+        }
+      });
     });
 
     this.messageService.onInsertObservable().subscribe((message: Message) => {

@@ -22,7 +22,7 @@
       <ion-row *ngFor="let message of messages" class="messagebox-container"
         [ngClass]="{'user-message': message.sender === user.id}">
         <div class="message-box">
-          <p>{{message.message}}</p>
+          <p class="word-break">{{message.message}}</p>
           <div class="meta-info">
             <ion-icon *ngIf="message.sender_id === user.id" name="checkmark-done-sharp"></ion-icon>
             <p>{{formatTime(message.time)}}</p>
