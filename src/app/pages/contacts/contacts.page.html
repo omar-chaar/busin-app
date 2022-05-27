@@ -4,7 +4,7 @@
   </ion-refresher>
   <ion-list lines="full">
     <ion-accordion-group value="numbers" *ngFor="let department of departments">
-      <ion-accordion value="colors" class="department-item" (click)="loadUsers(department)">
+      <ion-accordion value="colors" class="department-item">
         <ion-item slot="header">
           <ion-label>
             <h2 class="department-name">{{department.name}}</h2>
@@ -12,7 +12,7 @@
         </ion-item>
         <ion-list slot="content">
           <div *ngIf="department.users">
-          <ion-item>
+          <ion-item *ngIf="department.name != 'Owner'">
             <ion-button (click)="redirectTo('/chat-group/' + department.id)" color="tertiary" class="group-btn">
               {{department.name}} Group</ion-button>
           </ion-item>
@@ -31,8 +31,9 @@
             </ion-item>
           </div>          
             <ion-item *ngIf="!department.users" class="border-none">
-              <ion-label>
-                <h2 class="no-users">No users in this department</h2>
+              <!-- TODO: FIX THIS-->
+              <ion-label *ngIf="noUsersDepartments.includes(department.id)">
+                <h2 >No users in this department</h2>
               </ion-label>
             </ion-item>          
         </ion-list>
