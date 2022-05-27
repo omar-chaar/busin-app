@@ -94,7 +94,8 @@ export class UserService {
   editUser(user: User): Observable<any> {
     const headers = {authorization: 'Bearer ' + this.currentUser.token};
     const url = `${environment.apiUrl}/user/edit-user-data/${user.id}`;
-    const body = {name: user.name, surname: user.surname, departmentId: user.department_id, position: user.position};
+    const body = {name: user.name, surname: user.surname, departmentId: user.department_id, position: user.position,
+    admin: user.admin};
     return this.http.put(url, body, {headers: headers});
   }
 
