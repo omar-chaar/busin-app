@@ -15,7 +15,6 @@
             <ion-label class="date">{{formatDate(announcement.date)}}</ion-label>
           </div>
         </ion-item>
-        <!-- fsd-->
         <ion-item-sliding slot="content" class="content">
           <ion-item slot="content" class="content">
             <ion-label>
@@ -28,6 +27,7 @@
         </ion-item-sliding>
       </ion-accordion>
     </ion-accordion-group>
+    <p *ngIf="announcements.length === 0" class="empty">No announcements for you.</p>
   </ion-list>
 
   <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)" *ngIf="!fullyLoaded">
