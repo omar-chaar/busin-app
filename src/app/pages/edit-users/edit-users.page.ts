@@ -87,19 +87,6 @@ export class EditUsersPage implements OnInit {
     return await modal.present();
   }
 
-  loadData(event): void {
-    if (!this.fullyLoaded) {
-      this.page += 1;
-      setTimeout(() => {
-        const res = this.addMoreItems();
-        if (!res) {
-          this.fullyLoaded = true
-        }
-        event.target.complete();
-      }, 2000);
-    }
-  }
-
   addMoreItems(): boolean {
     return true
   }
