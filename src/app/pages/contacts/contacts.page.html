@@ -32,8 +32,8 @@
           </div>          
             <ion-item *ngIf="!department.users" class="border-none">
               <!-- TODO: FIX THIS-->
-              <ion-label *ngIf="noUsersDepartments.includes(department.id)">
-                <h2 >No users in this department</h2>
+              <ion-label *ngIf="noUsersDepartments.includes(department.department_id)">
+                <h2 class="empty" >No users in this department</h2>
               </ion-label>
             </ion-item>          
         </ion-list>
