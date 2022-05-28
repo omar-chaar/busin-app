@@ -4,14 +4,16 @@
     <ion-icon name="chevron-back-outline" class="return-icon" (click)="redirectTo('/edit-users')"></ion-icon>
     <ion-title>Editing {{userEditing.getFullName()}}</ion-title>
   </ion-toolbar>
-<!--TODO: FIX NOT TAKING FULL SPACE-->
   <form class="container" (ngSubmit)="handleSubmit()" >    
-    <ion-item>
+    <ion-item *ngIf="!userEditing.owner">
       <ion-label>Department</ion-label>
-      <ion-select placeholder="department.name" [(ngModel)]="userEditing.department_id" name="department">
+      <ion-select placeholder="department.name" [(ngModel)]="userEditing.department_id" name="department"  >
         <ion-select-option *ngFor="let department of departments" [value]="department.department_id">{{department.name}}
         </ion-select-option>
       </ion-select>
+    </ion-item>
+    <ion-item *ngIf="userEditing.owner" [disabled]="userEditing.owner">
+      <ion-label> Can't edit owner's department.</ion-label>
     </ion-item>
     <ion-item>
       <ion-label position="stacked">Name</ion-label>
