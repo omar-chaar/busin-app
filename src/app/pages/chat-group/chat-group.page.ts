@@ -11,7 +11,6 @@ import { Department } from 'src/model/classes/Department';
 import { User } from 'src/model/classes/User';
 import { IonContent, NavController } from '@ionic/angular';
 import { Location } from '@angular/common';
-
 @Component({
   selector: 'app-chat-group',
   templateUrl: './chat-group.page.html',
@@ -35,7 +34,6 @@ export class ChatGroupPage implements OnInit, OnDestroy {
 
   ngOnInit() {
     const id = +this.route.snapshot.params['id'];
-    console.log(this.fullyLoaded);
     this.user = this.userService.currentUser;
     this.departmentService.getDepartment(id).subscribe((department) => {
       this.department = new Department(department.data.department_id, department.data.name, department.data.company_id);
@@ -45,7 +43,7 @@ export class ChatGroupPage implements OnInit, OnDestroy {
         }
         const messages = data.data
         this.messages = messages.map(message => {
-          const time = this.formatDate(message.time);
+          const time = message.time;
           return new ChatMessage(message.group_message_id, message.sender_id, message.department_id, time, message.message_body, message.name,
             message.deptname);
         }) 
@@ -62,7 +60,6 @@ export class ChatGroupPage implements OnInit, OnDestroy {
         this.socketIoService.getNewMessageGroupMessage().subscribe((message: ChatMessage) => {
           if (message != null){
           var messageToPush = new ChatMessage(message.id, message.sender, message.department_id, message.time, message.body, message.sender_name, message.department_name);
-          console.log(messageToPush);
             if(this.messages.some(message => message.id == messageToPush.id)){
               return;
             }
@@ -104,7 +101,7 @@ export class ChatGroupPage implements OnInit, OnDestroy {
       }     
       const messages = data.data
       var newMessages = messages.map(message => {
-        const time = this.formatDate(message.time);
+        const time = message.time;
         return new ChatMessage(message.group_message_id, message.sender_id, message.department_id, time, message.message_body, message.name,
           message.deptname);
       })
@@ -126,23 +123,7 @@ export class ChatGroupPage implements OnInit, OnDestroy {
     });
   }
 
-  //convert this 2022-05-28T04:46:02.000Z to javascript date
-  formatDate(date: string): Date {
-    const dateArray = date.split('T');
-    const dateString = dateArray[0];
-    const timeString = dateArray[1];
-    const timeArray = timeString.split('.');
-    const time = timeArray[0];
-    const dateArray2 = dateString.split('-');
-    const year = parseInt(dateArray2[0]);
-    const month = parseInt(dateArray2[1]);
-    const day = parseInt(dateArray2[2]);
-    const dateArray3 = time.split(':');
-    const hour = parseInt(dateArray3[0]);
-    const minute = parseInt(dateArray3[1]);
-    const second = parseInt(dateArray3[2]);
-    return new Date(year, month, day, hour, minute, second);
-  }
+  
 
   formatTime(date: Date): string {
     const hour: string =

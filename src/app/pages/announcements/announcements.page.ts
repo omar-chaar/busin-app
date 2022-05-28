@@ -86,7 +86,6 @@ export class AnnouncementsPage implements OnInit {
             }
           )
         })
-        console.log(this.announcements);
         this.fullyLoaded = true;
       },
       (err) => {

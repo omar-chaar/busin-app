@@ -69,7 +69,6 @@ export class MessagePage implements OnInit, OnDestroy {
           });          
           this.socketService.connect();
           this.socketService.getNewMessage().subscribe((message: Message) => {
-            console.log(message);
             if (message != null)
               if (message.sender != this.user.id) {          
                 var messageToPush = new Message(message.id, message.sender, message.receiver, message.time, message.message, message.was_seen, message.parentMessage);

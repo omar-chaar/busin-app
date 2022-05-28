@@ -20,7 +20,9 @@ export class ChatMessage{
         this.sender_name = sender_name;
         this.department_name = department_name;
 
-        if(typeof time === 'string') this.time = new Date(time)
+        if(typeof time === 'string'){
+            this.time = new Date(time);
+        }
         else this.time = time;
     }
 }
