@@ -38,4 +38,11 @@ export class ChatGroupService {
     return this.http.post(url, body, {headers});
   }
 
+  getNextTenMessages(department_id: number, page: number):Observable<any>{
+    const url = `${environment.apiUrl}/group/next_ten_messages/${department_id}`;
+    const headers = {'authorization': `Bearer ${this.userService.currentUser.token}`};
+    const body = {page: page};
+    return this.http.post(url, body, {headers});
+  }
+
 }

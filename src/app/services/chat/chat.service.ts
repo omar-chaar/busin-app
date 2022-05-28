@@ -18,7 +18,9 @@ export class ChatService {
 
 
   chats: Chat[];
+  user: User;
   subject = new Subject();
+  fullyLoaded = false;
 
   constructor(private userService: UserService, private messageService: MessagesService,
     private http: HttpClient) {
@@ -26,8 +28,9 @@ export class ChatService {
   }
 
   getChats(user: User): void {
+    this.user = user;
     const headers = { 'authorization': 'Bearer ' + user.token };
-    this.http.get<any>(environment.apiUrl + '/messages/get-messages/' + user.id, {headers: headers}).subscribe(
+    this.http.post<any>(environment.apiUrl + '/messages/get-messages/' + user.id,{ page: 0 },{headers: headers}).subscribe(
       (data) => {
         this.chats = data.messages.map((data) => {
           const user = {name: data.user.name, surname: data.user.surname, picture: data.user.profilePicture, id: data.user.id};
@@ -35,7 +38,9 @@ export class ChatService {
             data.chatWasSeen, data.parentMessageId);
           return new Chat(data.chatId, message, null, user);
         })
-        console.log(this.chats);
+        if(this.chats.length < 10) {
+          this.fullyLoaded = true;
+        }
         this.subject.next(this.chats);
       },
       (error) => {
@@ -44,6 +49,30 @@ export class ChatService {
       }
       );
   }
+
+  getNextTenChats(page: number): void {
+    const headers = { 'authorization': 'Bearer ' + this.user.token };
+    const body = { page: page };
+    this.http.post<any>(environment.apiUrl + '/messages/get-messages/' + this.user.id, body, { headers: headers }).subscribe(
+      (data) => {
+        var newChats = data.messages.map((data) => {
+          const user = {name: data.user.name, surname: data.user.surname, picture: data.user.profilePicture, id: data.user.id};
+          const message = new Message(data.chatMessageId, data.chatSenderId, data.chatReceiverId, data.chatTime, data.chatMessage, 
+            data.chatWasSeen, data.parentMessageId);
+          return new Chat(data.chatId, message, null, user);
+        })
+        if(newChats.length < 10) {
+          this.fullyLoaded = true;
+        }
+        this.chats = this.chats.concat(newChats);
+        this.subject.next(this.chats);
+      },
+      (error) => {
+        console.log(error);
+
+      }
+      );
+    }
 
   onLoad(): Observable<any> {
     return this.subject.asObservable();

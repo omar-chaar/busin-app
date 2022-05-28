@@ -26,7 +26,8 @@ export class ChatGroupPage implements OnInit, OnDestroy {
   text: string;
   loaded: boolean = false;
   fullyLoaded: boolean = false;
-  //TODO: INFINITE SCROLL
+  page: number = 1;
+
   constructor(private _router: Router, private route: ActivatedRoute,
    private userService: UserService, private departmentService: DepartmentService,
    private chatGroupService: ChatGroupService, private socketIoService: SocketioService,
@@ -34,6 +35,7 @@ export class ChatGroupPage implements OnInit, OnDestroy {
 
   ngOnInit() {
     const id = +this.route.snapshot.params['id'];
+    console.log(this.fullyLoaded);
     this.user = this.userService.currentUser;
     this.departmentService.getDepartment(id).subscribe((department) => {
       this.department = new Department(department.data.department_id, department.data.name, department.data.company_id);
@@ -85,10 +87,39 @@ export class ChatGroupPage implements OnInit, OnDestroy {
     this.navController.setDirection("back", true, "back");
     this.location.back();
   }
-
-  loadMoreMessages() {
-   }
-   
+  loadData(event) {
+  if(!this.fullyLoaded){
+    setTimeout(() => {
+      this.loadMoreMessages();
+      event.target.complete();
+    }, 500);
+  }else{
+    event.target.disabled = true;
+  }
+  }
+  loadMoreMessages(){
+    this.chatGroupService.getNextTenMessages(this.department.department_id, this.page).subscribe(data => {
+      if(!data){
+         this.loaded = this.fullyLoaded = true;
+      }     
+      const messages = data.data
+      var newMessages = messages.map(message => {
+        const time = this.formatDate(message.time);
+        return new ChatMessage(message.group_message_id, message.sender_id, message.department_id, time, message.message_body, message.name,
+          message.deptname);
+      })
+      this.messages = [...newMessages, ...this.messages];
+      this.orderByDate(this.messages);
+      this.page++;
+      if(newMessages.length < 10){
+        this.fullyLoaded = true;
+      }
+      
+    
+    });
+  }
+  
+     
   orderByDate(messages: ChatMessage[]): ChatMessage[] {
     return messages.sort((a, b) => {
       return +a.time - +b.time;

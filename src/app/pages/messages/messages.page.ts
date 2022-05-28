@@ -26,6 +26,7 @@ export class MessagesPage implements OnInit {
   departmentMessage: any = {};
   currentUser: User;
   fullyLoaded = false;
+  page: number = 1;
 
   //user for test
   user: User = this.userService.currentUser;
@@ -44,7 +45,9 @@ export class MessagesPage implements OnInit {
       this.currentUser = this.userService.currentUser;
       this.chats = chats;
       this.chats.forEach((chat: Chat) => {
-        this.concantYou(chat);
+        if(!(chat.message.message.substring(0, 5) === 'You: ')){
+          this.concantYou(chat);
+        }        
       });
     });    
     this.loadFirstMessageGroup();
@@ -68,7 +71,6 @@ export class MessagesPage implements OnInit {
           this.departmentMessage.message = 'No messages in your group.';
         } else {
           this.userService.getUserById(resp.data.sender_id).subscribe((user) => {
-            console.log(user)
             this.departmentMessage.message = `${user.data.name} ${user.data.surname}: ${resp.data.message_body}`,
             this.departmentMessage.time = this.formatTime(new Date(resp.data.time))
             this.departmentMessage.sender = `${user.name} ${user.surname}`
@@ -77,15 +79,18 @@ export class MessagesPage implements OnInit {
       });
     });
   }
-  //TODO: IS THIS WORKING?
-  /*loadData(event): void {
+
+  loadData(event): void {
+    this.fullyLoaded = this.chatService.fullyLoaded;
     if (!this.fullyLoaded) {
       setTimeout(() => {
-      
+        this.addMoreItems();
         event.target.complete();
       }, 2000);
+    } else {      
+      event.target.disabled = true;
     }
-  }*/
+  }
 
   formatTime(date: Date): string {
     const hour: string =
@@ -99,8 +104,9 @@ export class MessagesPage implements OnInit {
     return `${hour}:${minutes}`;
   }
 
-  addMoreItems(): boolean {
-    return false;
+  addMoreItems() {
+    this.chatService.getNextTenChats(this.page);
+    this.page++;    
   }
 
   concantYou(chat: Chat): string{
@@ -132,9 +138,9 @@ export class MessagesPage implements OnInit {
       this.users = [];
       this.departmentMessage = {};
       this.fullyLoaded = false;
+      this.page = 1;
       this.chatService.getChats(this.userService.currentUser);
       this.user = this.userService.currentUser;
-      this.ngOnInit();
       event.target.complete();
     }, 2000);
   }  
