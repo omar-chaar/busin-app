@@ -22,17 +22,19 @@ export class AddUserPage implements OnInit {
   name: string;
   surname: string;
   code: string;
-  //TODO: ADD CONSTRAINTS TO INPUTS SUCH AS LENGTH
+
   //TODO: SCHEDULE
 
   constructor(private modalController: ModalController, private departmentService: DepartmentService,
     private validationService: ValidationService, private toastService: ToastService,
     private userService: UserService) {
-      const deptos = departmentService.departments;
-      this.departments = deptos.filter(department => department.name !== 'Owner');
-    
+     
   }
+  
+  //Initialization and destroy functions
+
   ngOnInit() {
+    this.departments = this.departmentService.departments.filter(department => department.name !== 'Owner');   
   }
 
   dismiss() {
@@ -41,6 +43,8 @@ export class AddUserPage implements OnInit {
     });
   }
 
+  //Submit Functions
+
   handleSubmit(): void {
     if (this.validationService.validateSelectAndCheckbox('Department', this.selectedDepartment) &&
       this.validationService.validateLength('Position', this.position, 30, 2) &&
@@ -48,12 +52,12 @@ export class AddUserPage implements OnInit {
       this.validationService.validateLength('Surname', this.surname, 30, 2)) {
       this.userService.generateToken(this.name, this.surname, this.selectedDepartment.department_id, this.position, this.admin).subscribe(
         (response) => {
-          this.toastService.presentToast(response.response, 5000, 'success');
+          this.toastService.presentToast(response.response, 2000, 'success');
           this.code = response.data;
         },
         (error) => {
           console.log(error)
-          this.toastService.presentToast(error.error.error, 2500, 'danger');
+          this.toastService.presentToast(error.error.error, 3500, 'danger');
         }
       );
     }
