@@ -25,13 +25,12 @@
                 <p class="username">{{contact.getFullName()}}</p>
                 <p class="position">{{contact.position}}</p>
               </ion-label>
-              <ion-buttons class="chat-icon" *ngIf="user !== contact" (click)="redirectToChat(contact)">
+              <ion-buttons class="chat-icon" *ngIf="user.id != contact.id" (click)="redirectToChat(contact)">
                 <ion-icon name="chatbubble-ellipses-sharp"></ion-icon>
               </ion-buttons>
             </ion-item>
           </div>          
             <ion-item *ngIf="!department.users" class="border-none">
-              <!-- TODO: FIX THIS-->
               <ion-label *ngIf="noUsersDepartments.includes(department.department_id)">
                 <h2 class="empty" >No users in this department</h2>
               </ion-label>
