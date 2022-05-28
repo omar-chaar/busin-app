@@ -23,7 +23,8 @@ export class ProfilePage implements OnInit {
 
 
   constructor(private route: ActivatedRoute, private _router: Router, private userService: UserService,
-    private chatService: ChatService, private departmentService: DepartmentService, private toastService:ToastService, private location: Location, private navController: NavController) {
+    private chatService: ChatService, private departmentService: DepartmentService, 
+    private toastService:ToastService, private location: Location, private navController: NavController) {
   }
 
   ngOnInit() {

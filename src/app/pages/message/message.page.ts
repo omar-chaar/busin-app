@@ -3,13 +3,14 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { ChatService } from 'src/app/services/chat/chat.service';
 import { MessagesService } from 'src/app/services/messages/messages.service';
 import { UserService } from 'src/app/services/user/user.service';
-import { IonInfiniteScroll } from '@ionic/angular';
+import { IonInfiniteScroll, NavController } from '@ionic/angular';
 import { IonContent } from '@ionic/angular';
 import { Message } from 'src/model/classes/Message';
 import { User } from 'src/model/classes/User';
 import { Chat } from 'src/model/classes/Chat';
 import { Observable, Subject } from 'rxjs';
 import { SocketioService } from 'src/app/services/socketio/socketio.service';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-message',
@@ -33,7 +34,9 @@ export class MessagePage implements OnInit, OnDestroy {
     private chatService: ChatService,
     private userService: UserService,
     private messagesService: MessagesService,
-    private socketService: SocketioService
+    private socketService: SocketioService,
+    private location: Location,
+    private navController: NavController
   ) {
     this.user = this.userService.currentUser;
   }
@@ -88,8 +91,10 @@ export class MessagePage implements OnInit, OnDestroy {
     this.messages = [];
   }
 
+  
   goBack(): void {
-    this._router.navigateByUrl('/tabs/messages');
+    this.navController.setDirection("back", true, "back");
+    this.location.back();
   }
 
   goToProfile(id: number): void {

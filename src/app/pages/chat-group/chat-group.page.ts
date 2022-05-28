@@ -9,7 +9,8 @@ import { ChatGroup } from 'src/model/classes/ChatGroup';
 import { ChatMessage } from 'src/model/classes/ChatMessage';
 import { Department } from 'src/model/classes/Department';
 import { User } from 'src/model/classes/User';
-import { IonContent } from '@ionic/angular';
+import { IonContent, NavController } from '@ionic/angular';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-chat-group',
@@ -26,7 +27,8 @@ export class ChatGroupPage implements OnInit, OnDestroy {
   //TODO: INFINITE SCROLL
   constructor(private _router: Router, private route: ActivatedRoute,
    private userService: UserService, private departmentService: DepartmentService,
-   private chatGroupService: ChatGroupService, private socketIoService: SocketioService) { }
+   private chatGroupService: ChatGroupService, private socketIoService: SocketioService,
+   private location:Location, private navController: NavController) { }
 
   ngOnInit() {
     const id = +this.route.snapshot.params['id'];
@@ -70,8 +72,10 @@ export class ChatGroupPage implements OnInit, OnDestroy {
      this.socketIoService.disconnect();
   }
 
+    
   goBack(): void {
-    this._router.navigateByUrl('/tabs/contacts')
+    this.navController.setDirection("back", true, "back");
+    this.location.back();
   }
 
   orderByDate(messages: ChatMessage[]): ChatMessage[] {
