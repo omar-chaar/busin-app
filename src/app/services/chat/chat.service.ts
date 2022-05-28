@@ -41,6 +41,11 @@ export class ChatService {
         if(this.chats.length < 10) {
           this.fullyLoaded = true;
         }
+        this.chats.forEach(chat => {
+          this.getUnreads(chat.user.id).subscribe(data => {
+            chat.unreads = data.unread;
+          })
+        })
         this.subject.next(this.chats);
       },
       (error) => {
@@ -64,6 +69,11 @@ export class ChatService {
         if(newChats.length < 10) {
           this.fullyLoaded = true;
         }
+        newChats.forEach((chat: Chat) => {
+          this.getUnreads(chat.user.id).subscribe(data => {
+            chat.unreads = data.unread;
+          })
+        })
         this.chats = this.chats.concat(newChats);
         this.subject.next(this.chats);
       },
@@ -73,6 +83,12 @@ export class ChatService {
       }
       );
     }
+
+  getUnreads(senderId: number):Observable<any>{
+    const headers = { 'authorization': 'Bearer ' + this.user.token };
+    const body = {receiverId: this.userService.currentUser.id, senderId};
+    return this.http.post<any>(environment.apiUrl + '/messages/get-unread', body,{headers: headers})
+  }
 
   onLoad(): Observable<any> {
     return this.subject.asObservable();

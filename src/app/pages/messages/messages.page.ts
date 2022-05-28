@@ -45,11 +45,11 @@ export class MessagesPage implements OnInit {
       this.currentUser = this.userService.currentUser;
       this.chats = chats;
       this.chats.forEach((chat: Chat) => {
-        if(!(chat.message.message.substring(0, 5) === 'You: ')){
+        if (!(chat.message.message.substring(0, 5) === 'You: ')) {
           this.concantYou(chat);
-        }        
+        }
       });
-    });    
+    });
     this.loadFirstMessageGroup();
     this.messageService.onInsertObservable().subscribe((message: Message) => {
       this.chats.forEach((chat: Chat, index) => {
@@ -63,7 +63,7 @@ export class MessagesPage implements OnInit {
     });
   }
 
-  loadFirstMessageGroup(){
+  loadFirstMessageGroup() {
     this.chatGroupService.getLastMessage().subscribe((resp) => {
       this.departmentService.getDepartment(this.user.department_id).subscribe((department) => {
         this.departmentMessage.departmentName = department.data.name;
@@ -72,7 +72,7 @@ export class MessagesPage implements OnInit {
         } else {
           this.userService.getUserById(resp.data.sender_id).subscribe((user) => {
             this.departmentMessage.message = `${user.data.name} ${user.data.surname}: ${resp.data.message_body}`,
-            this.departmentMessage.time = this.formatTime(new Date(resp.data.time))
+              this.departmentMessage.time = this.formatTime(new Date(resp.data.time))
             this.departmentMessage.sender = `${user.name} ${user.surname}`
           });
         }
@@ -87,7 +87,7 @@ export class MessagesPage implements OnInit {
         this.addMoreItems();
         event.target.complete();
       }, 2000);
-    } else {      
+    } else {
       event.target.disabled = true;
     }
   }
@@ -104,13 +104,16 @@ export class MessagesPage implements OnInit {
     return `${hour}:${minutes}`;
   }
 
+  //convert javascript date to local timezone date
+
+
   addMoreItems() {
     this.chatService.getNextTenChats(this.page);
-    this.page++;    
+    this.page++;
   }
 
-  concantYou(chat: Chat): string{
-    if(chat.message.sender === this.user.id){
+  concantYou(chat: Chat): string {
+    if (chat.message.sender === this.user.id) {
       return chat.message.message = `You: ${chat.message.message}`;
     }
   }
@@ -120,14 +123,13 @@ export class MessagesPage implements OnInit {
   }
 
   redirectToChat(id: number, chat: Chat): void {
-    if (!chat.message.was_seen) {
-      this.messageService
-        .setAsSeen(this.currentUser.id, chat.user.id)
-        .subscribe(() => (chat.message.was_seen = true));
-    }
+    chat.unreads = 0;
+    this.messageService
+      .setAsSeen(this.currentUser.id, chat.user.id)
+      .subscribe(() => (chat.message.was_seen = true));
     this.router.navigateByUrl('/message/' + id);
   }
-  
+
   redirectToGroup(id: number): void {
     this.router.navigateByUrl('/chat-group/' + id);
   }
@@ -141,8 +143,9 @@ export class MessagesPage implements OnInit {
       this.page = 1;
       this.chatService.getChats(this.userService.currentUser);
       this.user = this.userService.currentUser;
+      this.ngOnInit();
       event.target.complete();
     }, 2000);
-  }  
+  }
 
 }

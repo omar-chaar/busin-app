@@ -27,7 +27,7 @@
       </ion-label>
       <ion-label class="meta-info">
         <p class="">{{formatTime(chat.message.time)}}</p>
-        <ion-badge color="tertiary" *ngIf="chat.message.was_seen === 0 && chat.message.sender !== currentUser.id">Not Seen</ion-badge>
+        <ion-badge color="tertiary" *ngIf="chat.unreads > 0">{{chat.unreads}}</ion-badge>
       </ion-label>
     </ion-item>
 
