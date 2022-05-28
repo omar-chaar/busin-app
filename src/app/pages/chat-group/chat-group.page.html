@@ -17,9 +17,9 @@
     <ion-grid>
       <ion-row *ngFor="let message of messages" class="messagebox-container"
         [ngClass]="{'user-message': message.sender === user.id}">
-        <div class="message-box">
+        <div class="message-box" [ngClass]="{'outsider': message.department_id !== department.department_id}">
           <div class="meta-info sender-name" *ngIf="message.sender !== user.id">
-            <p>{{message.sender_name}}</p>
+            <p>{{message.sender_name}} {{getDepartmentName(message)}}</p>
           </div>
           <p>{{message.body}}</p>
           <div class="meta-info">

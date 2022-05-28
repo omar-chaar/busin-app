@@ -31,11 +31,14 @@ export class ChatGroupPage implements OnInit {
     this.departmentService.getDepartment(id).subscribe((department) => {
       this.department = new Department(department.data.department_id, department.data.name, department.data.company_id);
       this.chatGroupService.getFirstMessages(this.department.department_id).subscribe(data => {
-        console.log(data)
         const messages = data.data
+        console.log(messages)
         this.messages = messages.map(message => {
-          new ChatMessage(message.message_id, message.sender_id, message.department_id, message.time, message.message_body, message.name)
+          const time = this.formatDate(message.time);
+          return new ChatMessage(message.group_message_id, message.sender_id, message.department_id, time, message.message_body, message.name,
+            message.deptname);
         })
+        this.orderByDate(this.messages);
       }) 
     }); 
   }
@@ -48,6 +51,24 @@ export class ChatGroupPage implements OnInit {
     return messages.sort((a, b) => {
       return +a.time - +b.time;
     });
+  }
+
+  //convert this 2022-05-28T04:46:02.000Z to javascript date
+  formatDate(date: string): Date {
+    const dateArray = date.split('T');
+    const dateString = dateArray[0];
+    const timeString = dateArray[1];
+    const timeArray = timeString.split('.');
+    const time = timeArray[0];
+    const dateArray2 = dateString.split('-');
+    const year = parseInt(dateArray2[0]);
+    const month = parseInt(dateArray2[1]);
+    const day = parseInt(dateArray2[2]);
+    const dateArray3 = time.split(':');
+    const hour = parseInt(dateArray3[0]);
+    const minute = parseInt(dateArray3[1]);
+    const second = parseInt(dateArray3[2]);
+    return new Date(year, month, day, hour, minute, second);
   }
 
   formatTime(date: Date): string {
@@ -65,8 +86,18 @@ export class ChatGroupPage implements OnInit {
   onSubmit(): void {
     if(this.text !== ' '){
       this.chatGroupService.sendGroupMessage(this.department.department_id, this.user.id, this.text)
-      .subscribe((data) => console.log(data))
-      this.text = '';
+      .subscribe(() =>{
+        this.messages.push(new ChatMessage(0, this.user.id, this.department.department_id, new Date(), this.text, this.user.name, this.department.name));
+        this.text = '';
+      });
+    }
+  }
+
+  getDepartmentName(message: ChatMessage): string {
+    if(message.department_id !== this.department.department_id){
+      return '- ' + message.department_name;
+    }else{
+      return '';
     }
   }
 

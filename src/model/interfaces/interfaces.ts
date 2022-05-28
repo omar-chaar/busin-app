@@ -49,15 +49,6 @@ export interface IMessage {
     chat?: Chat,
 }
 
-export interface IChatMessage {
-    id: number,
-    sender: number,
-    department_id: number,
-    time: Date,
-    body: string,
-    sender_name: string
-}
-
 export interface IChat {
     id: number,
     messages?: Message[],

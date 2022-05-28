@@ -22,6 +22,10 @@ ion-toolbar{
     margin-bottom: 20px;
 }
 
+.outsider{
+    background-color:rgb(255,165,0, 0.3) !important
+}
+
 .contact-info{
     display: inline-block;
     flex-direction: column;
@@ -71,8 +75,8 @@ ion-toolbar{
 }
 
 .user-message .message-box{
-    background-color: #5D5FEF;
-    color: #fff;
+    background-color: #5D5FEF !important;
+    color: #fff !important;
     margin-right: 0px;
     margin-left: 20px;
 }

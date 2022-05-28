@@ -13,7 +13,7 @@
         <ion-list slot="content">
           <div *ngIf="department.users">
           <ion-item *ngIf="department.name != 'Owner'">
-            <ion-button (click)="redirectTo('/chat-group/' + department.id)" color="tertiary" class="group-btn">
+            <ion-button (click)="redirectTo('/chat-group/' + department.department_id)" color="tertiary" class="group-btn">
               {{department.name}} Group</ion-button>
           </ion-item>
           
