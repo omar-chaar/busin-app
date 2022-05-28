@@ -25,6 +25,7 @@ export class MessagePage implements OnInit, OnDestroy {
   user: User;
   text: string;
   fullyLoaded = false;
+  page:number = 2;
 
   constructor(
     private _router: Router,
@@ -142,10 +143,11 @@ export class MessagePage implements OnInit, OnDestroy {
   }
 
   loadMoreMessages(): void {
-    const id = this.messages[0].id;
+    const id = this.messages[this.messages.length - 1].id;
     this.messagesService
-      .updateMessages(this.user.id, this.contact.user_id, id)
+      .updateMessages(this.user.id, this.contact.user_id, id, this.page)
       .subscribe((data) => {
+        this.page += 1;
         const newmessages = data.messages.map(
           (message) =>
             new Message(
@@ -158,7 +160,6 @@ export class MessagePage implements OnInit, OnDestroy {
               message.parent_message_id
             )
         );
-        console.log(newmessages);
         if (newmessages.length == 0) {
           return (this.fullyLoaded = true);
         }

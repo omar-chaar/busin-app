@@ -51,7 +51,6 @@ export class MessagesPage implements OnInit {
         if (!resp) {
           this.departmentMessage.message = 'No messages in your group.';
         } else {
-          console.log(resp)
           this.userService.getUserById(resp.data.sender_id).subscribe((user) => {
             console.log(user)
             this.departmentMessage.message = `${user.data.name} ${user.data.surname}: ${resp.data.message_body}`,
@@ -67,7 +66,7 @@ export class MessagesPage implements OnInit {
         if (chat.user.id === message.receiver) {
           message.was_seen = true;
           const topchat = this.chats.splice(index, 1)[0];
-          topchat.messages[0] = message;
+          topchat.message = message;
           this.chats.unshift(topchat);
         }
       });
@@ -104,10 +103,10 @@ export class MessagesPage implements OnInit {
   }
 
   redirectToChat(id: number, chat: Chat): void {
-    if (!chat.messages[0].was_seen) {
+    if (!chat.message.was_seen) {
       this.messageService
         .setAsSeen(this.currentUser.id, chat.user.id)
-        .subscribe(() => (chat.messages[0].was_seen = true));
+        .subscribe(() => (chat.message.was_seen = true));
     }
     this.router.navigateByUrl('/message/' + id);
   }

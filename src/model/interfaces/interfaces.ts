@@ -48,13 +48,6 @@ export interface IMessage {
     parentMessage?: Message,
     chat?: Chat,
 }
-
-export interface IChat {
-    id: number,
-    messages?: Message[],
-    lastMessage?: Date,
-}
-
 export interface IChatGroup{
     id: number,
     department: Department,

@@ -33,8 +33,7 @@ export class ChatService {
           const user = {name: data.user.name, surname: data.user.surname, picture: data.user.profilePicture, id: data.user.id};
           const message = new Message(data.chatMessageId, data.chatSenderId, data.chatReceiverId, data.chatTime, data.chatMessage, 
             data.chatWasSeen, data.parentMessageId);
-          const messages: Message[] = [message];
-          return new Chat(data.chatId, messages, null, user);
+          return new Chat(data.chatId, message, null, user);
         })
         console.log(this.chats);
         this.subject.next(this.chats);

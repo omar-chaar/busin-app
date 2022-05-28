@@ -19,9 +19,9 @@ export class MessagesService {
 
   }
 
-  updateMessages(user:number, user2:number, id:number): Observable<any> {
+  updateMessages(user:number, user2:number, id:number, page:number): Observable<any> {
     const headers = {authorization: `Bearer ${this.userService.currentUser.token}`, 'Content-Type': 'application/json'};
-    const url = `${environment.apiUrl}/messages/parentmessage/${id}?userId=${user}&user2Id=${user2}`;
+    const url = `${environment.apiUrl}/messages/parentmessage/${id}?userId=${user}&user2Id=${user2}&page=${page}`;
     return this.http.get(url, {headers});
   }
 
