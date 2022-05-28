@@ -88,7 +88,6 @@ export class AddUserPage implements OnInit {
           this.canDismiss();
         },
         (error) => {
-          console.log(error)
           this.toastService.presentToast(error.error.error, 3500, 'danger');
         }
       );

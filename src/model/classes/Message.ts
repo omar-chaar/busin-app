@@ -20,10 +20,15 @@ export class Message implements IMessage{
         this.message = message;
         this.was_seen = was_seen;
 
-        if(typeof time === 'string') this.time = new Date(time)
+        if(typeof time === 'string'){
+            this.time = new Date(time);
+        }
         else this.time = time;
 
         if(parentMessage) this.parentMessage = parentMessage;
     }
+
+    //utc to localtime
+    
 
 }
