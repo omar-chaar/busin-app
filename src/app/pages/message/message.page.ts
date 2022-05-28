@@ -25,7 +25,7 @@ export class MessagePage implements OnInit, OnDestroy {
   user: User;
   text: string;
   fullyLoaded = false;
-  page:number = 2;
+  page:number = 1;
 
   constructor(
     private _router: Router,
@@ -163,8 +163,7 @@ export class MessagePage implements OnInit, OnDestroy {
         if (newmessages.length == 0) {
           return (this.fullyLoaded = true);
         }
-        this.messages = [...this.messages, ...newmessages];
-        this.orderByDate(this.messages);
+        this.messages = [...newmessages, ...this.messages];
       });
   }
 
