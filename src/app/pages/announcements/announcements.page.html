@@ -27,7 +27,7 @@
         </ion-item-sliding>
       </ion-accordion>
     </ion-accordion-group>
-    <p *ngIf="announcements.length === 0" class="empty">No announcements for you.</p>
+    <p *ngIf="announcements.length === 0" class="empty">There is no announcements yet.</p>
   </ion-list>
 
   <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)" *ngIf="!fullyLoaded">
