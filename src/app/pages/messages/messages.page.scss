@@ -5,16 +5,19 @@
 }
 
 .text-info{
-    width: 70%;
+    width: 100%;
 }
 
 .hour-info{
-    flex: 1;
+    flex: 0;
     width: 20%;
 }
-
+.name-info{
+    flex: 2;
+}
 .meta-info{
     display: flex;
+    width: 20%;
     flex-direction: column;
     align-items: flex-end;
 }

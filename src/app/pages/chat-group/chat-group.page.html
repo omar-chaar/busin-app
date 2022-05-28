@@ -13,6 +13,10 @@
   </ion-toolbar>
 </ion-header>
 <ion-content>
+  <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)" position="top" *ngIf="!fullyLoaded">
+    <ion-infinite-scroll-content loadingSpinner="bubbles">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
   <ion-list>
     <ion-grid>
       <ion-row *ngFor="let message of messages" class="messagebox-container"
@@ -30,7 +34,10 @@
     </ion-grid>
   </ion-list>
 </ion-content>
-<div *ngIf="messages.length === 0" class="empty-message">
+<div class="loading-icon" *ngIf="!loaded">
+  <ion-spinner name="bubbles"></ion-spinner>
+</div>
+<div *ngIf="messages.length === 0 && loaded" class="empty-message">
   <p>Be the first to send a message. Say hi!</p>
 </div>
 <ion-item class="text-container">

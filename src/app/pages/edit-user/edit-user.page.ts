@@ -17,7 +17,8 @@ export class EditUserPage implements OnInit {
   userEditing: User = new User(0, '', '', '', '', '', 0, false, false, '');
   department: Department;
   departments: Department[] = [];
-
+  userFullName: string = '';
+  
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
@@ -41,6 +42,7 @@ export class EditUserPage implements OnInit {
         resp.data.is_adm,
         resp.data.is_owner
       );
+      this.userFullName = this.userEditing.name + ' ' + this.userEditing.surname;
       this.departmentService
         .getDepartment(this.userEditing.department_id)
         .subscribe((resp) => {

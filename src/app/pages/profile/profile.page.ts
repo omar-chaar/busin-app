@@ -82,4 +82,15 @@ export class ProfilePage implements OnInit {
       
   }
 
+  doRefresh(event) {
+    setTimeout(() => {
+      this.profileUser =  new User(0, '', '', '', '', '', 0, false, false, '');
+      this.department = new Department(0, '', 0);    
+
+      this.ngOnInit();
+      event.target.complete();
+    }, 2000);
+  }  
+
+
 }

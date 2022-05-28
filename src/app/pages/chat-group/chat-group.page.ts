@@ -24,6 +24,8 @@ export class ChatGroupPage implements OnInit, OnDestroy {
   messages: ChatMessage[] = [];
   user: User;
   text: string;
+  loaded: boolean = false;
+  fullyLoaded: boolean = false;
   //TODO: INFINITE SCROLL
   constructor(private _router: Router, private route: ActivatedRoute,
    private userService: UserService, private departmentService: DepartmentService,
@@ -36,17 +38,23 @@ export class ChatGroupPage implements OnInit, OnDestroy {
     this.departmentService.getDepartment(id).subscribe((department) => {
       this.department = new Department(department.data.department_id, department.data.name, department.data.company_id);
       this.chatGroupService.getFirstMessages(this.department.department_id).subscribe(data => {
+        if(!data){
+           this.loaded = this.fullyLoaded = true;
+        }
         const messages = data.data
-        console.log(messages)
         this.messages = messages.map(message => {
           const time = this.formatDate(message.time);
           return new ChatMessage(message.group_message_id, message.sender_id, message.department_id, time, message.message_body, message.name,
             message.deptname);
-        })
+        }) 
         setTimeout(() => {
           this.ScrollToBottom();
         });          
-        this.orderByDate(this.messages);
+        this.orderByDate(this.messages);        
+        this.loaded = true;
+        if(this.messages.length < 10){
+          this.fullyLoaded = true;
+        }
         this.socketIoService.connect();
         this.groupConnection();
         this.socketIoService.getNewMessageGroupMessage().subscribe((message: ChatMessage) => {
@@ -56,7 +64,7 @@ export class ChatGroupPage implements OnInit, OnDestroy {
             if(this.messages.some(message => message.id == messageToPush.id)){
               return;
             }
-            this.messages.push(messageToPush);
+            this.messages.push(messageToPush);            
             setTimeout(() => {
                 this.ScrollToBottomWithAnim();
             });    
@@ -78,6 +86,9 @@ export class ChatGroupPage implements OnInit, OnDestroy {
     this.location.back();
   }
 
+  loadMoreMessages() {
+   }
+   
   orderByDate(messages: ChatMessage[]): ChatMessage[] {
     return messages.sort((a, b) => {
       return +a.time - +b.time;
@@ -143,7 +154,13 @@ export class ChatGroupPage implements OnInit, OnDestroy {
   }
 
   sendGroupMessage(message: ChatMessage): void{
-    this.socketIoService.groupMessage(message);
+    this.userService.getUserById(message.sender).subscribe((user) => {
+      message.department_id = user.data.department_id;
+      this.departmentService.getDepartment(message.department_id).subscribe((department) => {
+        message.department_name = department.data.name;
+        this.socketIoService.groupMessage(message);
+      }); 
+    });        
   }
 
   ScrollToBottom() {

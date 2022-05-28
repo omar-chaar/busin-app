@@ -43,8 +43,24 @@ export class MessagesPage implements OnInit {
     this.chatService.onLoad().subscribe((chats: Chat[]) => {
       this.currentUser = this.userService.currentUser;
       this.chats = chats;
+      this.chats.forEach((chat: Chat) => {
+        this.concantYou(chat);
+      });
+    });    
+    this.loadFirstMessageGroup();
+    this.messageService.onInsertObservable().subscribe((message: Message) => {
+      this.chats.forEach((chat: Chat, index) => {
+        if (chat.user.id === message.receiver) {
+          message.was_seen = true;
+          const topchat = this.chats.splice(index, 1)[0];
+          topchat.message = message;
+          this.chats.unshift(topchat);
+        }
+      });
     });
+  }
 
+  loadFirstMessageGroup(){
     this.chatGroupService.getLastMessage().subscribe((resp) => {
       this.departmentService.getDepartment(this.user.department_id).subscribe((department) => {
         this.departmentMessage.departmentName = department.data.name;
@@ -60,28 +76,16 @@ export class MessagesPage implements OnInit {
         }
       });
     });
-
-    this.messageService.onInsertObservable().subscribe((message: Message) => {
-      this.chats.forEach((chat: Chat, index) => {
-        if (chat.user.id === message.receiver) {
-          message.was_seen = true;
-          const topchat = this.chats.splice(index, 1)[0];
-          topchat.message = message;
-          this.chats.unshift(topchat);
-        }
-      });
-    });
   }
-
   //TODO: IS THIS WORKING?
-  loadData(event): void {
+  /*loadData(event): void {
     if (!this.fullyLoaded) {
       setTimeout(() => {
       
         event.target.complete();
       }, 2000);
     }
-  }
+  }*/
 
   formatTime(date: Date): string {
     const hour: string =
@@ -98,6 +102,13 @@ export class MessagesPage implements OnInit {
   addMoreItems(): boolean {
     return false;
   }
+
+  concantYou(chat: Chat): string{
+    if(chat.message.sender === this.user.id){
+      return chat.message.message = `You: ${chat.message.message}`;
+    }
+  }
+
   goToProfile(id: number): void {
     this.router.navigateByUrl('/profile/' + id);
   }
@@ -115,5 +126,17 @@ export class MessagesPage implements OnInit {
     this.router.navigateByUrl('/chat-group/' + id);
   }
 
+  doRefresh(event) {
+    setTimeout(() => {
+      this.chats = [];
+      this.users = [];
+      this.departmentMessage = {};
+      this.fullyLoaded = false;
+      this.chatService.getChats(this.userService.currentUser);
+      this.user = this.userService.currentUser;
+      this.ngOnInit();
+      event.target.complete();
+    }, 2000);
+  }  
 
 }

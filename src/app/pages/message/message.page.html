@@ -13,7 +13,7 @@
   </ion-toolbar>
 </ion-header>
   <ion-content [scrollEvents]="true" class="scrollbar-hidden">
-    <ion-infinite-scroll threshold="1px" (ionInfinite)="loadData($event)" position="top" *ngIf="!fullyLoaded">
+    <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)" position="top" *ngIf="!fullyLoaded">
       <ion-infinite-scroll-content loadingSpinner="bubbles">
       </ion-infinite-scroll-content>
     </ion-infinite-scroll>

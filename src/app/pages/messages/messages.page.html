@@ -1,5 +1,7 @@
 <ion-content>
-
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
   <ion-list lines="full">
     <ion-item ion-button class="department-group" *ngIf="departmentMessage.departmentName && 
     departmentMessage.departmentName !== 'Owner'" (click)="redirectToGroup(user.department_id)">
@@ -17,10 +19,10 @@
       <ion-avatar slot="start" (click)="goToProfile(chat.user.id)">
         <img src="../../../assets/images/gw50h17a.bmp">
       </ion-avatar>
-      <ion-label (click)="redirectToChat(chat.user.id, chat)">
+      <ion-label class="name-info" (click)="redirectToChat(chat.user.id, chat)">
         <h2>{{chat.user.name}} {{chat.user.surname}}</h2>
-        <ion-label class="message-info">
-          <p class="text-info">{{chat.message.message}}</p>
+        <ion-label class="message-info">          
+          <p class="text-info"> {{chat.message.message}}</p>
         </ion-label>
       </ion-label>
       <ion-label class="meta-info">

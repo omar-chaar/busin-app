@@ -2,7 +2,7 @@
 
   <ion-toolbar mode="ios" color="tertiary">
     <ion-icon name="chevron-back-outline" class="return-icon" (click)="redirectTo('/edit-users')"></ion-icon>
-    <ion-title>Editing {{userEditing.getFullName()}}</ion-title>
+    <ion-title>Editing {{userFullName}}</ion-title>
   </ion-toolbar>
   <form class="container" (ngSubmit)="handleSubmit()" >    
     <ion-item *ngIf="!userEditing.owner">
