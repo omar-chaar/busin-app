@@ -15,4 +15,6 @@ export class Chat{
         }
         this.user = user;
     }
+    
+    
 }
