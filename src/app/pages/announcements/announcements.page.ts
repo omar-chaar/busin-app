@@ -54,22 +54,39 @@ export class AnnouncementsPage implements OnInit {
     this.loadTenFirstAnnouncements();
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   loadAnnouncements(): void {
     this.announcementService.getAnnouncements().subscribe(
       (resp: any) => {
         this.announcements = resp.data.map((announcement) => {
           const date = this.toDate(announcement.time);
+          const user = resp.data;
+          const userObj = new User(user.user_id, user.name, user.surname, user.position, user.email, null,
+            user.department_id, user.is_admin, user.is_owner, null);
           announcement = new Announcement(
             announcement.announcement_id,
             announcement.announcement_title,
             announcement.announcement_body,
             date,
-            announcement.sender_id
+            userObj
           );
           return announcement;
         });
+        this.announcements.forEach((announcement:any) => {
+          this.userService.getUserById(announcement.sender).subscribe(
+            (resp: any) => {
+              const user = resp.data;
+              const userObj = new User(user.user_id, user.name, user.surname, user.position, user.email, null,
+                user.department_id, user.is_admin, user.is_owner, null);
+              announcement.sender = userObj;
+            },
+            (err) => {
+              this.toastService.presentToast(err.error.error, 4500, 'danger');
+            }
+          )
+        })
+        console.log(this.announcements);
         this.fullyLoaded = true;
       },
       (err) => {
@@ -78,7 +95,7 @@ export class AnnouncementsPage implements OnInit {
     );
   }
 
-  async canDelete(announcement: Announcement):Promise<void> {
+  async canDelete(announcement: Announcement): Promise<void> {
     const actionSheet = await this.actionSheetCtrl.create({
       header: `Delete "${announcement.title}"?`,
       buttons: [
@@ -97,7 +114,7 @@ export class AnnouncementsPage implements OnInit {
 
     const { role } = await actionSheet.onDidDismiss();
 
-    if (role === 'destructive') {    
+    if (role === 'destructive') {
       this.announcementService.deleteAnnouncement(announcement.id).subscribe(
         (resp: any) => {
           this.toastService.presentToast('Announcement deleted.', 2500, 'success');
@@ -127,6 +144,21 @@ export class AnnouncementsPage implements OnInit {
           return announcement;
         });
         this.announcements = this.announcements.reverse();
+        this.announcements.forEach((announcement: any) => {
+          this.userService.getUserById(announcement.sender).subscribe(
+            (resp: any) => {
+              const user = resp.data;
+              const userObj = new User(user.user_id, user.name, user.surname, user.position, user.email, null,
+                user.department_id, user.is_admin, user.is_owner, null);
+              announcement.sender = userObj;
+            },
+            (err) => {
+              this.toastService.presentToast(err.error.error, 4500, 'danger');
+            }
+          )
+        })
+        console.log(this.announcements);
+        this.fullyLoaded = true;
         if (this.announcements.length < 10) {
           this.fullyLoaded = true;
         }
@@ -144,7 +176,7 @@ export class AnnouncementsPage implements OnInit {
       .get10MoreAnnouncements(this.announcements[0].id)
       .subscribe(
         (resp: any) => {
-          this.loadedAnnouncements =  resp.data.map((announcement) => {
+          this.loadedAnnouncements = resp.data.map((announcement) => {
             const date = this.toDate(announcement.time);
             announcement = new Announcement(
               announcement.announcement_id,
@@ -155,23 +187,23 @@ export class AnnouncementsPage implements OnInit {
             );
             return announcement;
           });
-            
-          if(this.loadedAnnouncements.length == 0){
+
+          if (this.loadedAnnouncements.length == 0) {
             return this.fullyLoaded = true;
           }
-          this.announcements = [...this.loadedAnnouncements.reverse(),...this.announcements];
+          this.announcements = [...this.loadedAnnouncements.reverse(), ...this.announcements];
 
           if (this.announcements[this.announcements.length - 1].id === this.loadedAnnouncements[this.loadedAnnouncements.length - 1].id) {
-             return this.fullyLoaded = true;
+            return this.fullyLoaded = true;
           }
-               
+
         },
         (err) => {
           this.toastService.presentToast(err.error.error, 4500, 'danger');
           this.fullyLoaded = true;
         }
       );
-}
+  }
 
 
   async presentModal() {
@@ -188,15 +220,15 @@ export class AnnouncementsPage implements OnInit {
 
   loadData(event): void {
     if (!this.fullyLoaded) {
-        setTimeout(() => {        
+      setTimeout(() => {
         this.loadMore10Announcements();
         event.target.complete();
       }, 500);
-      
+
     } else {
       event.target.disabled = true;
     }
-    
+
   }
 
   formatDate(date: Date): string {
@@ -266,7 +298,7 @@ export class AnnouncementsPage implements OnInit {
   openModal(): void {
     if (this.user.admin) this.presentModal();
   }
-  
+
   doRefresh(event) {
     this.announcements = [];
     this.fullyLoaded = false;
