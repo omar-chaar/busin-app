@@ -24,7 +24,7 @@ export class MessagePage implements OnInit, OnDestroy {
   messageToSend: Message;
   user: User;
   text: string;
-  fullyLoaded = false;
+  fullyLoaded = true;
   page:number = 1;
 
   constructor(
@@ -39,20 +39,7 @@ export class MessagePage implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.socketService.getNewMessage().subscribe((message: Message) => {
-      console.log("Entrou")
-      if (message == null) return;      
-        if (message.sender != this.user.id) {
-          console.log('Before push');
-          console.log(this.messages);
-          this.messages.push(new Message(message.id, message.sender, message.receiver, message.time, message.message, message.was_seen, message.parentMessage));
-          console.log('After push');
-          console.log(this.messages);
-          setTimeout(() => {
-            this.ScrollToBottom();
-          }, 20);
-        }     
-    });
+    
     const id = +this.route.snapshot.params['id'];
     this.userService.getUserById(id).subscribe((user) => {
       this.contact = user.data;
@@ -69,18 +56,36 @@ export class MessagePage implements OnInit, OnDestroy {
                 message.message_body,
                 message.was_seen,
                 message.parent_message_id
-              )
+              )          
           );
+          if(this.messages.length >= 10) {
+            this.fullyLoaded = false;
+          }
           setTimeout(() => {
             this.ScrollToBottom();
+          });          
+          this.socketService.connect();
+          this.socketService.getNewMessage().subscribe((message: Message) => {
+            console.log(message);
+            if (message != null)
+              if (message.sender != this.user.id) {          
+                var messageToPush = new Message(message.id, message.sender, message.receiver, message.time, message.message, message.was_seen, message.parentMessage);
+                if(!this.messages.some(message => message.id == messageToPush.id)){
+                  this.messages.push(messageToPush);
+                }
+                setTimeout(() => {
+                  this.ScrollToBottom();
+                }, 20);
+              }     
           });
-        });
+        });        
     });
-    this.socketService.connect();
-  }
+   }
+  
 
   ngOnDestroy() {
     this.socketService.disconnect();
+    this.messages = [];
   }
 
   goBack(): void {
@@ -131,11 +136,9 @@ export class MessagePage implements OnInit, OnDestroy {
 
   loadData(event) {
     if (!this.fullyLoaded) {
-      console.log('Loading');
       setTimeout(() => {
         this.loadMoreMessages();
         event.target.complete();
-        console.log('Done');
       }, 500);
     } else {
       event.target.disabled = true;
