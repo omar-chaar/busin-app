@@ -22,7 +22,6 @@ export class Message implements IMessage {
         if (typeof time === 'string') {
             //add one hour to time
             this.time = new Date(time);
-            this.time.setHours(this.time.getHours() + 1);            
         }
         else this.time = time;
 
