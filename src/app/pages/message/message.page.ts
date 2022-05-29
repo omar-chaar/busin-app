@@ -74,10 +74,12 @@ export class MessagePage implements OnInit, OnDestroy {
                 var messageToPush = new Message(message.id, message.sender, message.receiver, message.time, message.message, message.was_seen, message.parentMessage);
                 if(!this.messages.some(message => message.id == messageToPush.id)){
                   this.messages.push(messageToPush);
+                  this.messagesService.setAsSeen(messageToPush.sender, messageToPush.receiver);
                 }
                 setTimeout(() => {
                   this.ScrollToBottom();
                 }, 20);
+                
               }     
           });
         });        
