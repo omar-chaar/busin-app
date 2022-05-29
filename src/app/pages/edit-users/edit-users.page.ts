@@ -1,13 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ActionSheetController, ModalController } from '@ionic/angular';
-import { ChatMessageService } from 'src/app/services/chat-message/chat-message.service';
 import { ChatService } from 'src/app/services/chat/chat.service';
 import { MessagesService } from 'src/app/services/messages/messages.service';
 import { ToastService } from 'src/app/services/toast/toast.service';
 import { UserService } from 'src/app/services/user/user.service';
 import { AddUserPage } from '../add-user/add-user.page';
-import { EditUserPage } from '../edit-user/edit-user.page';
 import { User } from 'src/model/classes/User';
 import { CompanyService } from 'src/app/services/company/company.service';
 
@@ -25,7 +23,7 @@ export class EditUsersPage implements OnInit {
   modal: HTMLElement;
 
   constructor(private userService: UserService, private actionSheetCtrl: ActionSheetController,
-    private messageService: MessagesService, private chatMessageService: ChatMessageService,
+    private messageService: MessagesService,
     private chatService: ChatService, private toastService: ToastService, private router: Router,
     private modalController: ModalController, private companyService: CompanyService) { 
 

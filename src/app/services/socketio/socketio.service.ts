@@ -3,7 +3,6 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { io } from "socket.io-client";
 import { environment } from 'src/environments/environment';
 import { Message } from 'src/model/classes/Message';
-import { User } from 'src/model/classes/User';
 import { UserService } from '../user/user.service';
 import { ChatMessage } from 'src/model/classes/ChatMessage';
 
@@ -28,6 +27,10 @@ groupMessage$: BehaviorSubject<ChatMessage> = new BehaviorSubject(null);
   
   sendToken(token:string) {
     this.socket.emit('token', token);
+  }
+
+  privateConnection(user_id:number){
+    this.socket.emit('private-connection', user_id);
   }
 
   sendMessage(message:Message) {

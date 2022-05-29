@@ -3,14 +3,11 @@ import { IonInfiniteScroll } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { ChatService } from 'src/app/services/chat/chat.service';
 import { UserService } from 'src/app/services/user/user.service';
-import { Subscription } from 'rxjs';
 import { MessagesService } from 'src/app/services/messages/messages.service';
-
 import { User } from 'src/model/classes/User';
 import { Chat } from 'src/model/classes/Chat';
 import { Message } from 'src/model/classes/Message';
 import { ChatGroupService } from 'src/app/services/chat-group/chat-group.service';
-import { Department } from 'src/model/classes/Department';
 import { DepartmentService } from 'src/app/services/department/department.service';
 
 @Component({
@@ -27,6 +24,7 @@ export class MessagesPage implements OnInit {
   currentUser: User;
   fullyLoaded = false;
   page: number = 1;
+  loaded = false;
 
   //user for test
   user: User = this.userService.currentUser;
@@ -68,12 +66,14 @@ export class MessagesPage implements OnInit {
       this.departmentService.getDepartment(this.user.department_id).subscribe((department) => {
         this.departmentMessage.departmentName = department.data.name;
         if (!resp) {
-          this.departmentMessage.message = 'No messages in your group.';
+          this.departmentMessage.message = 'No messages in your group.';               
+          this.loaded = true;          
         } else {
           this.userService.getUserById(resp.data.sender_id).subscribe((user) => {
             this.departmentMessage.message = `${user.data.name} ${user.data.surname}: ${resp.data.message_body}`,
               this.departmentMessage.time = this.formatTime(new Date(resp.data.time))
-            this.departmentMessage.sender = `${user.name} ${user.surname}`
+            this.departmentMessage.sender = `${user.name} ${user.surname}`                  
+          this.loaded = true;
           });
         }
       });
@@ -136,9 +136,6 @@ export class MessagesPage implements OnInit {
 
   doRefresh(event) {
     setTimeout(() => {
-      this.chats = [];
-      this.users = [];
-      this.departmentMessage = {};
       this.fullyLoaded = false;
       this.page = 1;
       this.chatService.getChats(this.userService.currentUser);

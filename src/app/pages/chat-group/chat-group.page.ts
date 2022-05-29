@@ -1,11 +1,9 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ChatGroupService } from 'src/app/services/chat-group/chat-group.service';
-import { ChatMessageService } from 'src/app/services/chat-message/chat-message.service';
 import { DepartmentService } from 'src/app/services/department/department.service';
 import { SocketioService } from 'src/app/services/socketio/socketio.service';
 import { UserService } from 'src/app/services/user/user.service';
-import { ChatGroup } from 'src/model/classes/ChatGroup';
 import { ChatMessage } from 'src/model/classes/ChatMessage';
 import { Department } from 'src/model/classes/Department';
 import { User } from 'src/model/classes/User';

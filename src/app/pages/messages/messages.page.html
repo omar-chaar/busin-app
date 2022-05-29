@@ -2,7 +2,10 @@
   <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
-  <ion-list lines="full">
+  <center>
+  <ion-spinner color="primary" *ngIf="!loaded"  class="ion-text-center"></ion-spinner> 
+  </center>
+  <ion-list lines="full" *ngIf = "loaded">
     <ion-item ion-button class="department-group" *ngIf="departmentMessage.departmentName && 
     departmentMessage.departmentName !== 'Owner'" (click)="redirectToGroup(user.department_id)">
       <ion-label>

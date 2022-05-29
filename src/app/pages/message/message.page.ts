@@ -7,8 +7,6 @@ import { IonInfiniteScroll, NavController } from '@ionic/angular';
 import { IonContent } from '@ionic/angular';
 import { Message } from 'src/model/classes/Message';
 import { User } from 'src/model/classes/User';
-import { Chat } from 'src/model/classes/Chat';
-import { Observable, Subject } from 'rxjs';
 import { SocketioService } from 'src/app/services/socketio/socketio.service';
 import { Location } from '@angular/common';
 
@@ -68,6 +66,8 @@ export class MessagePage implements OnInit, OnDestroy {
             this.ScrollToBottom();
           });          
           this.socketService.connect();
+          console.log(this.contact.user_id)
+          this.socketService.privateConnection(this.contact.user_id);
           this.socketService.getNewMessage().subscribe((message: Message) => {
             if (message != null)
               if (message.sender != this.user.id) {          

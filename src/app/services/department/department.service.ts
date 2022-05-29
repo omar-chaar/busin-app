@@ -1,10 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, OnInit } from '@angular/core';
-import { Subject, Observable } from 'rxjs';
+import {  Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { Company } from 'src/model/classes/Company';
 import { Department } from 'src/model/classes/Department';
-import { CompanyService } from '../company/company.service';
 import { UserService } from '../user/user.service';
 
 

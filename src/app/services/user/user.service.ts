@@ -3,8 +3,6 @@ import { User } from 'src/model/classes/User';
 import { HttpClient } from '@angular/common/http';
 import { Observable, Subject } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { Department } from 'src/model/classes/Department';
-import { DepartmentService } from '../department/department.service';
 
 @Injectable({
   providedIn: 'root'
