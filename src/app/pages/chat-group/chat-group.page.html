@@ -19,8 +19,11 @@
   </ion-infinite-scroll>
   <ion-list>
     <ion-grid>
-      <ion-row *ngFor="let message of messages" class="messagebox-container"
+      <ion-row *ngFor="let message of messages; let i = index;" class="messagebox-container"
         [ngClass]="{'user-message': message.sender === user.id}">
+        <div class="separator" *ngIf="i > 0 && message.time.getDate() != messages[i-1].time.getDate()">
+          {{message.time.toLocaleDateString()}}
+        </div>
         <div class="message-box" [ngClass]="{'outsider': message.department_id !== department.department_id}">
           <div class="meta-info sender-name" *ngIf="message.sender !== user.id">
             <p>{{message.sender_name}} {{getDepartmentName(message)}}</p>
