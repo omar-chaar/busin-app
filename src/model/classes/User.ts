@@ -1,5 +1,4 @@
 import { IUser } from "../interfaces/interfaces";
-import { Department } from "./Department";
 
 export class User implements IUser{
 

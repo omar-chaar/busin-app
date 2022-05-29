@@ -1,5 +1,4 @@
 import { IDepartment } from "../interfaces/interfaces";
-import { Company } from "./Company";
 
 export class Department implements IDepartment{
 

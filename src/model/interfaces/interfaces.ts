@@ -1,10 +1,7 @@
-import { ChatMessage } from "../classes/ChatMessage";
-import { Company } from "../classes/Company";
 import { Department } from "../classes/Department";
 import { User } from "../classes/User";
 import { Message } from "../classes/Message";
 import { Chat } from "../classes/Chat";
-import { ChatGroup } from "../classes/ChatGroup";
 
 export interface IAnnouncement {
     id: number,

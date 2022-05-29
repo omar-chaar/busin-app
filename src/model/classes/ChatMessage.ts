@@ -1,6 +1,3 @@
-import { ChatGroup } from "./ChatGroup";
-import { User } from "./User";
-
 export class ChatMessage{
 
     id: number;

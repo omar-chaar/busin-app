@@ -133,7 +133,7 @@ export class AnnouncementsPage implements OnInit {
     this.announcementService.get10FirstAnnouncements().subscribe(
       (resp: any) => {
         this.announcements = resp.data.map((announcement) => {
-          const date = this.toDate(announcement.time);
+          const date = new Date(announcement.time);
           announcement = new Announcement(
             announcement.announcement_id,
             announcement.announcement_title,
@@ -255,7 +255,7 @@ export class AnnouncementsPage implements OnInit {
     let day = date.getDate().toString();
     let monthIndex = date.getMonth().toString();
     let year = date.getFullYear().toString();
-    let hours = (date.getHours() - 2).toString();
+    let hours = (date.getHours()).toString();
     let minutes = date.getMinutes().toString();
 
     if (day.length == 1) {
@@ -266,8 +266,7 @@ export class AnnouncementsPage implements OnInit {
     }
     if (minutes.length == 1) {
       minutes = '0' + minutes;
-    }
-
+    }    
     return (
       day +
       ' ' +
@@ -287,7 +286,7 @@ export class AnnouncementsPage implements OnInit {
     const timeArr = strArr[1].toString().split(':');
     return new Date(
       +dateArr[0],
-      +dateArr[1] - 1,
+      +dateArr[1],
       +dateArr[2],
       +timeArr[0],
       +timeArr[1]

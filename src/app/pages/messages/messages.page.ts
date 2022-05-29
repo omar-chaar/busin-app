@@ -70,7 +70,7 @@ export class MessagesPage implements OnInit {
           this.loaded = true;          
         } else {
           this.userService.getUserById(resp.data.sender_id).subscribe((user) => {
-            this.departmentMessage.message = `${user.data.name} ${user.data.surname}: ${resp.data.message_body}`,
+            this.departmentMessage.message = `${user.data.name}: ${resp.data.message_body}`,
               this.departmentMessage.time = this.formatTime(new Date(resp.data.time))
             this.departmentMessage.sender = `${user.name} ${user.surname}`                  
           this.loaded = true;

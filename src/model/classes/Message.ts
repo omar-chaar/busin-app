@@ -1,6 +1,5 @@
 import { IMessage } from "../interfaces/interfaces";
 import { Chat } from "./Chat";
-import { User } from "./User";
 
 export class Message implements IMessage {
 
