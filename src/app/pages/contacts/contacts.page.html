@@ -29,7 +29,8 @@
                 <ion-icon name="chatbubble-ellipses-sharp"></ion-icon>
               </ion-buttons>
             </ion-item>
-          </div>          
+          </div>
+          <center><ion-spinner *ngIf="!department" color="primary" ></ion-spinner></center>          
             <ion-item *ngIf="!department.users" class="border-none">
               <ion-label *ngIf="noUsersDepartments.includes(department.department_id)">
                 <h2 class="empty" >No users in this department</h2>
