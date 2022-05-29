@@ -92,5 +92,10 @@ export class ProfilePage implements OnInit {
     }, 2000);
   }  
 
+  logout(){
+    this.userService.logout();
+    this.redirectTo('/login');
+  }
+
 
 }

@@ -50,13 +50,30 @@ ion-toolbar{
 
 .messagebox-container{
     margin: 10px 7px;
-    
+    display: flex;
+    flex-direction: column;
+}
+
+.separator{
+    margin: 10px 0;
+    color: darkgrey;
+    font-size: .95rem;
+}
+
+.separator::after{
+    content: "";
+    display: block;
+    width: 50%;
+    height: 1px;
+    background: #e6e6e6;
 }
 
 .message-box{
     border-radius: 10px;
     padding: 10px 7px;
     display: flex;
+    width: fit-content;
+    align-self: flex-start;
     gap: 5px;
     flex-direction: column;
     background-color: #DADADA;
@@ -74,6 +91,7 @@ ion-toolbar{
     color: #fff;
     margin-right: 0px;
     margin-left: 20px;
+    align-self: flex-end;
 }
 
 .user-message .meta-info{

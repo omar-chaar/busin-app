@@ -19,8 +19,12 @@
     </ion-infinite-scroll>
   <ion-list class="scrollbar-hidden">
     <ion-grid>
-      <ion-row *ngFor="let message of messages" class="messagebox-container"
+      <ion-row *ngFor="let message of messages; let i = index;" class="messagebox-container"
         [ngClass]="{'user-message': message.sender === user.id}">
+        <div *ngIf="i > 0 && message.time.getDate() !== messages[i-1].time.getDate()"
+        class="separator">
+        {{message.time.toLocaleDateString()}}
+      </div>
         <div class="message-box">
           <p class="word-break">{{message.message}}</p>
           <div class="meta-info">

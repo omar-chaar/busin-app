@@ -6,7 +6,7 @@
     <div class="profile-container">
       <span class="profile-icons profile-header">
         <ion-icon name="chevron-back-outline" (click)="backButton()"></ion-icon>
-        <ion-icon name="ellipsis-vertical-sharp" id="profile-menu{{profileUser.id}}"></ion-icon>
+        <ion-icon *ngIf="user === profileUser" name="ellipsis-vertical-sharp" id="profile-menu{{profileUser.id}}"></ion-icon>
       </span>
       <span class="profile-avatar non-primary-button">
         <ion-avatar>         
@@ -39,11 +39,8 @@
   <ng-template>
     <app-popover-content>
       <ion-list>
-        <ion-item *ngIf="user !== profileUser" [button]="true" [detail]="false">
-          <ion-label>Delete messages</ion-label>
-        </ion-item>
-        <ion-item *ngIf="user === profileUser" [button]="true" [detail]="false">
-          <ion-label>Change picture</ion-label>
+        <ion-item *ngIf="user === profileUser" [button]="true" [detail]="false" (click)="logout()">
+          <ion-label>Logout</ion-label>
         </ion-item>
       </ion-list>
     </app-popover-content>

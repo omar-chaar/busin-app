@@ -60,7 +60,7 @@ export class AnnouncementsPage implements OnInit {
     this.announcementService.getAnnouncements().subscribe(
       (resp: any) => {
         this.announcements = resp.data.map((announcement) => {
-          const date = this.toDate(announcement.time);
+          const date = new Date(announcement.time);
           const user = resp.data;
           const userObj = new User(user.user_id, user.name, user.surname, user.position, user.email, null,
             user.department_id, user.is_admin, user.is_owner, null);
@@ -248,7 +248,7 @@ export class AnnouncementsPage implements OnInit {
     let day = date.getDate().toString();
     let monthIndex = date.getMonth().toString();
     let year = date.getFullYear().toString();
-    let hours = date.getHours().toString();
+    let hours = (date.getHours() - 2).toString();
     let minutes = date.getMinutes().toString();
 
     if (day.length == 1) {
