@@ -255,7 +255,7 @@ export class AnnouncementsPage implements OnInit {
     let day = date.getDate().toString();
     let monthIndex = date.getMonth().toString();
     let year = date.getFullYear().toString();
-    let hours = (date.getHours() - 2).toString();
+    let hours = date.getHours().toString();
     let minutes = date.getMinutes().toString();
 
     if (day.length == 1) {
